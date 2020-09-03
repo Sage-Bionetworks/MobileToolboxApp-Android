@@ -28,6 +28,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // Sage dependencies
+    implementation 'org.sagebionetworks.bridge:android-sdk:0.2.3'
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
