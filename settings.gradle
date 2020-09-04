@@ -1,2 +1,2 @@
-include ':app'
+include ':alpha-app'
 rootProject.name = "MTBAlphaApp-Android"

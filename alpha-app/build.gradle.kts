@@ -10,7 +10,7 @@ android {
     buildToolsVersion("29.0.3")
 
     defaultConfig {
-        applicationId = "org.sagebionetworks.research.mtb_alpha.app"
+        applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(21)
         targetSdkVersion(30)
         versionCode = 1

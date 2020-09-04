@@ -1,9 +1,10 @@
-package org.sagebionetworks.research.mtb_alpha.app
+package org.sagebionetworks.research.mtb.alpha_app
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
