@@ -1,20 +1,55 @@
 package org.sagebionetworks.research.mtb.alpha_app
 
+import android.content.Intent
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
+import org.koin.android.ext.android.inject
+import org.sagebionetworks.bridge.kmm.presentation.auth.ExternalIdSignInActivity
+import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
+import org.sagebionetworks.research.mtb.alpha_app.ui.AssessmentListActivity
 import org.sagebionetworks.research.mtb.alpha_app.ui.main.MainFragment
 
 class MainActivity : DaggerAppCompatActivity() {
 
+    val authenticationRepository: AuthenticationRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
-        }
+
+//        if (!authenticationRepository.isAuthenticated()) {
+//            val launchIntent = Intent(this, ExternalIdSignInActivity::class.java)
+//                .setData(intent.data)
+//                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//
+//            startActivity(launchIntent)
+//        }
+
+//        if (savedInstanceState == null) {
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.container, MainFragment.newInstance())
+//                .commitNow()
+//        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (!authenticationRepository.isAuthenticated()) {
+            val launchIntent = Intent(this, ExternalIdSignInActivity::class.java)
+                .setData(intent.data)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+            startActivity(launchIntent)
+        } else {
+            val launchIntent = Intent(this, AssessmentListActivity::class.java)
+                .setData(intent.data)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+            startActivity(launchIntent)
+        }
+
+    }
+
 //    @Inject
 //    lateinit var bridgeAccessViewModelFactory: BridgeAccessViewModel.Factory
 //    val bridgeAccessViewModel by viewModels<BridgeAccessViewModel>() {

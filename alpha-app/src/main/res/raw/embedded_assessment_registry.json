@@ -1,0 +1,28 @@
+[
+  {
+    "type": "DccsModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "Dimensional Change Card Sort",
+        "title": "DCCS",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "dimensional_change_card_sort"
+      }
+    ]
+  },
+  {
+    "type": "MfsModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "MFS pilot 2",
+        "title": "MFS",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "mfs_pilot_2"
+      }
+    ]
+  }
+]
