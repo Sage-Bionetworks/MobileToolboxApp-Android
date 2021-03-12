@@ -2,4 +2,6 @@
 <resources>
     <string name="osb_study_id">mtb-alpha</string>
     <string name="osb_study_name">MTB Alpha</string>
+    <string name="osb_app_id">mtb-alpha</string>
+    <string name="osb_app_name">MTB Alpha</string>
 </resources>
