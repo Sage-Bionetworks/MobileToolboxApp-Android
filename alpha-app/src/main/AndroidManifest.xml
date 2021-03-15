@@ -18,8 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.sagebionetworks.research.mtb.alpha_app.ui.AssessmentListActivity">
-        </activity>
+        <activity android:name="org.sagebionetworks.research.mtb.alpha_app.ui.AssessmentListActivity"></activity>
+        <activity android:name="org.sagebionetworks.research.mtb.alpha_app.MtbAssessmentActivity"></activity>
     </application>
 
 </manifest>
