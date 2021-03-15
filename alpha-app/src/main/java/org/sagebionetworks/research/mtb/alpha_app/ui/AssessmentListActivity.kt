@@ -10,6 +10,7 @@ import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.EmbeddedJsonModuleInfo
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.assessmentmodel.serialization.ModuleInfoObject
+import org.sagebionetworks.research.mtb.alpha_app.MtbAssessmentActivity
 import org.sagebionetworks.research.mtb.alpha_app.R
 import org.sagebionetworks.research.mtb.alpha_app.databinding.ActivityAssessmentListBinding
 import org.sagebionetworks.research.mtb.alpha_app.databinding.AssessmentRowBinding
@@ -44,7 +45,7 @@ class AssessmentListActivity: AppCompatActivity() {
         val row = AssessmentRowBinding.inflate(inflater, binding.assessmentContainer, false)
         row.taskName.text = title
         row.buttonStartTask.setOnClickListener {
-            val intent = Intent(this, AssessmentActivity::class.java)
+            val intent = Intent(this, MtbAssessmentActivity::class.java)
             intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
             if (theme > 0) {
                 intent.putExtra(AssessmentActivity.ARG_THEME, theme)
