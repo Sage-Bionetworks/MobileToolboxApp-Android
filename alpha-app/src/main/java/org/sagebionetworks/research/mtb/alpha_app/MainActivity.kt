@@ -2,34 +2,19 @@ package org.sagebionetworks.research.mtb.alpha_app
 
 import android.content.Intent
 import android.os.Bundle
-import dagger.android.support.DaggerAppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import org.koin.android.ext.android.inject
 import org.sagebionetworks.bridge.kmm.presentation.auth.ExternalIdSignInActivity
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mtb.alpha_app.ui.AssessmentListActivity
-import org.sagebionetworks.research.mtb.alpha_app.ui.main.MainFragment
 
-class MainActivity : DaggerAppCompatActivity() {
+class MainActivity :AppCompatActivity() {
 
     val authenticationRepository: AuthenticationRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-//        if (!authenticationRepository.isAuthenticated()) {
-//            val launchIntent = Intent(this, ExternalIdSignInActivity::class.java)
-//                .setData(intent.data)
-//                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//
-//            startActivity(launchIntent)
-//        }
-
-//        if (savedInstanceState == null) {
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.container, MainFragment.newInstance())
-//                .commitNow()
-//        }
     }
 
     override fun onResume() {
@@ -49,126 +34,4 @@ class MainActivity : DaggerAppCompatActivity() {
         }
 
     }
-
-//    @Inject
-//    lateinit var bridgeAccessViewModelFactory: BridgeAccessViewModel.Factory
-//    val bridgeAccessViewModel by viewModels<BridgeAccessViewModel>() {
-//        bridgeAccessViewModelFactory
-//    }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//
-//        bridgeAccessViewModel.bridgeAccessStatus.observe(
-//            this,
-//            Observer<Resource<BridgeAccessState>> {
-//                BridgeAccessStrategy.handle(it, this)
-//            })
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//
-//        bridgeAccessViewModel.checkAccess()
-//    }
-//
-//    override fun onAccessGranted() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onErrored(state: BridgeAccessState, message: String?) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onLoading(state: BridgeAccessState) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onRequireAppUpgrade() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onRequireAuthentication() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onRequireConsent() {
-//        TODO("Not yet implemented")
-//    }
 }
-/**
-package org.sagebionetworks.research.mtb.alpha_app
-
-import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.lifecycle.Observer
-import dagger.android.support.DaggerAppCompatActivity
-import org.sagebionetworks.bridge.android.access.BridgeAccessState
-import org.sagebionetworks.bridge.android.access.BridgeAccessStrategy
-import org.sagebionetworks.bridge.android.access.BridgeAccessViewModel
-import org.sagebionetworks.bridge.android.access.Resource
-import org.sagebionetworks.research.mtb.alpha_app.ui.main.MainFragment
-import org.sagebionetworks.research.mtb.alpha_app.ui.researcher_sign_in.ResearcherSignInFragment
-import org.sagebionetworks.research.mtb.alpha_app.ui.task_list.ShowTaskListFragment
-import javax.inject.Inject
-
-class MainActivity : DaggerAppCompatActivity(), BridgeAccessStrategy {
-
-
-@Inject
-lateinit var bridgeAccessViewModelFactory: BridgeAccessViewModel.Factory
-val bridgeAccessViewModel by viewModels<BridgeAccessViewModel>() {
-bridgeAccessViewModelFactory
-}
-
-
-override fun onCreate(savedInstanceState: Bundle?) {
-super.onCreate(savedInstanceState)
-setContentView(R.layout.activity_main)
-if (savedInstanceState == null) {
-supportFragmentManager.beginTransaction()
-.replace(R.id.container, MainFragment.newInstance())
-.commitNow()
-}
-bridgeAccessViewModel.bridgeAccessStatus.observe(
-this,
-Observer<Resource<BridgeAccessState>> {
-BridgeAccessStrategy.handle(it, this)
-})
-}
-
-override fun onResume() {
-super.onResume()
-
-bridgeAccessViewModel.checkAccess()
-}
-
-override fun onAccessGranted() {
-supportFragmentManager.beginTransaction()
-.replace(R.id.container, ShowTaskListFragment.newInstance())
-.commitNow()
-}
-
-override fun onErrored(state: BridgeAccessState, message: String?) {
-TODO("Not yet implemented")
-}
-
-override fun onLoading(state: BridgeAccessState) {
-TODO("Not yet implemented")
-}
-
-override fun onRequireAppUpgrade() {
-TODO("Not yet implemented")
-}
-
-override fun onRequireAuthentication() {
-supportFragmentManager.beginTransaction()
-.replace(R.id.container, ResearcherSignInFragment.newInstance())
-.commitNow()
-}
-
-override fun onRequireConsent() {
-TODO("Not yet implemented")
-}
-}**/
