@@ -3,12 +3,16 @@ package org.sagebionetworks.research.mtb.alpha_app
 import edu.northwestern.mobiletoolbox.common.assessment.MtbNodeStateProvider
 import edu.northwestern.mobiletoolbox.dimensional_change_card_sort.navigation.DCCSNodeStateProvider
 import edu.northwestern.mobiletoolbox.dimensional_change_card_sort.serialization.DCCSAssessmentObject
-//import edu.northwestern.mobiletoolbox.flanker.navigation.FlankerNodeStateProvider
-//import edu.northwestern.mobiletoolbox.flanker.serialization.FlankerAssessmentObject
-//import edu.northwestern.mobiletoolbox.spelling.navigation.SpellingNodeStateProvider
-//import edu.northwestern.mobiletoolbox.spelling.serialization.SpellingAssessmentObject
-//import edu.northwestern.mobiletoolbox.vocabulary.dichotomous_engine.VocabNodeStateProvider
-//import edu.northwestern.mobiletoolbox.vocabulary.serialization.VocabularyAssessmentObject
+import edu.northwestern.mobiletoolbox.flanker.navigation.FlankerNodeStateProvider
+import edu.northwestern.mobiletoolbox.flanker.serialization.FlankerAssessmentObject
+import edu.northwestern.mobiletoolbox.fname.navigation.FNAMENodeStateProvider
+import edu.northwestern.mobiletoolbox.fname.serialization.FNAMEAssessmentObject
+import edu.northwestern.mobiletoolbox.number_match.navigation.NumberMatchNodeStateProvider
+import edu.northwestern.mobiletoolbox.number_match.serialization.NumberMatchAssessmentObject
+import edu.northwestern.mobiletoolbox.spelling.navigation.SpellingNodeStateProvider
+import edu.northwestern.mobiletoolbox.spelling.serialization.SpellingAssessmentObject
+import edu.northwestern.mobiletoolbox.vocabulary.dichotomous_engine.VocabNodeStateProvider
+import edu.northwestern.mobiletoolbox.vocabulary.serialization.VocabularyAssessmentObject
 import org.sagebionetworks.assessmentmodel.BranchNode
 import org.sagebionetworks.assessmentmodel.navigation.BranchNodeState
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
@@ -17,21 +21,30 @@ class MtbAppNodeStateProvider(private val nodeStateProviders: List<CustomNodeSta
 
     override fun customBranchNodeStateFor(node: BranchNode, parent: BranchNodeState?): BranchNodeState? {
         val provider = when (node) {
-//            is VocabularyAssessmentObject -> {
-//                nodeStateProviders.first { x -> x is VocabNodeStateProvider }
-//            }
-//T
-//            is SpellingAssessmentObject -> {
-//                nodeStateProviders.first { x -> x is SpellingNodeStateProvider }
-//            }
-//
-//            is FlankerAssessmentObject -> {
-//                nodeStateProviders.first { x -> x is FlankerNodeStateProvider }
-//            }
+            is VocabularyAssessmentObject -> {
+                nodeStateProviders.first { x -> x is VocabNodeStateProvider }
+            }
+
+            is SpellingAssessmentObject -> {
+                nodeStateProviders.first { x -> x is SpellingNodeStateProvider }
+            }
+
+            is FlankerAssessmentObject -> {
+                nodeStateProviders.first { x -> x is FlankerNodeStateProvider }
+            }
 
             is DCCSAssessmentObject -> {
                 nodeStateProviders.first { x -> x is DCCSNodeStateProvider}
             }
+
+            is NumberMatchAssessmentObject -> {
+                nodeStateProviders.first { x -> x is NumberMatchNodeStateProvider }
+            }
+
+            is FNAMEAssessmentObject -> {
+                nodeStateProviders.first { x -> x is FNAMENodeStateProvider }
+            }
+
             else -> {
                 nodeStateProviders.first { x -> x is MtbNodeStateProvider }
             }

@@ -1,25 +1,42 @@
 package org.sagebionetworks.research.mtb.alpha_app
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.serialization.encodeToString
+import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
+import org.sagebionetworks.assessmentmodel.AssessmentResult
 import org.sagebionetworks.assessmentmodel.JsonModuleInfo
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
 import org.sagebionetworks.assessmentmodel.navigation.NodeState
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.assessmentmodel.presentation.RootAssessmentViewModel
+import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
+import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 
 class MtbAssessmentActivity : AssessmentActivity() {
 
-    override fun initViewModel(assessmentInfo: AssessmentPlaceholder, assessmentProvider: AssessmentRegistryProvider, customNodeStateProvider: CustomNodeStateProvider?) =
+    val uploadRequester: UploadRequester by inject()
+
+    override fun initViewModel(
+        assessmentInfo: AssessmentPlaceholder,
+        assessmentProvider: AssessmentRegistryProvider,
+        customNodeStateProvider: CustomNodeStateProvider?
+    ) =
         ViewModelProvider(
             this, MtbRootAssessmentViewModelFactory()
-                .create(assessmentInfo, assessmentProvider, customNodeStateProvider)
+                .create(
+                    assessmentInfo,
+                    assessmentProvider,
+                    customNodeStateProvider,
+                    uploadRequester
+                )
         ).get(MtbRootAssessmentViewModel::class.java)
 
 }
@@ -29,19 +46,20 @@ class MtbAssessmentActivity : AssessmentActivity() {
 class MtbRootAssessmentViewModel(
     assessmentPlaceholder: AssessmentPlaceholder,
     registryProvider: AssessmentRegistryProvider,
-    nodeStateProvider: CustomNodeStateProvider?) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
+    nodeStateProvider: CustomNodeStateProvider?,
+    val uploadRequester: UploadRequester
+) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
     val handleReadyToSave = MutableLiveData<String>()
+    val context by inject(Context::class.java)
+    val archiveUploader by inject(AssessmentResultArchiveUploader::class.java)
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
         val moduleInfo = registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
         val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
-        val resultString = jsonCoder.encodeToString(nodeState.currentResult)
+        val assessmentResult = nodeState.currentResult as AssessmentResult
 
-        //Here's where we can package the results into a zip file and trigger the upload to bridge.
-
-        handleReadyToSave.value = resultString ?: ""
-        Log.d("Save Result", resultString ?: "No data")
+        archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder)
     }
 
     override fun handleFinished(reason: FinishedReason, nodeState: NodeState) {
@@ -56,14 +74,20 @@ open class MtbRootAssessmentViewModelFactory() {
     open fun create(
         assessmentInfo: AssessmentPlaceholder,
         assessmentProvider: AssessmentRegistryProvider,
-        nodeStateProvider: CustomNodeStateProvider?
+        nodeStateProvider: CustomNodeStateProvider?,
+        uploadRequester: UploadRequester
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(MtbRootAssessmentViewModel::class.java)) {
 
                     @Suppress("UNCHECKED_CAST")
-                    return MtbRootAssessmentViewModel(assessmentInfo, assessmentProvider, nodeStateProvider) as T
+                    return MtbRootAssessmentViewModel(
+                        assessmentInfo,
+                        assessmentProvider,
+                        nodeStateProvider,
+                        uploadRequester
+                    ) as T
                 }
 
                 throw IllegalArgumentException("Unknown ViewModel class")

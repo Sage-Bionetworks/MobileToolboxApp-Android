@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
-    id("kotlin-android")
 }
 
 android {
@@ -17,18 +16,36 @@ android {
         versionName = "1.0"
 
         multiDexEnabled = true
-
+        multiDexKeepFile = File("multidex-config.txt")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+        }
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("x86", "x86_64", "armeabi", "armeabi-v7a", "mips", "mips64", "arm64-v8a")
+            isUniversalApk = true
+        }
     }
 
     buildTypes {
+
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
+    }
+
+    packagingOptions {
+        pickFirst("**/*.so")
     }
 
     compileOptions {
@@ -51,19 +68,26 @@ dependencies {
     val bridgeClientKmmVersion = "0.2.7"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
+    implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
 
     // MTB dependencies
     val mtbVersion = "0.1.18"
+    implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:$mtbVersion")
     implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:$mtbVersion")
     implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.1.31")
-    implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:$mtbVersion")
+    implementation("edu.northwestern.mobiletoolbox:flanker:$mtbVersion")
+    implementation("edu.northwestern.mobiletoolbox:spelling:$mtbVersion")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:$mtbVersion")
+    implementation("edu.northwestern.mobiletoolbox:number_match:$mtbVersion")
+    implementation("edu.northwestern.mobiletoolbox:fname:$mtbVersion")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:$mtbVersion")
+
 
     val assessment_version = "0.4.2"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessment_version")
-
 
     // Koin
     implementation(Deps.Koin.core)
@@ -72,7 +96,7 @@ dependencies {
 
     //I think this can be removed once we remove bridge-client and dagger -nbrown 03/09/21
     configurations {
-        all{ exclude( group="com.google.guava", module="listenablefuture")}
+        all { exclude(group = "com.google.guava", module = "listenablefuture") }
     }
 
 

@@ -4,19 +4,68 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/../MobileToolboxAndroid" name="MobileToolboxAndroid">
+                <projects>
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/dichotomous_engine" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/dimensional_change_card_sort" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/flanker" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/fname" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/memory-for-sequences" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/mtb-common-ui" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/mtb-test-app" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/number_match" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/picture_sequence_memory" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/spelling" />
+                  <project path="$PROJECT_DIR$/../MobileToolboxAndroid/vocabulary" />
+                </projects>
+              </build>
+              <build path="$PROJECT_DIR$/../BridgeClientKMM" name="BridgeClientKMM">
+                <projects>
+                  <project path="$PROJECT_DIR$/../BridgeClientKMM" />
+                  <project path="$PROJECT_DIR$/../BridgeClientKMM/androidApp" />
+                  <project path="$PROJECT_DIR$/../BridgeClientKMM/assessmentmodel-sdk" />
+                  <project path="$PROJECT_DIR$/../BridgeClientKMM/bridge-client" />
+                  <project path="$PROJECT_DIR$/../BridgeClientKMM/bridge-client-presentation" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="testRunner" value="PLATFORM" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-6.2.1" />
-        <option name="gradleJvm" value="1.8 (2)" />
         <option name="modules">
           <set>
+            <option value="$PROJECT_DIR$/../BridgeClientKMM" />
+            <option value="$PROJECT_DIR$/../BridgeClientKMM/androidApp" />
+            <option value="$PROJECT_DIR$/../BridgeClientKMM/assessmentmodel-sdk" />
+            <option value="$PROJECT_DIR$/../BridgeClientKMM/bridge-client" />
+            <option value="$PROJECT_DIR$/../BridgeClientKMM/bridge-client-presentation" />
+            <option value="$PROJECT_DIR$/../BridgeClientKMM/buildSrc" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/alpha-app" />
             <option value="$PROJECT_DIR$/buildSrc" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/dichotomous_engine" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/dimensional_change_card_sort" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/flanker" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/fname" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/memory-for-sequences" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/mtb-common-ui" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/mtb-test-app" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/number_match" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/picture_sequence_memory" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/spelling" />
+            <option value="$PROJECT_DIR$/../MobileToolboxAndroid/vocabulary" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>

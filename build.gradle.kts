@@ -19,6 +19,7 @@ allprojects {
     repositories {
 
         google()
+        mavenCentral()
         jcenter()
 
         maven(url = "http://repo-maven.sagebridge.org/")

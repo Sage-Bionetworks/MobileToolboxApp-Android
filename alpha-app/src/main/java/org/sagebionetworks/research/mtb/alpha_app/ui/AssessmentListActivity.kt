@@ -31,8 +31,8 @@ class AssessmentListActivity: AppCompatActivity() {
         setContentView(view)
 
         for (moduleInfo in assessmentRegistryProvider.modules) {
-            (moduleInfo as EmbeddedJsonModuleInfo)?.let {
-                var theme = R.style.BlueberryTheme
+            (moduleInfo as EmbeddedJsonModuleInfo).let {
+                val theme = R.style.BlueberryTheme
                 for (assessment in it.assessments) {
                     addAssessment(assessment.title?:assessment.identifier, assessment.identifier, theme)
                 }
