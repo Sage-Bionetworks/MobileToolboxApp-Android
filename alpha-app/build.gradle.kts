@@ -12,8 +12,8 @@ android {
         applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "0.2"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -21,6 +21,7 @@ android {
 
         ndk {
             abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+            debugSymbolLevel = "FULL"
         }
     }
 
@@ -58,6 +59,7 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     buildFeatures.viewBinding = true
+    ndkVersion = "22.1.7171670"
 }
 
 dependencies {

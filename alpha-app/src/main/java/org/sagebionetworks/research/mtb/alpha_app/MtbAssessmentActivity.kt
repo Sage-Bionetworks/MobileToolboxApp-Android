@@ -22,7 +22,7 @@ import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchive
 
 class MtbAssessmentActivity : AssessmentActivity() {
 
-    val uploadRequester: UploadRequester by inject()
+    val archiveUploader: AssessmentResultArchiveUploader by inject()
 
     override fun initViewModel(
         assessmentInfo: AssessmentPlaceholder,
@@ -35,7 +35,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
                     assessmentInfo,
                     assessmentProvider,
                     customNodeStateProvider,
-                    uploadRequester
+                    archiveUploader
                 )
         ).get(MtbRootAssessmentViewModel::class.java)
 
@@ -47,18 +47,17 @@ class MtbRootAssessmentViewModel(
     assessmentPlaceholder: AssessmentPlaceholder,
     registryProvider: AssessmentRegistryProvider,
     nodeStateProvider: CustomNodeStateProvider?,
-    val uploadRequester: UploadRequester
+    val archiveUploader: AssessmentResultArchiveUploader
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
     val handleReadyToSave = MutableLiveData<String>()
-    val context by inject(Context::class.java)
-    val archiveUploader by inject(AssessmentResultArchiveUploader::class.java)
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
         val moduleInfo = registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
         val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
         val assessmentResult = nodeState.currentResult as AssessmentResult
 
+        // TODO: move to coroutine - liujoshua 04/09/2021
         archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder)
     }
 
@@ -75,7 +74,7 @@ open class MtbRootAssessmentViewModelFactory() {
         assessmentInfo: AssessmentPlaceholder,
         assessmentProvider: AssessmentRegistryProvider,
         nodeStateProvider: CustomNodeStateProvider?,
-        uploadRequester: UploadRequester
+        archiveUploader: AssessmentResultArchiveUploader
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -86,7 +85,7 @@ open class MtbRootAssessmentViewModelFactory() {
                         assessmentInfo,
                         assessmentProvider,
                         nodeStateProvider,
-                        uploadRequester
+                        archiveUploader
                     ) as T
                 }
 
