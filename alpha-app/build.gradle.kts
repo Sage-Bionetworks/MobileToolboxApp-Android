@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
-    kotlin("kapt")
     id("kotlin-android")
 }
 
@@ -65,14 +64,6 @@ dependencies {
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessment_version")
 
-    // Dagger
-
-    implementation("com.google.dagger:dagger-android:${Versions.dagger}")
-    implementation("com.google.dagger:dagger-android-support:${Versions.dagger}")
-    implementation("com.google.code.findbugs:jsr305:3.0.2") //fix missing javax annotation for dagger
-    kapt("com.google.dagger:dagger-android-processor:${Versions.dagger}")
-    kapt("com.google.dagger:dagger-compiler:${Versions.dagger}")
-    kaptTest("com.google.dagger:dagger-compiler:${Versions.dagger}")
 
     // Koin
     implementation(Deps.Koin.core)
