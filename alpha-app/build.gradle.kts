@@ -9,7 +9,7 @@ android {
     buildToolsVersion("29.0.3")
 
     defaultConfig {
-        applicationId = "org.sagebionetworks.research.mtb.app"
+        applicationId = "org.sagebionetworks.research.psorcast.validation"
         minSdkVersion(23)
         targetSdkVersion(30)
         versionCode = 2
@@ -72,6 +72,11 @@ dependencies {
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+        version {
+            strictly("1.4.2-native-mt")
+        }
+    }
     // MTB dependencies
     val mtbVersion = "0.1.18"
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")

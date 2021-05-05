@@ -13,6 +13,19 @@
     ]
   },
   {
+    "type": "FlankerModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "Flanker Inhibitory Control",
+        "title": "Flanker",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "flanker_inhibitory_control_age_18"
+      }
+    ]
+  },
+  {
     "type": "MfsModuleInfo",
     "assessments": [
       {
@@ -22,6 +35,74 @@
         "subtitle": "",
         "detail": "",
         "resourceName": "mfs_pilot_2"
+      }
+    ]
+  },
+  {
+    "type": "SpellingModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "MTB Spelling Form 1",
+        "title": "Spelling",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "mtb_spelling_form_1"
+      }
+    ]
+  },
+  {
+    "type": "VocabularyModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "Vocabulary Form 1",
+        "title": "Vocabulary Form 1",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "vocabulary_form_1"
+      },
+      {
+        "type": "transformableAssessment",
+        "identifier": "Vocabulary Form 2",
+        "title": "Vocabulary Form 2",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "vocabulary_form_2"
+      }
+    ]
+  },
+  {
+    "type": "FNAMEModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "FNAME Learning Form 1",
+        "title": "FNAME Learning Form 1",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "fname_learning_form_1"
+      },
+      {
+        "type": "transformableAssessment",
+        "identifier": "FNAME Test Form 1",
+        "title": "FNAME Test Form 1",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "fname_test_form_1"
+      }
+    ]
+  },
+  {
+    "type": "NumberMatchModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "Number Match",
+        "title": "Number Match",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "number_match"
       }
     ]
   }
