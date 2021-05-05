@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
 }
 
 android {
@@ -12,8 +13,8 @@ android {
         applicationId = "org.sagebionetworks.research.psorcast.validation"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 2
-        versionName = "0.2"
+        versionCode = 3
+        versionName = "0.3"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -67,7 +68,7 @@ dependencies {
 
     // Sage dependencies
     implementation("org.sagebionetworks.bridge:android-sdk:0.5.0")
-    val bridgeClientKmmVersion = "0.2.7"
+    val bridgeClientKmmVersion = "0.2.10"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
@@ -78,21 +79,22 @@ dependencies {
         }
     }
     // MTB dependencies
-    val mtbVersion = "0.1.18"
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:flanker:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:spelling:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:number_match:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:fname:$mtbVersion")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:$mtbVersion")
+    implementation(Deps.MTB.glide)
+    kapt(Deps.MTB.glide_kapt)
+    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3")
+    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.27")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.27")
+    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.26")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.4")
+    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.12")
+    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.9")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.9")
+    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.9")
+    implementation("edu.northwestern.mobiletoolbox:fname:0.1.9")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.9")
 
-
-    val assessment_version = "0.4.2"
+    val assessment_version = "0.4.3"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessment_version")
 
@@ -109,7 +111,7 @@ dependencies {
 
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
-
+    implementation(kotlin("reflect", Versions.kotlin))
     // Android
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.android.support:multidex:1.0.3")

@@ -105,5 +105,18 @@
         "resourceName": "number_match"
       }
     ]
+  },
+  {
+    "type": "PSMModuleInfo",
+    "assessments": [
+      {
+        "type": "transformableAssessment",
+        "identifier": "Picture Sequence MemoryV1",
+        "title": "Picture Sequence MemoryV1",
+        "subtitle": "",
+        "detail": "",
+        "resourceName": "picture_sequence_memory_v1"
+      }
+    ]
   }
 ]

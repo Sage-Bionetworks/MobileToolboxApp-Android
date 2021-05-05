@@ -3,11 +3,12 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
+        gradlePluginPortal()
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.2")
+        classpath("com.android.tools.build:gradle:4.1.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -17,46 +18,68 @@ buildscript {
 
 allprojects {
     repositories {
-
         google()
         mavenCentral()
-        jcenter()
-
         maven(url = "http://repo-maven.sagebridge.org/")
-        maven(url = "https://kotlin.bintray.com/kotlinx/")
-        maven(url = "https://dl.bintray.com/heliumfoot/maven")
-        maven(url = "https://dl.bintray.com/readdle/maven")
-        maven(url = "https://dl.bintray.com/sage-bionetworks/AssessmentModel-KotlinNative")
-        maven(url = "https://dl.bintray.com/sage-bionetworks/BridgeClientKMM")
-        maven(url = "https://dl.bintray.com/ekito/koin")
+        maven(url = "https://sagebionetworks.jfrog.io/artifactory/mobile-sdks/")
+        mavenLocal()
 
         maven {
-
             name = "GitHubPackages"
-
             url = uri("https://maven.pkg.github.com/MobileToolbox/MobileToolboxAndroid")
             credentials {
 
-                username = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user") ?: System.getenv("GPR_USER")
-                password = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
+                username = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user")
+                    ?: System.getenv("GPR_USER")
+                password = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key")
+                    ?: System.getenv("GPR_API_KEY")
             }
         }
 
-        repositories {
-            maven {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/MobileToolbox/MobileToolboxNavigation")
+            credentials {
 
-                name = "GitHubPackages"
+                username = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user")
+                    ?: System.getenv("GPR_USER")
+                password = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key")
+                    ?: System.getenv("GPR_API_KEY")
+            }
+        }
 
-                url = uri("https://maven.pkg.github.com/MobileToolbox/MobileToolboxNavigation")
-                credentials {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/heliumfoot/swift-java-codegen")
+            credentials {
+                username = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user")
+                    ?: System.getenv("GPR_USER")
+                password = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key")
+                    ?: System.getenv("GPR_API_KEY")
+            }
+        }
+    }
 
-                    gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user") ?: System.getenv("GPR_USER")
-                    gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key") ?: System.getenv("GPR_API_KEY")
+    configurations.all {
+
+        resolutionStrategy.eachDependency(Action {
+            with (requested) {
+                // remove after our transitive dependencies migrate
+                if (group == "org.koin") {
+                    useTarget( "io.insert-koin:${name}:${version}")
+                    because("Koin moved groups")
+                }
+                if (group == "org.jetbrains.kotlin") {
+                    if (name.startsWith("kotlin-stdlib")) {
+                        useTarget( "org.jetbrains.kotlin:${name}:${Versions.kotlin}")
+
+                    }
                 }
             }
-        }
+        })
 
     }
+
 }
 
 //task clean(type: Delete) {

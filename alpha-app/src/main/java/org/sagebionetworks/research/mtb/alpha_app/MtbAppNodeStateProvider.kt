@@ -9,6 +9,8 @@ import edu.northwestern.mobiletoolbox.fname.navigation.FNAMENodeStateProvider
 import edu.northwestern.mobiletoolbox.fname.serialization.FNAMEAssessmentObject
 import edu.northwestern.mobiletoolbox.number_match.navigation.NumberMatchNodeStateProvider
 import edu.northwestern.mobiletoolbox.number_match.serialization.NumberMatchAssessmentObject
+import edu.northwestern.mobiletoolbox.picture_sequence_memory.navigation.PSMNodeStateProvider
+import edu.northwestern.mobiletoolbox.picture_sequence_memory.serialization.PSMAssessmentObject
 import edu.northwestern.mobiletoolbox.spelling.navigation.SpellingNodeStateProvider
 import edu.northwestern.mobiletoolbox.spelling.serialization.SpellingAssessmentObject
 import edu.northwestern.mobiletoolbox.vocabulary.dichotomous_engine.VocabNodeStateProvider
@@ -43,6 +45,10 @@ class MtbAppNodeStateProvider(private val nodeStateProviders: List<CustomNodeSta
 
             is FNAMEAssessmentObject -> {
                 nodeStateProviders.first { x -> x is FNAMENodeStateProvider }
+            }
+
+            is PSMAssessmentObject -> {
+                nodeStateProviders.first { x -> x is PSMNodeStateProvider }
             }
 
             else -> {

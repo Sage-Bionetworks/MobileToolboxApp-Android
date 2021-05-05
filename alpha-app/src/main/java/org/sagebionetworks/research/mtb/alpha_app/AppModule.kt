@@ -10,6 +10,7 @@ import edu.northwestern.mobiletoolbox.fname.serialization.fnameModuleInfoSeriali
 import edu.northwestern.mobiletoolbox.mfs.serialization.mfsModuleInfoSerializersModule
 import edu.northwestern.mobiletoolbox.number_match.navigation.NumberMatchNodeStateProvider
 import edu.northwestern.mobiletoolbox.number_match.serialization.numberMatchModuleInfoSerializersModule
+import edu.northwestern.mobiletoolbox.picture_sequence_memory.navigation.PSMNodeStateProvider
 import edu.northwestern.mobiletoolbox.picture_sequence_memory.serialization.psmModuleInfoSerializersModule
 import edu.northwestern.mobiletoolbox.spelling.navigation.SpellingNodeStateProvider
 import edu.northwestern.mobiletoolbox.spelling.serialization.spellingModuleInfoSerializersModule
@@ -43,11 +44,14 @@ val appModule = module {
                         fnameModuleInfoSerializersModule +
                         numberMatchModuleInfoSerializersModule +
                         psmModuleInfoSerializersModule
+                isLenient = true
             },
         )
     }
 
-    single<AssessmentResultArchiveUploader> { MtbAssessmentResultArchiveUploader() }
+    single<AssessmentResultArchiveUploader> {
+        MtbAssessmentResultArchiveUploader(get(), get(), get(), get())
+    }
 
     single { UploadRequester(get(), get()) }
 
@@ -61,7 +65,8 @@ val appModule = module {
                 DCCSNodeStateProvider(get()),
                 NumberMatchNodeStateProvider(get()),
                 FNAMENodeStateProvider(get()),
-                MtbNodeStateProvider(get())
+                PSMNodeStateProvider(get()),
+                MtbNodeStateProvider(get()),
             )
         )
     }

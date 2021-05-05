@@ -32,7 +32,7 @@ class AssessmentListActivity: AppCompatActivity() {
 
         for (moduleInfo in assessmentRegistryProvider.modules) {
             (moduleInfo as EmbeddedJsonModuleInfo).let {
-                val theme = R.style.BlueberryTheme
+                val theme = edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen
                 for (assessment in it.assessments) {
                     addAssessment(assessment.title?:assessment.identifier, assessment.identifier, theme)
                 }

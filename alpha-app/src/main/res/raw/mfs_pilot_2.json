@@ -1,0 +1,1424 @@
+{
+  "identifier": "MFS pilot 2",
+  "type": "MFS_pilot_2",
+  "schemaIdentifier": "MTB_Memory_For_Sequences",
+  "versionString": "4",
+  "taskOrientation": "landscape",
+  "presentationDelay": 1000,
+  "sequenceLetters": [
+    "a",
+    "b",
+    "c",
+    "q",
+    "r",
+    "s",
+    "x",
+    "y",
+    "z"
+  ],
+  "sequenceNumbers": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ],
+  "responseSequenceLimit": 20,
+  "instructions": [
+    {
+      "identifier": "mfsInstructions",
+      "type": "mssModalInstruction",
+      "title": "Instructions",
+      "detail": "Remember, first tap the letters that you saw in alphabetical order, then tap the numbers from smallest to largest.",
+      "image": {
+        "type": "fetchable",
+        "imageName": "mfs_instruction_image",
+        "bundleIdentifier": "edu.northwestern.mss.MemoryForSequences"
+      },
+      "actions": {
+        "backToPauseScreen": {
+          "type": "default",
+          "buttonTitle": "Back to paused screen"
+        },
+        "resume": {
+          "type": "default",
+          "buttonTitle": "Resume"
+        }
+      }
+    }
+  ],
+  "steps": [
+    {
+      "identifier": "MFS_welcome",
+      "detail": "This activity will ask you to remember letters and numbers.",
+      "title": "Sequences",
+      "type": "mfsOverview",
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequencesWelcome",
+        "viewIdentifier": "MemoryForSequencesWelcome"
+      },
+      "shouldRecordResponseTime": false,
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "View instructions"
+        },
+        "skip": {
+          "type": "navigation",
+          "buttonTitle": "Practice",
+          "skipToIdentifier": "MFS_P1"
+        },
+        "reviewInstructions": {
+          "type": "default",
+          "buttonTitle": "Review Instructions"
+        },
+        "cancel": {
+          "type": "default",
+          "iconName": "mfs-exit-button",
+          "bundleIdentifier": "edu.northwestern.mss.MemoryForSequences"
+        }
+      },
+      "image": {
+        "type": "fetchable",
+        "imageName": "mfs_logo",
+        "bundleIdentifier": "edu.northwestern.mss.MemoryForSequences"
+      }
+    },
+    {
+      "identifier": "MFS_Ins",
+      "type": "mfsInstructionParent",
+      "shouldGoBack": true,
+      "viewTheme": {
+        "storyboardIdentifier": "MSSInstructionsParent",
+        "viewIdentifier": "MSSInstructionsParent",
+        "bundleIdentifier": "edu.Northwestern.MSSMobileKit",
+        "childStepBundleIdentifier": "edu.northwestern.mss.MemoryForSequences"
+      },
+      "actions": {},
+      "transition": {
+        "identifier": "MFS_trans1",
+        "type": "mssTransition",
+        "title": "Let's try it out!",
+        "shouldRecordResponseTime": false,
+        "actions": {
+          "goForward": {
+            "type": "default",
+            "buttonTitle": "Practice"
+          },
+          "reviewInstructions": {
+            "type": "default",
+            "buttonTitle": "Review Instructions"
+          }
+        },
+        "viewTheme": {
+          "storyboardIdentifier": "MemoryForSequencesInstructions",
+          "viewIdentifier": "MemoryForSequencesTransition",
+          "bundleIdentifier": "edu.northwestern.mss.MemoryForSequences"
+        }
+      },
+      "steps": [
+        {
+          "identifier": "MFS_Ins1",
+          "type": "mfsInstructionChild",
+          "htmlText": "<span style = \"font-family: Lato; font-style: normal; font-weight: normal; font-size: 18px; line-height: 20px;\">You are going to see a group of <b>letters</b> and <b>numbers</b> shown one at a time. </br></br>Try to <b>remember</b> what you <b>see</b>.</span>",
+          "shouldDisplayResponseView": false,
+          "shouldRecordResponseTime": false,
+          "childViewRepeatAnimationDelay": 1000,
+          "inputFields": [
+            {
+              "choices": [
+                {
+                  "itemResponseOID": "17303F75-6C65-43F9-8B32-D2C539BF0EB9",
+                  "text": "<",
+                  "value": 1
+                },
+                {
+                  "itemResponseOID": "FC903F97-B312-4758-AF93-0805085A6EFC",
+                  "text": ">",
+                  "value": 2
+                }
+              ],
+              "identifier": "MFS_Ins1_0",
+              "type": "singleChoiceStringInt"
+            }
+          ],
+          "demoStep": {
+            "identifier": "MFS_Ins1_Demo",
+            "title": "3-r-2",
+            "inputFields": [],
+            "type": "mssFormUI",
+            "viewTheme": {
+              "storyboardIdentifier": "MemoryForSequences",
+              "viewIdentifier": "MemoryForSequencesTest"
+            }
+          }
+        },
+        {
+          "identifier": "MFS_Ins2",
+          "type": "mfsInstructionChild",
+          "htmlText": "<span style = \"font-family: Lato; font-style: normal; font-weight: normal; font-size: 18px; line-height: 20px;\"><b>First</b> tap the letters you just saw in <b>alphabetical order</b>, then tap the <b>numbers</b> from <b>smallest to largest</b>.</span>",
+          "shouldDisplayResponseView": true,
+          "shouldRecordResponseTime": false,
+          "inputFields": [
+            {
+              "choices": [
+                {
+                  "itemResponseOID": "17303F75-6C65-43F9-8B32-D2C539BF0EB9",
+                  "text": "<",
+                  "value": 1
+                },
+                {
+                  "itemResponseOID": "FC903F97-B312-4758-AF93-0805085A6EFC",
+                  "text": ">",
+                  "value": 2
+                }
+              ],
+              "identifier": "MFS_Ins2",
+              "type": "singleChoiceStringInt"
+            }
+          ],
+          "demoStep": {
+            "identifier": "MFS_Ins2_Demo",
+            "title": "3-r-2",
+            "inputFields": [],
+            "type": "mssFormUI",
+            "viewTheme": {
+              "storyboardIdentifier": "MemoryForSequences",
+              "viewIdentifier": "MemoryForSequencesTest"
+            },
+            "animation": {
+              "controls": [
+                {
+                  "identifier" : "r"
+                },
+                {
+                  "identifier" : "2"
+                },
+                {
+                  "identifier" : "3"
+                },
+                {
+                  "identifier" : "done"
+                }
+              ],
+              "delay": 1000,
+              "repeatDelay": 1000,
+              "repeatCount": 3,
+              "shouldNotResetAfterLastRepeat": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "identifier": "MFS_P1",
+      "title": "3-y",
+      "detail": "",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "y-3",
+              "itemResponseOID": "9EB1F02A-B3C3-40FE-8583-C6F2C7147E8A"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "E9744364-AB29-4D96-8DD1-E95C0AEBF4A4"
+            }
+          ],
+          "identifier": "MFS_P1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "isPractice": true,
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      },
+      "transition": {
+        "type": "feedback",
+        "identifier": "MFS_P1_FEEDBACK",
+        "shouldRecordResponseTime": false,
+        "viewTheme": {
+          "storyboardIdentifier": "MemoryForSequences",
+          "viewIdentifier": "MemoryForSequencesFeedback"
+        },
+        "correct": {
+          "icon": "ico_feedback_correct",
+          "title": "Correct!",
+          "description": ""
+        },
+        "incorrect": {
+          "icon": "ico_feedback_incorrect",
+          "title": "Let's try that again!",
+          "description": "<span style=\"font-family: Lato; font-style: normal; font-weight: normal; font-size: 18px; line-height: 20px;\">Remember to <strong>reorder</strong> what you saw by tapping the <strong>letters</strong> in <strong>alphabetical order</strong>, then <strong>tap</strong> the <strong>numbers</strong> from <strong>smallest</strong> to <strong>largest</strong>.</span>",
+          "seperator" : "then"
+        },
+        "actions": {
+          "next": {
+            "type": "default",
+            "buttonTitle": "Next"
+          },
+          "tryAgain": {
+            "type": "default",
+            "buttonTitle": "Try again"
+          }
+        }
+      }
+    },
+    {
+      "identifier": "MFS_P2",
+      "title": "z-8-q",
+      "detail": "",
+      "shouldRecordResponseTime": false,
+      "type": "mssFormUI",
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "q-z-8",
+              "itemResponseOID": "8E16CAE6-6954-416F-A309-0CA377ECC4DF"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "06FF2CD4-EC40-485C-A4FA-130A461111DB"
+            }
+          ],
+          "identifier": "MFS_P2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "isPractice": true,
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      },
+      "transition": {
+        "type": "feedback",
+        "identifier": "MFS_P2_FEEDBACK",
+        "shouldRecordResponseTime": false,
+        "viewTheme": {
+          "storyboardIdentifier": "MemoryForSequences",
+          "viewIdentifier": "MemoryForSequencesFeedback"
+        },
+        "correct": {
+          "icon": "ico_feedback_correct",
+          "title": "Nice Work!",
+          "description": "<span style=\"font-family: Lato; font-style: normal; font-weight: normal; font-size: 18px; line-height: 20px;\">Now let's do some more.</span>"
+        },
+        "incorrect": {
+          "icon": "ico_feedback_incorrect",
+          "title": "Let's try that again!",
+          "description": "<span style=\"font-family: Lato; font-style: normal; font-weight: normal; font-size: 18px; line-height: 20px;\">Remember to <strong>reorder</strong> what you saw by tapping the <strong>letters</strong> in <strong>alphabetical order</strong>, then <strong>tap</strong> the <strong>numbers</strong> from <strong>smallest</strong> to <strong>largest</strong>.</span>",
+          "seperator" : "then"
+        },
+        "actions": {
+          "next": {
+            "type": "default",
+            "buttonTitle": "Start"
+          },
+          "tryAgain": {
+            "type": "default",
+            "buttonTitle": "Try again"
+          }
+        }
+      }
+    },
+    {
+      "identifier": "MFS_2_1",
+      "sequenceName": "MFS_2",
+      "title": "9-c",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "c-9",
+              "itemResponseOID": "F683C605-D73E-4262-B145-49B36F933F36"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "31FAFC1B-DB78-4AD7-B827-F85548C890DE"
+            }
+          ],
+          "identifier": "MFS_2_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_2_2",
+      "sequenceName": "MFS_2",
+      "title": "r-4",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "r-4",
+              "itemResponseOID": "C4A3B21C-548B-486C-96F9-C94A09D5D40B"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "990CEF9A-30BB-4326-9060-ABB7ECB9AA9F"
+            }
+          ],
+          "identifier": "MFS_2_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_2_3",
+      "sequenceName": "MFS_2",
+      "title": "3-z",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "z-3",
+              "itemResponseOID": "46C60C0D-BE6B-4820-9117-A78A873CFF95"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "28E950B3-804C-4E5C-A836-893A062B57D6"
+            }
+          ],
+          "identifier": "MFS_2_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_3_1",
+      "sequenceName": "MFS_3",
+      "title": "b-2-z",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "b-z-2",
+              "itemResponseOID": "E7737AC3-EF7B-4271-8FED-FB52C7B9344B"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "31768CA7-E83F-41AA-9848-988BC5D059D6"
+            }
+          ],
+          "identifier": "MFS_3_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_3_2",
+      "sequenceName": "MFS_3",
+      "title": "a-5-s",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-s-5",
+              "itemResponseOID": "AB597D5C-1ED1-422E-9080-59AC6AECC675"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "7E7243B9-4D31-4333-9DB8-6644CC5E5EC7"
+            }
+          ],
+          "identifier": "MFS_3_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_3_3",
+      "sequenceName": "MFS_3",
+      "title": "y-1-q",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "q-y-1",
+              "itemResponseOID": "AD3D9F47-5770-48D6-91BD-8640D914E9A0"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "04D2F33B-8F18-41C7-B06E-9459285EB53A"
+            }
+          ],
+          "identifier": "MFS_3_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_3_4",
+      "sequenceName": "MFS_3_1",
+      "title": "6-s-8",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "s-6-8",
+              "itemResponseOID": "BB17FC3E-E8E1-4174-9798-3CE640FE1E45"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "051615E6-4A5B-46F6-A250-B2CD39C69473"
+            }
+          ],
+          "identifier": "MFS_3_4",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_3_5",
+      "sequenceName": "MFS_3_1",
+      "title": "4-s-2",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "s-2-4",
+              "itemResponseOID": "17AB881C-DC6D-4B0D-B681-13E0BDEDBEAC"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "FF737366-C800-4D37-A745-B4432ADDDAEC"
+            }
+          ],
+          "identifier": "MFS_3_5",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_3_6",
+      "sequenceName": "MFS_3_1",
+      "title": "9-x-1",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "x-1-9",
+              "itemResponseOID": "B984EF44-61A5-48C1-AD13-3D1187452E4A"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "B5CE6DBB-D2D9-45DA-99E6-A694B8777361"
+            }
+          ],
+          "identifier": "MFS_3_6",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_4_1",
+      "sequenceName": "MFS_4",
+      "title": "1-b-6-z",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "b-z-1-6",
+              "itemResponseOID": "E62A0757-B69D-440D-93E4-3869D49C4DBF"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "484D3EB2-1CEB-4987-B61C-5AF2FE11DCA3"
+            }
+          ],
+          "identifier": "MFS_4_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_4_2",
+      "sequenceName": "MFS_4",
+      "title": "5-a-8-b",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-5-8",
+              "itemResponseOID": "D2800186-A554-4115-9E92-7340F452C084"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "59B61305-6710-4408-BF8D-84A4995CD6F0"
+            }
+          ],
+          "identifier": "MFS_4_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_4_3",
+      "sequenceName": "MFS_4",
+      "title": "4-r-2-y",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "r-y-2-4",
+              "itemResponseOID": "7FB2D494-423A-4386-B10F-BD2E8A31E469"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "2659BF57-9201-45FD-87F6-F39A9567D534"
+            }
+          ],
+          "identifier": "MFS_4_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_5_1",
+      "sequenceName": "MFS_5",
+      "title": "c-6-q-1-b",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "b-c-q-1-6",
+              "itemResponseOID": "5ABC90D5-1D32-4469-B01B-C7A896C6948D"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "9DF3E9D4-B330-4C9E-84A6-BCFB83F03B4E"
+            }
+          ],
+          "identifier": "MFS_5_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_5_2",
+      "sequenceName": "MFS_5",
+      "title": "a-9-s-4-y",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-s-y-4-9",
+              "itemResponseOID": "5A187AA9-D6EB-4C15-9BA6-7853CA4D9534"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "68AD7AA2-99F2-4E77-B264-2EE9BBE4DF9B"
+            }
+          ],
+          "identifier": "MFS_5_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_5_3",
+      "sequenceName": "MFS_5",
+      "title": "x-6-q-4-c",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "c-q-x-4-6",
+              "itemResponseOID": "C9041B99-2C82-4E81-B4AB-64CD823435A5"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "EA823C0F-8AC7-447D-9149-91EDB5D192DA"
+            }
+          ],
+          "identifier": "MFS_5_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_6_1",
+      "sequenceName": "MFS_6",
+      "title": "z-2-y-9-r-1",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "r-y-z-1-2-9",
+              "itemResponseOID": "1690E1D3-50EA-41CD-B024-AE4B5CEC9940"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "D48E062C-D2A9-4A03-99D7-192404336B0A"
+            }
+          ],
+          "identifier": "MFS_6_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_6_2",
+      "sequenceName": "MFS_6",
+      "title": "a-4-r-7-c-6",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-c-r-4-6-7",
+              "itemResponseOID": "F61890CF-E1AE-4F82-8A7B-7B0CE481F3C8"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "E6CF9403-E64C-440D-9B82-8C51FE8291F7"
+            }
+          ],
+          "identifier": "MFS_6_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_6_3",
+      "sequenceName": "MFS_6",
+      "title": "y-8-z-1-x-7",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "x-y-z-1-7-8",
+              "itemResponseOID": "CCD281D5-5DC0-4E92-A682-ED07EC938FE7"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "D227A116-22AE-4AB9-9D92-985EE742857E"
+            }
+          ],
+          "identifier": "MFS_6_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_7_1",
+      "sequenceName": "MFS_7",
+      "title": "1-a-7-c-9-y-8",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-c-y-1-7-8-9",
+              "itemResponseOID": "D3D3215D-5EF5-476C-8D35-C884100627DE"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "70F2070B-CDB9-45D0-AFDD-58D591EC2106"
+            }
+          ],
+          "identifier": "MFS_7_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_7_2",
+      "sequenceName": "MFS_7",
+      "title": "8-s-5-x-1-c-2",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "c-s-x-1-2-5-8",
+              "itemResponseOID": "7BDE34A8-2051-4977-A875-B99D840D0D45"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "8D62AC12-BC6D-4915-9FB4-B99736C06F49"
+            }
+          ],
+          "identifier": "MFS_7_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_7_3",
+      "sequenceName": "MFS_7",
+      "title": "3-a-6-b-8-y-7",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-y-3-6-7-8",
+              "itemResponseOID": "B4303483-5F81-4250-BC78-C12A541D8D33"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "6C9F0968-183A-400F-81BE-68C1CCFA2FC5"
+            }
+          ],
+          "identifier": "MFS_7_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_8_1",
+      "sequenceName": "MFS_8",
+      "title": "r-2-x-1-c-4-y-8",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "c-r-x-y-1-2-4-8",
+              "itemResponseOID": "EADF924A-D10C-4519-B2D8-9A93E9B15BE8"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "BB401107-E6E0-4A4B-B7B1-F5041E27DEFE"
+            }
+          ],
+          "identifier": "MFS_8_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_8_2",
+      "sequenceName": "MFS_8",
+      "title": "z-6-a-5-x-9-c-1",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-c-x-z-1-5-6-9",
+              "itemResponseOID": "28661D61-D813-41CD-8B25-358054397246"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "51C6CCF5-6356-4A13-AAFB-F410D0C7F2AC"
+            }
+          ],
+          "identifier": "MFS_8_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_8_3",
+      "sequenceName": "MFS_8",
+      "title": "s-3-q-4-r-1-a-2",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-q-r-s-1-2-3-4",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_8_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_9_1",
+      "sequenceName": "MFS_9",
+      "title": "r-2-a-3-s-5-q-1-b",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-q-r-s-1-2-3-5",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_9_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_9_2",
+      "sequenceName": "MFS_9",
+      "title": "y-6-x-7-c-5-r-4-a",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-c-r-x-y-4-5-6-7",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_9_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_9_3",
+      "sequenceName": "MFS_9",
+      "title": "a-1-q-7-c-2-b-3-s",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-c-q-s-1-2-3-7",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_9_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_10_1",
+      "sequenceName": "MFS_10",
+      "title": "2-b-6-c-7-y-9-r-1-a",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-c-r-y-1-2-6-7-9",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_10_1",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_10_2",
+      "sequenceName": "MFS_10",
+      "title": "9-r-7-a-8-c-6-b-5-q",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-c-q-r-5-6-7-8-9",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_10_2",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "MFS_10_3",
+      "sequenceName": "MFS_10",
+      "title": "4-s-3-c-1-q-6-a-9-b",
+      "type": "mssFormUI",
+      "shouldRecordResponseTime": false,
+      "inputFields": [
+        {
+          "choices": [
+            {
+              "score": 1,
+              "value": "a-b-c-q-s-1-3-4-6-9",
+              "itemResponseOID": "4C9EF6AE-6A7C-498B-93D1-3C8086A1C32E"
+            },
+            {
+              "score": 0,
+              "value": "",
+              "itemResponseOID": "3086E110-434F-4136-8B76-CE99449269E4"
+            }
+          ],
+          "identifier": "MFS_10_3",
+          "type": "singleChoiceStringInt"
+        }
+      ],
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Done"
+        }
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MemoryForSequences",
+        "viewIdentifier": "MemoryForSequencesTest"
+      }
+    },
+    {
+      "identifier": "completionScreen",
+      "stepName": "lastStep",
+      "title": "Good job!",
+      "shouldRecordResponseTime": false,
+      "detail": "You've completed this activity.",
+      "type": "completion",
+      "actions": {
+        "goForward": {
+          "type": "default",
+          "buttonTitle": "Exit activity"
+        }
+      },
+      "image": {
+        "type": "fetchable",
+        "imageName": "complete",
+        "bundleIdentifier": "edu.northwestern.mss.MemoryForSequences"
+      },
+      "viewTheme": {
+        "storyboardIdentifier": "MSSCompletion",
+        "viewIdentifier": "MSSCompletion",
+        "bundleIdentifier": "edu.Northwestern.MSSMobileKit"
+      }
+    }
+  ]
+}
