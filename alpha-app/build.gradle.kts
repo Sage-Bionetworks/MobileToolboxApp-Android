@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("android.extensions")
+//    kotlin("android.extensions")
     kotlin("kapt")
 }
 
@@ -10,11 +10,11 @@ android {
     buildToolsVersion("29.0.3")
 
     defaultConfig {
-        applicationId = "org.sagebionetworks.research.psorcast.validation"
+        applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
         versionCode = 3
-        versionName = "0.3"
+        versionName = "0.4"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -67,34 +67,42 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Sage dependencies
-    implementation("org.sagebionetworks.bridge:android-sdk:0.5.0")
-    val bridgeClientKmmVersion = "0.2.10"
+//    implementation("org.sagebionetworks.bridge:android-sdk:0.5.0")
+    implementation("org.sagebionetworks:BridgeDataUploadUtils:0.2.6") {
+        exclude(group = "joda-time", module = "joda-time")
+        exclude(group = "org.bouncycastle")
+        exclude(group = "com.madgag.spongycastle") //pkix renamed to bcpkix-jdk15on, causes dupes
+    }
+    implementation("net.danlew:android.joda:2.9.9.4")
+
+
+    val bridgeClientKmmVersion = "0.2.11"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
-        version {
-            strictly("1.4.2-native-mt")
-        }
-    }
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+//        version {
+//            strictly("1.4.2-native-mt")
+//        }
+//    }
     // MTB dependencies
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
-    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3")
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.27")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.27")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.26")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.4")
-    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.12")
-    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.9")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.9")
-    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.9")
-    implementation("edu.northwestern.mobiletoolbox:fname:0.1.9")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.9")
+//    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
+    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.28")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.28")
+    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.27")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.5")
+    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.13")
+    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.10")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.10")
+    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.10")
+    implementation("edu.northwestern.mobiletoolbox:fname:0.1.10")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.10")
 
-    val assessment_version = "0.4.3"
+    val assessment_version = "0.4.4"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessment_version")
 

@@ -72,6 +72,7 @@ val appModule = module {
     }
 
 
-    factory<FileLoader> { FileLoaderAndroid(get()) }
+    factory<FileLoader> {
+        FileLoaderAndroid(get()) }
 
 }

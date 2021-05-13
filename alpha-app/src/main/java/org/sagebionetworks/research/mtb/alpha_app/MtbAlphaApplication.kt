@@ -15,7 +15,6 @@ import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
-import org.koin.core.KoinExperimentalAPI
 import org.koin.core.component.KoinComponent
 import org.sagebionetworks.bridge.kmm.presentation.di.presentationModule
 import org.sagebionetworks.bridge.kmm.shared.di.*
