@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-//    kotlin("android.extensions")
     kotlin("kapt")
 }
 
@@ -13,7 +12,7 @@ android {
         applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 4
+        versionCode = 5
         versionName = "0.4"
 
         multiDexEnabled = true
@@ -67,12 +66,15 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Sage dependencies
-//    implementation("org.sagebionetworks.bridge:android-sdk:0.5.0")
     implementation("org.sagebionetworks:BridgeDataUploadUtils:0.2.6") {
         exclude(group = "joda-time", module = "joda-time")
         exclude(group = "org.bouncycastle")
         exclude(group = "com.madgag.spongycastle") //pkix renamed to bcpkix-jdk15on, causes dupes
     }
+    implementation("com.madgag.spongycastle:core:1.58.0.0")
+    implementation("com.madgag.spongycastle:prov:1.58.0.0")
+    // marked api due to propagation of CMSException
+    implementation("com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0")
     implementation("net.danlew:android.joda:2.9.9.4")
 
 
@@ -81,11 +83,6 @@ dependencies {
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
 
-//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
-//        version {
-//            strictly("1.4.2-native-mt")
-//        }
-//    }
     // MTB dependencies
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation(Deps.MTB.glide)
