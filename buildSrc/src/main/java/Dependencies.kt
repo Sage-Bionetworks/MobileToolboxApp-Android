@@ -1,16 +1,22 @@
 object Versions {
-    val kotlin = "1.4.10"
+    val kotlin = "1.4.32"
     val dagger = "2.21"
-    const val koin = "3.0.1-alpha-3"
+    const val koin = "3.0.1"
+    const val glide = "4.11.0"
 }
 
 
 object Deps {
     object Koin {
-        val core = "org.koin:koin-core:${Versions.koin}"
-        val test = "org.koin:koin-test:${Versions.koin}"
-        val android = "org.koin:koin-android:${Versions.koin}"
-        val androidViewModel = "org.koin:koin-androidx-viewmodel:${Versions.koin}"
-        val androidWorkManager = "org.koin:koin-androidx-workmanager:${Versions.koin}"
+        val core = "io.insert-koin:koin-core:${Versions.koin}"
+        val test = "io.insert-koin:koin-test:${Versions.koin}"
+        val android = "io.insert-koin:koin-android:${Versions.koin}"
+        val androidViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin}"
+        val androidWorkManager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
+    }
+
+    object MTB {
+        val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+        val glide_kapt = "com.github.bumptech.glide:compiler:${Versions.glide}"
     }
 }
