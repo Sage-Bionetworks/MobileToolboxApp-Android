@@ -1,2 +1,25 @@
 include ':alpha-app'
 rootProject.name = "MTBAlphaApp-Android"
+//
+//includeBuild('../MobileToolboxAndroid') {
+//    dependencySubstitution {
+//        substitute(module("edu.northwestern.mobiletoolbox:mtb-common-ui")).with(project(":mtb-common-ui"))
+//        substitute(module("edu.northwestern.mobiletoolbox:dimensional_change_card_sort")).with(project(":dimensional_change_card_sort"))
+//        substitute(module("edu.northwestern.mobiletoolbox:flanker")).with(project(":flanker"))
+//        substitute(module("edu.northwestern.mobiletoolbox:memory-for-sequences")).with(project(":memory-for-sequences"))
+//        substitute(module("edu.northwestern.mobiletoolbox:spelling")).with(project(":spelling"))
+//        substitute(module("edu.northwestern.mobiletoolbox:vocabulary")).with(project(":vocabulary"))
+//        substitute(module("edu.northwestern.mobiletoolbox:fname")).with(project(":fname"))
+//        substitute(module("edu.northwestern.mobiletoolbox:number_match")).with(project(":number_match"))
+//        substitute(module("edu.northwestern.mobiletoolbox:picture_sequence_memory")).with(project(":picture_sequence_memory"))
+//        substitute(module("edu.northwestern.mobiletoolbox:dichotomous_engine")).with(project(":dichotomous_engine"))
+//    }
+//}
+//includeBuild('../AssessmentModel-KotlinNative')
+//includeBuild('../BridgeClientKMM') {
+//    dependencySubstitution {
+//        substitute(module("org.sagebionetworks.bridge.kmm:bridge-client")).with(project(":bridge-client"))
+//        substitute(module("org.sagebionetworks.bridge.kmm:bridge-client-presentation")).with(project(":bridge-client-presentation"))
+//        substitute(module("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk")).with(project(":assessmentmodel-sdk"))
+//    }
+//}
