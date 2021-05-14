@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
+import org.koin.core.logger.Level
 import org.sagebionetworks.bridge.kmm.presentation.di.presentationModule
 import org.sagebionetworks.bridge.kmm.shared.di.*
 
@@ -18,7 +19,7 @@ class MtbAlphaApplication : MultiDexApplication(), KoinComponent {
         super.onCreate()
 
         initKoin (enableNetworkLogs = BuildConfig.DEBUG){
-            androidLogger()
+            androidLogger(Level.ERROR)
             androidContext(this@MtbAlphaApplication)
             workManagerFactory()
             modules(presentationModule)

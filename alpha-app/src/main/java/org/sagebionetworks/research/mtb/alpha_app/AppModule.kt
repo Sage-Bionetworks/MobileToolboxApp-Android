@@ -6,6 +6,7 @@ import edu.northwestern.mobiletoolbox.dimensional_change_card_sort.serialization
 import edu.northwestern.mobiletoolbox.mfs.serialization.mfsModuleInfoSerializersModule
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.plus
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
@@ -14,6 +15,7 @@ import org.sagebionetworks.assessmentmodel.resourcemanagement.FileLoader
 import org.sagebionetworks.assessmentmodel.serialization.EmbeddedJsonAssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.serialization.FileLoaderAndroid
 import org.sagebionetworks.assessmentmodel.serialization.nodeSerializersModule
+import org.sagebionetworks.research.mtb.alpha_app.ui.today.TodayViewModel
 
 val appModule = module {
 
@@ -43,5 +45,6 @@ val appModule = module {
     }
 
     factory<FileLoader> { FileLoaderAndroid(get()) }
+    viewModel { TodayViewModel(get(), get(), get()) }
 
 }
