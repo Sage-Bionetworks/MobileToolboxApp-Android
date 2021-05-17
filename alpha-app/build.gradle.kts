@@ -78,7 +78,7 @@ dependencies {
     implementation("net.danlew:android.joda:2.9.9.4")
 
 
-    val bridgeClientKmmVersion = "0.2.11"
+    val bridgeClientKmmVersion = "0.2.14"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")

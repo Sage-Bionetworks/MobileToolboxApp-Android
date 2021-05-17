@@ -8,10 +8,14 @@ import android.view.ViewGroup
 import android.widget.Space
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import kotlinx.datetime.Clock
 import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
+import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledAssessmentReference
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
 import org.sagebionetworks.research.mtb.alpha_app.MtbAssessmentActivity
@@ -113,17 +117,18 @@ class TodayFragment : Fragment() {
             if (!assessmentRef.isCompleted) {
                 val card = AssessmentCard(requireContext())
                 card.setupCard(assessmentRef = assessmentRef)
-                card.setOnClickListener { launchAssessment(assessmentRef) }
+                card.setOnClickListener { launchAssessment(assessmentRef, session) }
                 binding.list.addView(card)
             }
         }
     }
 
-    private fun launchAssessment(assessmentRef: ScheduledAssessmentReference) {
-        val instanceId = assessmentRef.instanceGuid //TODO: Need instanceId for result upload -nbrown 5/4/21
+    private fun launchAssessment(assessmentRef: ScheduledAssessmentReference, session: ScheduledSessionWindow) {
+        val adherenceRecord = AdherenceRecord(assessmentRef.instanceGuid, Clock.System.now(), session.eventTimeStamp.toString())
         val assessmentId = assessmentIdentifierMap.get(assessmentRef.assessmentInfo.identifier) ?: assessmentRef.assessmentInfo.identifier
         val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
         intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
+        intent.putExtra(MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY, Json.encodeToString(adherenceRecord))
         startActivity(intent)
     }
 
