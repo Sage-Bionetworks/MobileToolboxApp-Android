@@ -25,6 +25,7 @@
         </activity>
         <activity android:name="org.sagebionetworks.research.mtb.alpha_app.ui.AssessmentListActivity"></activity>
         <activity android:name="org.sagebionetworks.research.mtb.alpha_app.MtbAssessmentActivity"></activity>
+        <receiver android:name=".notif.AlarmReceiver" />
     </application>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
