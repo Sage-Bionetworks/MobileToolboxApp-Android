@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MTB Android Alpha App</string>
+    <string name="app_name">MTB: Norming</string>
 
     <string name="current_activities">current activities</string>
     <string name="due_on">Due on: %1$s</string>
