@@ -78,7 +78,7 @@ dependencies {
     implementation("net.danlew:android.joda:2.9.9.4")
 
 
-    val bridgeClientKmmVersion = "0.2.11"
+    val bridgeClientKmmVersion = "0.2.14"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
@@ -117,6 +117,8 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.0")
+
     // Android
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.android.support:multidex:1.0.3")
@@ -128,6 +130,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.1")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
     implementation("androidx.activity:activity-ktx:1.1.0")
     implementation("androidx.fragment:fragment-ktx:1.2.5")
 

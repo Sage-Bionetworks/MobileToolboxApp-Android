@@ -1,13 +1,13 @@
 package org.sagebionetworks.research.mtb.alpha_app
 
-import android.content.Context
-import android.util.Log
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.serialization.encodeToString
+import kotlinx.datetime.Clock
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.AssessmentResult
@@ -17,12 +17,22 @@ import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
 import org.sagebionetworks.assessmentmodel.navigation.NodeState
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.assessmentmodel.presentation.RootAssessmentViewModel
-import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
+import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
+import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 
 class MtbAssessmentActivity : AssessmentActivity() {
 
     val archiveUploader: AssessmentResultArchiveUploader by inject()
+    val adherenceRecordRepo: AdherenceRecordRepo by inject()
+    lateinit var adherenceRecord: AdherenceRecord
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!
+        val jsonCoder = Json {ignoreUnknownKeys = true }
+        adherenceRecord = jsonCoder.decodeFromString(adherenceRecordString)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun initViewModel(
         assessmentInfo: AssessmentPlaceholder,
@@ -35,9 +45,15 @@ class MtbAssessmentActivity : AssessmentActivity() {
                     assessmentInfo,
                     assessmentProvider,
                     customNodeStateProvider,
-                    archiveUploader
+                    archiveUploader,
+                    adherenceRecordRepo,
+                    adherenceRecord
                 )
         ).get(MtbRootAssessmentViewModel::class.java)
+
+    companion object {
+        const final val ARG_ADHERENCE_RECORD_KEY = "adherence_record_key"
+    }
 
 }
 
@@ -47,18 +63,28 @@ class MtbRootAssessmentViewModel(
     assessmentPlaceholder: AssessmentPlaceholder,
     registryProvider: AssessmentRegistryProvider,
     nodeStateProvider: CustomNodeStateProvider?,
-    val archiveUploader: AssessmentResultArchiveUploader
+    val archiveUploader: AssessmentResultArchiveUploader,
+    val adherenceRecordRepo: AdherenceRecordRepo,
+    val adherenceRecord: AdherenceRecord
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
     val handleReadyToSave = MutableLiveData<String>()
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
-        val moduleInfo = registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
-        val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
-        val assessmentResult = nodeState.currentResult as AssessmentResult
+        if (reason.markFinished) {
+            val finishedTimeStamp = nodeState.currentResult.endDateTime ?: Clock.System.now()
+            val studyId = archiveUploader.authenticationRepository.currentStudyId()!!
+            adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord.copy(finishedOn = finishedTimeStamp), studyId)
+        }
+        if (reason.saveResult) {
+            val moduleInfo =
+                registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
+            val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
+            val assessmentResult = nodeState.currentResult as AssessmentResult
 
-        // TODO: move to coroutine - liujoshua 04/09/2021
-        archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder)
+            // TODO: move to coroutine - liujoshua 04/09/2021
+            archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder)
+        }
     }
 
     override fun handleFinished(reason: FinishedReason, nodeState: NodeState) {
@@ -74,7 +100,9 @@ open class MtbRootAssessmentViewModelFactory() {
         assessmentInfo: AssessmentPlaceholder,
         assessmentProvider: AssessmentRegistryProvider,
         nodeStateProvider: CustomNodeStateProvider?,
-        archiveUploader: AssessmentResultArchiveUploader
+        archiveUploader: AssessmentResultArchiveUploader,
+        adherenceRecordRepo: AdherenceRecordRepo,
+        adherenceRecord: AdherenceRecord
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -85,7 +113,9 @@ open class MtbRootAssessmentViewModelFactory() {
                         assessmentInfo,
                         assessmentProvider,
                         nodeStateProvider,
-                        archiveUploader
+                        archiveUploader,
+                        adherenceRecordRepo,
+                        adherenceRecord
                     ) as T
                 }
 

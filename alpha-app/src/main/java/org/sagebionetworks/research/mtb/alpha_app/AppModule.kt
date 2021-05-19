@@ -18,6 +18,7 @@ import edu.northwestern.mobiletoolbox.vocabulary.dichotomous_engine.VocabNodeSta
 import edu.northwestern.mobiletoolbox.vocabulary.serialization.vocabularyModuleInfoSerializersModule
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.plus
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
@@ -26,6 +27,7 @@ import org.sagebionetworks.assessmentmodel.resourcemanagement.FileLoader
 import org.sagebionetworks.assessmentmodel.serialization.EmbeddedJsonAssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.serialization.FileLoaderAndroid
 import org.sagebionetworks.assessmentmodel.serialization.nodeSerializersModule
+import org.sagebionetworks.research.mtb.alpha_app.ui.today.TodayViewModel
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
 
@@ -71,8 +73,7 @@ val appModule = module {
         )
     }
 
-
-    factory<FileLoader> {
-        FileLoaderAndroid(get()) }
+    factory<FileLoader> { FileLoaderAndroid(get()) }
+    viewModel { TodayViewModel(get(), get(), get()) }
 
 }
