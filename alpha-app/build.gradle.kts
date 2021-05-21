@@ -12,8 +12,8 @@ android {
         applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 5
-        versionName = "0.4"
+        versionCode = 6
+        versionName = "0.5"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -76,9 +76,8 @@ dependencies {
     // marked api due to propagation of CMSException
     implementation("com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0")
     implementation("net.danlew:android.joda:2.9.9.4")
-
-
-    val bridgeClientKmmVersion = "0.2.15"
+    
+    val bridgeClientKmmVersion = "0.2.16"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
@@ -88,16 +87,16 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 //    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.28")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.28")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.27")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.5")
-    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.13")
-    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.10")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.10")
-    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.10")
-    implementation("edu.northwestern.mobiletoolbox:fname:0.1.10")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.10")
+    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.29")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.29")
+    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.28")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.6")
+    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.14")
+    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.11")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.11")
+    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.11")
+    implementation("edu.northwestern.mobiletoolbox:fname:0.1.11")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.11")
 
     val assessment_version = "0.4.4"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
