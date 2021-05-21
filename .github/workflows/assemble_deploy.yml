@@ -1,0 +1,57 @@
+name: Bundle and deploy
+
+on: 
+ push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GPR_USER: ${{ secrets.GPR_USER }}
+      GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches/modules-2
+          key: ${{ runner.os }}-gradlemodules-${{ hashFiles('checksum.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-gradlemodules-
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches/jars-3
+          key: ${{ runner.os }}-gradlejars-${{ hashFiles('checksum.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-gradlejars-
+      - uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches/build-cache-1
+          key: ${{ runner.os }}-gradlebuildcache-${{ hashFiles('checksum.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-gradlebuildcache-
+      
+      - name: Generate Release Bundle
+        run: ./gradlew bundleRelease
+      
+      - name: Sign Release Bundle
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: alpha-app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      # 4
+      - uses: actions/upload-artifact@master
+        with:
+          name: alpha-app-release.aab
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+      # 5
+      - uses: actions/upload-artifact@master
+        with:
+          name: mapping.txt
+          path: app/build/outputs/mapping/release/mapping.txt
