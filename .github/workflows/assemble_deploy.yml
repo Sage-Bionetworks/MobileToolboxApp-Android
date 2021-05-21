@@ -1,7 +1,9 @@
 name: Bundle and deploy
 
-on: 
- push:
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
