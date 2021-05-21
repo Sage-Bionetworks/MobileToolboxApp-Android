@@ -3,6 +3,7 @@ package org.sagebionetworks.research.mtb.alpha_app
 import androidx.multidex.MultiDexApplication
 import edu.northwestern.mobiletoolbox.common.di.mtbKoinModule
 import edu.northwestern.mobiletoolbox.dichotomous_engine.di.dichotomousKoinModule
+import edu.northwestern.mobiletoolbox.dimensional_change_card_sort.koin.dccsKoinModule
 import edu.northwestern.mobiletoolbox.flanker.di.flankerKoinModule
 import edu.northwestern.mobiletoolbox.fname.koin.fnameKoinModule
 import edu.northwestern.mobiletoolbox.mfs.di.mfsKoinModule
@@ -39,6 +40,7 @@ class MtbAlphaApplication : MultiDexApplication(), KoinComponent {
                 appModule,
                 mtbKoinModule,
                 mfsKoinModule,
+                dccsKoinModule,
                 dichotomousKoinModule,
                 vocabularyKoinModule,
                 spellingKoinModule,

@@ -7,6 +7,8 @@ import edu.northwestern.mobiletoolbox.flanker.navigation.FlankerNodeStateProvide
 import edu.northwestern.mobiletoolbox.flanker.serialization.FlankerAssessmentObject
 import edu.northwestern.mobiletoolbox.fname.navigation.FNAMENodeStateProvider
 import edu.northwestern.mobiletoolbox.fname.serialization.FNAMEAssessmentObject
+import edu.northwestern.mobiletoolbox.mfs.navigation.MfsNodeStateProvider
+import edu.northwestern.mobiletoolbox.mfs.serialization.MFSAssessmentObject
 import edu.northwestern.mobiletoolbox.number_match.navigation.NumberMatchNodeStateProvider
 import edu.northwestern.mobiletoolbox.number_match.serialization.NumberMatchAssessmentObject
 import edu.northwestern.mobiletoolbox.picture_sequence_memory.navigation.PSMNodeStateProvider
@@ -19,9 +21,13 @@ import org.sagebionetworks.assessmentmodel.BranchNode
 import org.sagebionetworks.assessmentmodel.navigation.BranchNodeState
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 
-class MtbAppNodeStateProvider(private val nodeStateProviders: List<CustomNodeStateProvider>) : CustomNodeStateProvider {
+class MtbAppNodeStateProvider(private val nodeStateProviders: List<CustomNodeStateProvider>) :
+    CustomNodeStateProvider {
 
-    override fun customBranchNodeStateFor(node: BranchNode, parent: BranchNodeState?): BranchNodeState? {
+    override fun customBranchNodeStateFor(
+        node: BranchNode,
+        parent: BranchNodeState?
+    ): BranchNodeState? {
         val provider = when (node) {
             is VocabularyAssessmentObject -> {
                 nodeStateProviders.first { x -> x is VocabNodeStateProvider }
@@ -36,11 +42,14 @@ class MtbAppNodeStateProvider(private val nodeStateProviders: List<CustomNodeSta
             }
 
             is DCCSAssessmentObject -> {
-                nodeStateProviders.first { x -> x is DCCSNodeStateProvider}
+                nodeStateProviders.first { x -> x is DCCSNodeStateProvider }
             }
 
             is NumberMatchAssessmentObject -> {
                 nodeStateProviders.first { x -> x is NumberMatchNodeStateProvider }
+            }
+            is MFSAssessmentObject -> {
+                nodeStateProviders.first { x -> x is MfsNodeStateProvider }
             }
 
             is FNAMEAssessmentObject -> {
