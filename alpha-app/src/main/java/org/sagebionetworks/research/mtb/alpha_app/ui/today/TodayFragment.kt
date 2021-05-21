@@ -12,14 +12,18 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledAssessmentReference
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
+import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
 import org.sagebionetworks.research.mtb.alpha_app.MtbAssessmentActivity
 import org.sagebionetworks.research.mtb.alpha_app.R
+import org.sagebionetworks.research.mtb.alpha_app.databinding.AssessmentUploadingViewBinding
+import org.sagebionetworks.research.mtb.alpha_app.databinding.AssessmentUploadsCompleteViewBinding
 import org.sagebionetworks.research.mtb.alpha_app.databinding.DueDateHeaderBinding
 import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentTodayBinding
 import java.time.ZoneId
@@ -65,6 +69,7 @@ class TodayFragment : Fragment() {
     }
 
     val viewModel: TodayViewModel by viewModel()
+    val uploadRequester: UploadRequester by inject()
     lateinit var binding: FragmentTodayBinding
 
     override fun onCreateView(
@@ -100,12 +105,31 @@ class TodayFragment : Fragment() {
 
     private fun sessionsLoaded(sessions: List<ScheduledSessionWindow>) {
         binding.list.removeAllViews()
-        sessions.forEach{addSession(it)}
+        var assessmentAdded = false
+        sessions.forEach{
+            assessmentAdded = assessmentAdded || addSession(it)
+        }
+        // Upload status for June release
+        if (sessions.isNotEmpty() && !assessmentAdded) {
+            binding.scrollView.visibility = View.GONE
+            binding.container.findViewById<View>(R.id.upload_status_view)?.let {
+                binding.container.removeView(it)
+            }
+            //User has completed all activities
+            if (uploadRequester.pendingUploads) {
+                //Show uploading view
+                binding.container.addView(AssessmentUploadingViewBinding.inflate(layoutInflater).root)
+            } else {
+                //Show uploads complete view
+                binding.container.addView(AssessmentUploadsCompleteViewBinding.inflate(layoutInflater).root)
+            }
+        }
     }
 
-    private fun addSession(session: ScheduledSessionWindow) {
-        if (session.isCompleted) return //Don't add session if it is completed
+    private fun addSession(session: ScheduledSessionWindow) : Boolean {
+        if (session.isCompleted) return false //Don't add session if it is completed
 
+        var assessmentAdded = false
         val expirationString = session.endDateTime.toJavaLocalDateTime().format(
             DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
                 .withZone(ZoneId.systemDefault()))
@@ -119,8 +143,10 @@ class TodayFragment : Fragment() {
                 card.setupCard(assessmentRef = assessmentRef)
                 card.setOnClickListener { launchAssessment(assessmentRef, session) }
                 binding.list.addView(card)
+                assessmentAdded = true
             }
         }
+        return assessmentAdded
     }
 
     private fun launchAssessment(assessmentRef: ScheduledAssessmentReference, session: ScheduledSessionWindow) {

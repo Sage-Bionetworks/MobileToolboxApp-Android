@@ -7,6 +7,7 @@ import edu.northwestern.mobiletoolbox.flanker.navigation.FlankerNodeStateProvide
 import edu.northwestern.mobiletoolbox.flanker.serialization.flankerModuleInfoSerializersModule
 import edu.northwestern.mobiletoolbox.fname.navigation.FNAMENodeStateProvider
 import edu.northwestern.mobiletoolbox.fname.serialization.fnameModuleInfoSerializersModule
+import edu.northwestern.mobiletoolbox.mfs.navigation.MfsNodeStateProvider
 import edu.northwestern.mobiletoolbox.mfs.serialization.mfsModuleInfoSerializersModule
 import edu.northwestern.mobiletoolbox.number_match.navigation.NumberMatchNodeStateProvider
 import edu.northwestern.mobiletoolbox.number_match.serialization.numberMatchModuleInfoSerializersModule
@@ -66,6 +67,7 @@ val appModule = module {
                 SpellingNodeStateProvider(get()),
                 DCCSNodeStateProvider(get()),
                 NumberMatchNodeStateProvider(get()),
+                MfsNodeStateProvider(get()),
                 FNAMENodeStateProvider(get()),
                 PSMNodeStateProvider(get()),
                 MtbNodeStateProvider(get()),
