@@ -155,6 +155,8 @@ class TodayFragment : Fragment() {
         val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
         intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
         intent.putExtra(MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY, Json.encodeToString(adherenceRecord))
+        //Fix for June so that MTB assessments are full screen
+        intent.putExtra(AssessmentActivity.ARG_THEME, edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen)
         startActivity(intent)
     }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
 import kotlinx.datetime.Clock
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -26,6 +27,12 @@ class MtbAssessmentActivity : AssessmentActivity() {
     val archiveUploader: AssessmentResultArchiveUploader by inject()
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     lateinit var adherenceRecord: AdherenceRecord
+
+    //Fix for June so that MTB assessments are full screen
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) AssessmentUtils.hideNavigationBar(window)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!
