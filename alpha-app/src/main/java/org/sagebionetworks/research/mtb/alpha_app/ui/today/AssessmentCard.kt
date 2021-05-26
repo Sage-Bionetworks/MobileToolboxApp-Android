@@ -36,7 +36,12 @@ class AssessmentCard : CardView {
         binding = AssessmentCardBinding.bind(view)
     }
 
-    fun setupCard(assessmentRef: ScheduledAssessmentReference) {
+    fun setupCard(assessmentRef: ScheduledAssessmentReference, locked: Boolean) {
+        if (locked) {
+            foreground = ColorDrawable(Color.parseColor("#B3FFFFFF"))
+            isEnabled = false
+            isClickable = false
+        }
         val assessmentInfo = assessmentRef.assessmentInfo
         binding.title.text = assessmentInfo.label
         assessmentInfo.minutesToComplete?.let {

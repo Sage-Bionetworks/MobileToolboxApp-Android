@@ -138,9 +138,12 @@ class TodayFragment : Fragment() {
         binding.list.addView(headerBinding.root)
 
         for (assessmentRef in session.assessments) {
+            // Workaround for June to support doing assessments in order
+            // Disable all but the first assessment in a session
+            val locked = assessmentAdded && session.sessionInfo.performanceOrder == PerformanceOrder.SEQUENTIAL
             if (!assessmentRef.isCompleted) {
                 val card = AssessmentCard(requireContext())
-                card.setupCard(assessmentRef = assessmentRef)
+                card.setupCard(assessmentRef = assessmentRef, locked = locked)
                 card.setOnClickListener { launchAssessment(assessmentRef, session) }
                 binding.list.addView(card)
                 assessmentAdded = true
