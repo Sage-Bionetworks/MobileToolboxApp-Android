@@ -87,16 +87,16 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 //    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.30")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.30")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.29")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.7")
-    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.15")
-    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.12")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.12")
-    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.12")
-    implementation("edu.northwestern.mobiletoolbox:fname:0.1.12")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.12")
+    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.32")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.32")
+    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.31")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.9")
+    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.17")
+    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.14")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.14")
+    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.14")
+    implementation("edu.northwestern.mobiletoolbox:fname:0.1.14")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.14")
 
     val assessment_version = "0.4.4"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
@@ -117,6 +117,12 @@ dependencies {
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3-native-mt") {
+        version {
+            strictly("1.4.3-native-mt")
+        }
+    }
 
     // Android
     implementation("androidx.appcompat:appcompat:1.2.0")
