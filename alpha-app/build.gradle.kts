@@ -88,7 +88,7 @@ dependencies {
     kapt(Deps.MTB.glide_kapt)
 //    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
     implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.32")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.32")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.33")
     implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.31")
     implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.9")
     implementation("edu.northwestern.mobiletoolbox:flanker:0.1.17")
