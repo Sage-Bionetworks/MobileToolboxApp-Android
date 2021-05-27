@@ -138,9 +138,12 @@ class TodayFragment : Fragment() {
         binding.list.addView(headerBinding.root)
 
         for (assessmentRef in session.assessments) {
+            // Workaround for June to support doing assessments in order
+            // Disable all but the first assessment in a session
+            val locked = assessmentAdded && session.sessionInfo.performanceOrder == PerformanceOrder.SEQUENTIAL
             if (!assessmentRef.isCompleted) {
                 val card = AssessmentCard(requireContext())
-                card.setupCard(assessmentRef = assessmentRef)
+                card.setupCard(assessmentRef = assessmentRef, locked = locked)
                 card.setOnClickListener { launchAssessment(assessmentRef, session) }
                 binding.list.addView(card)
                 assessmentAdded = true
@@ -155,6 +158,8 @@ class TodayFragment : Fragment() {
         val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
         intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
         intent.putExtra(MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY, Json.encodeToString(adherenceRecord))
+        //Fix for June so that MTB assessments are full screen
+        intent.putExtra(AssessmentActivity.ARG_THEME, edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen)
         startActivity(intent)
     }
 
