@@ -12,8 +12,8 @@ android {
         applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 8
-        versionName = "0.5.$versionCode"
+        versionCode = 9
+        versionName = "0.6.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
