@@ -12,7 +12,7 @@ android {
         applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 10
+        versionCode = 11
         versionName = "0.6.$versionCode"
 
         multiDexEnabled = true
@@ -87,16 +87,16 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 //    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.32")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.33")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.31")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.9")
-    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.17")
-    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.14")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.14")
-    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.14")
-    implementation("edu.northwestern.mobiletoolbox:fname:0.1.14")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.14")
+    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.33")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.34")
+    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.32")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.10")
+    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.18")
+    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.15")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.15")
+    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.15")
+    implementation("edu.northwestern.mobiletoolbox:fname:0.1.15")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.15")
 
     val assessment_version = "0.4.4"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
