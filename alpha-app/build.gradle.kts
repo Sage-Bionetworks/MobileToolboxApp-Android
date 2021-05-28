@@ -12,7 +12,7 @@ android {
         applicationId = "org.sagebionetworks.research.mtb.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 10
+        versionCode = 11
         versionName = "0.6.$versionCode"
 
         multiDexEnabled = true
