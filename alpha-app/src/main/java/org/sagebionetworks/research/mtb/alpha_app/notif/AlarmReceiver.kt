@@ -38,7 +38,8 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        val studyId = authRepo.session()!!.studyIds.get(0)
+        val studyId = authRepo.session()?.studyIds?.get(0)
+        if (studyId == null) return // User is no longer logged in, so we don't have a session
         runBlocking {
             //Get activity events
             val eventsResource = activityEventsRepo.getActivityEvents(studyId).firstOrNull { it is ResourceResult.Success }
