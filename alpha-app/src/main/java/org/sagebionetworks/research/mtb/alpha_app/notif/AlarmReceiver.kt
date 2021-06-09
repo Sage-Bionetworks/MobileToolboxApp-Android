@@ -53,19 +53,19 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
             val sessionsList = (sessionsListResource as? ResourceResult.Success)?.data
             if (sessionsList != null && sessionsList.isNotEmpty()) {
                 val sessionWindow = sessionsList[0]
-                val notificationMessage = sessionWindow.sessionInfo.message
-                if (notificationMessage != null) {
+                if (sessionWindow.sessionInfo.notifications?.isNotEmpty() == true) {
+                    val notificationMessage = sessionWindow.sessionInfo.notifications?.get(0)
                     createNotificationChannel(context)
-                    val intent = Intent(context, MainActivity::class.java).apply {
+                    val activityIntent = Intent(context, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
-                    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+                    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0)
 
                     val notificationId = 1
-                    var builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                    val builder = NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_notification_icon)
-                        .setContentTitle(notificationMessage.subject)
-                        .setContentText(notificationMessage.message)
+                        .setContentTitle(notificationMessage?.message?.subject)
+                        .setContentText(notificationMessage?.message?.message)
                         .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

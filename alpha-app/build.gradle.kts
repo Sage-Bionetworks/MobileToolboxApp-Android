@@ -77,7 +77,7 @@ dependencies {
     implementation("com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0")
     implementation("net.danlew:android.joda:2.9.9.4")
 
-    val bridgeClientKmmVersion = "0.2.16"
+    val bridgeClientKmmVersion = "0.2.17"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
