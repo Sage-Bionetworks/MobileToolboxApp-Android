@@ -8,5 +8,9 @@
     <string name="thank_you">Thank you for your patience. \n\n You may exit the app</string>
     <string name="hang_tight">Hang tight...</string>
     <string name="please_dont_close">Please don\'t close the app quite yet, we\'re uploading your contributions to the cloud.</string>
+    <string name="title_home">Home</string>
+    <string name="title_past_activities">Past Activities</string>
+    <string name="title_study_info">Study Info</string>
+    <string name="title_account">Account</string>
 
 </resources>
