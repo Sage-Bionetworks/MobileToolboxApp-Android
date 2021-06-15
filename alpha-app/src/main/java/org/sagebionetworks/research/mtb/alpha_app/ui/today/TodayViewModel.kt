@@ -27,11 +27,8 @@ class TodayViewModel(private val timelineRepo: ScheduleTimelineRepo,
     private fun loadTodaysSessions() {
         val studyId = authRepo.session()!!.studyIds.get(0)
         viewModelScope.launch {
-            val eventsResource = activityEventsRepo.getActivityEvents(studyId).firstOrNull { it is ResourceResult.Success }
-            (eventsResource as? ResourceResult.Success)?.data?.let { eventList ->
-                timelineRepo.getSessionsForToday(studyId, eventList).collect {
-                    _sessionLiveData.postValue(it)
-                }
+            timelineRepo.getSessionsForToday(studyId).collect {
+                _sessionLiveData.postValue(it)
             }
         }
     }

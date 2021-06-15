@@ -77,7 +77,7 @@ dependencies {
     implementation("com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0")
     implementation("net.danlew:android.joda:2.9.9.4")
 
-    val bridgeClientKmmVersion = "0.2.17"
+    val bridgeClientKmmVersion = "0.2.18"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
@@ -87,6 +87,7 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 //    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
+
     implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.34")
     implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.35")
     implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.33")
@@ -98,7 +99,7 @@ dependencies {
     implementation("edu.northwestern.mobiletoolbox:fname:0.1.16")
     implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.16")
 
-    val assessment_version = "0.4.4"
+    val assessment_version = "0.4.6"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessment_version")
 
