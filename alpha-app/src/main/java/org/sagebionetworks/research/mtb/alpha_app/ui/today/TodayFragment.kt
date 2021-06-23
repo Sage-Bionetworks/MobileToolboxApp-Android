@@ -104,6 +104,7 @@ class TodayFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.todaysDate.text = java.time.LocalDate.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
+        viewModel.loadTodaysSessions()
     }
 
     private fun sessionsLoaded(sessions: List<ScheduledSessionWindow>) {
