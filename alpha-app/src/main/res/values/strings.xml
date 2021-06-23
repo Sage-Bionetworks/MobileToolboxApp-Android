@@ -12,5 +12,7 @@
     <string name="title_past_activities">Past Activities</string>
     <string name="title_study_info">Study Info</string>
     <string name="title_account">Account</string>
+    <string name="profile">profile</string>
+    <string name="settings">settings</string>
 
 </resources>
