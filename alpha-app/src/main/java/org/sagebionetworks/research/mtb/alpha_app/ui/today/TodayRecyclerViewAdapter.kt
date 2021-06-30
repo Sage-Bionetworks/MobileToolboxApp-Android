@@ -107,9 +107,6 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
             TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
                 binding.assessmentImage.setImageDrawable(context.resources.getDrawable(it))
             }
-            val inactivatedColor = Color.parseColor(assessmentInfo.colorScheme?.inactivated)
-            TextViewCompat.setCompoundDrawableTintList(binding.title, ColorStateList.valueOf(inactivatedColor))
-            TextViewCompat.setCompoundDrawableTintMode(binding.title, PorterDuff.Mode.MULTIPLY)
         }
 
         init {

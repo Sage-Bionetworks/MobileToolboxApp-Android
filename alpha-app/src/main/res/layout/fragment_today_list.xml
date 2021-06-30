@@ -6,8 +6,7 @@
     android:name="org.sagebionetworks.research.mtb.alpha_app.ui.today.TodayFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp"
+    android:paddingBottom="64dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.today.TodayFragment"
     tools:listitem="@layout/assessment_card" />
