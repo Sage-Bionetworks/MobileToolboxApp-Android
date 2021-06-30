@@ -121,11 +121,6 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
             fun from(parent: ViewGroup, onClick: (ScheduledAssessmentReference, ScheduledSessionWindow) -> Unit): AssessmentViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = AssessmentCardBinding.inflate(layoutInflater, parent, false)
-//                val cardView = AssessmentCardBinding.inflate(parent.inf)
-//                cardView.setLayoutParams(ViewGroup.LayoutParams(
-//                    ViewGroup.LayoutParams.MATCH_PARENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//                ))
                 return AssessmentViewHolder(binding, onClick)
             }
         }

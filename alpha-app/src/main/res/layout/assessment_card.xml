@@ -2,15 +2,15 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="4dp"
     app:cardPreventCornerOverlap="false"
     android:foreground="?attr/selectableItemBackground"
     android:layout_marginBottom="16dp"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     android:layout_width="match_parent"
-    android:layout_height="112dp">
+    android:layout_height="142dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,7 @@
 
         <View
             android:id="@+id/image_background"
-            android:layout_width="112dp"
+            android:layout_width="142dp"
             android:layout_height="match_parent"
             android:background="#ECECEC"
             app:layout_constraintStart_toStartOf="parent" />
