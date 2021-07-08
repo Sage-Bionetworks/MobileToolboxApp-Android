@@ -1,6 +1,7 @@
 package org.sagebionetworks.research.mtb.alpha_app.ui.today
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.sagebionetworks.research.mtb.alpha_app.databinding.TodayHeaderBinding
@@ -10,11 +11,27 @@ import java.time.format.FormatStyle
 
 class HeaderAdapter: RecyclerView.Adapter<HeaderAdapter.HeaderViewHolder>() {
 
-    /* ViewHolder for displaying header. */
+    var todayComplete = false
+    var loading = false
+
+    /* ViewHolder for displaying today header. */
     class HeaderViewHolder(val binding: TodayHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(text: String) {
+        fun bind(text: String, upToDate: Boolean, loading: Boolean) {
             binding.todaysDate.text = text
+            if (loading) {
+                binding.loading.visibility = View.VISIBLE
+                binding.currentActivities.visibility = View.GONE
+                binding.upToDate.visibility = View.GONE
+            } else if (upToDate) {
+                binding.loading.visibility = View.GONE
+                binding.currentActivities.visibility = View.GONE
+                binding.upToDate.visibility = View.VISIBLE
+            } else {
+                binding.loading.visibility = View.GONE
+                binding.currentActivities.visibility = View.VISIBLE
+                binding.upToDate.visibility = View.GONE
+            }
         }
     }
 
@@ -28,7 +45,7 @@ class HeaderAdapter: RecyclerView.Adapter<HeaderAdapter.HeaderViewHolder>() {
         val text = java.time.LocalDate.now().format(
             DateTimeFormatter.ofLocalizedDate(
                 FormatStyle.LONG))
-        holder.bind(text)
+        holder.bind(text, todayComplete, loading)
     }
 
     override fun getItemCount(): Int {

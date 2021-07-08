@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import androidx.core.widget.TextViewCompat
@@ -63,10 +64,27 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
     class SessionHeaderViewHolder(val binding: DueDateHeaderBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun setupHeader(session: ScheduledSessionWindow) {
-            val expirationString = session.endDateTime.toJavaLocalDateTime().format(
-                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-                    .withZone(ZoneId.systemDefault()))
-            binding.textView.text = binding.textView.context.getString(R.string.due_on, expirationString)
+            //If available now
+            if (session.isAvailableNow()) {
+                binding.dueTextView.visibility = View.VISIBLE
+                binding.opensTextView.visibility = View.GONE
+                val expirationString = session.endDateTime.toJavaLocalDateTime().format(
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+                        .withZone(ZoneId.systemDefault())
+                )
+                binding.dueTextView.text =
+                    binding.dueTextView.context.getString(R.string.due_on, expirationString)
+            } else {
+                //If available in future
+                binding.dueTextView.visibility = View.GONE
+                binding.opensTextView.visibility = View.VISIBLE
+                val openString = session.startDateTime.toJavaLocalDateTime().format(
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+                        .withZone(ZoneId.systemDefault())
+                )
+                binding.opensTextView.text =
+                    binding.dueTextView.context.getString(R.string.opens, openString)
+            }
         }
 
         companion object {

@@ -12,6 +12,7 @@ import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.ActivityEventsRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
+import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionTimelineSlice
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
 import java.time.LocalDate
 
@@ -23,8 +24,8 @@ class TodayViewModel(private val timelineRepo: ScheduleTimelineRepo,
         loadTodaysSessions()
     }
 
-    private val _sessionLiveData = MutableLiveData<ResourceResult<List<ScheduledSessionWindow>>>()
-    val sessionLiveData: LiveData<ResourceResult<List<ScheduledSessionWindow>>> = _sessionLiveData
+    private val _sessionLiveData = MutableLiveData<ResourceResult<ScheduledSessionTimelineSlice>>()
+    val sessionLiveData: LiveData<ResourceResult<ScheduledSessionTimelineSlice>> = _sessionLiveData
 
     private var timelineJob: Job? = null
     private var sessionLoadDate: LocalDate? = null

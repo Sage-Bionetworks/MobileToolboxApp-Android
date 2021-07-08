@@ -45,7 +45,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
             val sessionsListResource = timelineRepo.getSessionsForToday(studyId).firstOrNull {
                 it is ResourceResult.Success
             }
-            val sessionsList = (sessionsListResource as? ResourceResult.Success)?.data
+            val sessionsList = (sessionsListResource as? ResourceResult.Success)?.data?.scheduledSessionWindows
             if (sessionsList != null && sessionsList.isNotEmpty()) {
                 val sessionWindow = sessionsList[0]
                 if (sessionWindow.sessionInfo.notifications?.isNotEmpty() == true) {

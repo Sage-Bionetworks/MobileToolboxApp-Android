@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp">
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -11,14 +14,26 @@
         android:layout_gravity="center"
         android:background="?android:attr/listDivider" />
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/dueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="16dp"
         android:drawablePadding="4dp"
-        android:background="@color/white"
+        android:background="@color/backgroundGrey"
         android:textColor="#000000"
         android:text="@string/due_on"
         app:drawableStartCompat="@drawable/ic_session_clock_icon" />
+    <TextView
+        android:id="@+id/opensTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:padding="16dp"
+        android:drawablePadding="4dp"
+        android:background="@color/backgroundGrey"
+        android:textColor="#000000"
+        android:text="@string/opens"
+        app:drawableStartCompat="@drawable/ic_session_lock_icon" />
 </FrameLayout>

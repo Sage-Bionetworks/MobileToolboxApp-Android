@@ -15,7 +15,13 @@
         android:textAllCaps="true"
         android:textColor="#727272"
         tools:text="January 22, 2021"/>
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <TextView
+        android:id="@+id/current_activities"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -25,4 +31,25 @@
         android:textColor="#2A2727"
         android:textSize="18sp"
         android:textStyle="italic" />
+    <FrameLayout
+        android:id="@+id/up_to_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_up_to_date_background"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/playfair_display_italic"
+            android:text="@string/nice_you_re_all_up_to_date"
+            android:textAlignment="center"
+            android:textColor="#2A2727"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </FrameLayout>
 </LinearLayout>
