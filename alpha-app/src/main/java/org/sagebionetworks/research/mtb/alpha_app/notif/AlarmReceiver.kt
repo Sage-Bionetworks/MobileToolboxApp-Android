@@ -41,14 +41,9 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
         val studyId = authRepo.session()?.studyIds?.get(0)
         if (studyId == null) return // User is no longer logged in, so we don't have a session
         runBlocking {
-            //Get activity events
-            val eventsResource = activityEventsRepo.getActivityEvents(studyId).firstOrNull { it is ResourceResult.Success }
-
             //Get sessions for today
-            val sessionsListResource = (eventsResource as? ResourceResult.Success)?.data?.let { eventList ->
-                timelineRepo.getSessionsForToday(studyId, eventList).firstOrNull {
-                    it is ResourceResult.Success
-                }
+            val sessionsListResource = timelineRepo.getSessionsForToday(studyId).firstOrNull {
+                it is ResourceResult.Success
             }
             val sessionsList = (sessionsListResource as? ResourceResult.Success)?.data
             if (sessionsList != null && sessionsList.isNotEmpty()) {
