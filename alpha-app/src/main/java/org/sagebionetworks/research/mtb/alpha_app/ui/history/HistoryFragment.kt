@@ -4,41 +4,94 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentHistoryBinding
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
+import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
+import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
+import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
+import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentTodayListBinding
 
 class HistoryFragment : Fragment() {
 
-    private lateinit var historyViewModel: HistoryViewModel
-    private var _binding: FragmentHistoryBinding? = null
+    private val viewModel: HistoryViewModel by viewModel()
+    lateinit var binding: FragmentTodayListBinding
+    lateinit var listAdapter: HistoryRecyclerViewAdapter
+    lateinit var headerAdapter: HistoryHeaderAdapter
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    val adherenceRecordRepo: AdherenceRecordRepo by inject()
+    val authRepo: AuthenticationRepository by inject()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.sessionLiveData.observe(this, Observer {
+            when(it) {
+                is ResourceResult.Success -> {
+                    sessionsLoaded(it.data.scheduledSessionWindows)
+                }
+                is ResourceResult.InProgress -> {
+
+                }
+                is ResourceResult.Failed -> {
+
+                }
+            }
+        })
+    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        historyViewModel =
-            ViewModelProvider(this).get(HistoryViewModel::class.java)
+    ): View {
+        binding = FragmentTodayListBinding.inflate(inflater)
+        listAdapter = HistoryRecyclerViewAdapter()
+        headerAdapter = HistoryHeaderAdapter()
+        headerAdapter.loading = true
 
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        // Set the adapter
+        with(binding.list) {
+            layoutManager =  LinearLayoutManager(context)
+            adapter = ConcatAdapter(headerAdapter, listAdapter)
+        }
 
-        val textView: TextView = binding.textHome
-        historyViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        return binding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadTodaysSessions()
     }
+
+    private fun sessionsLoaded(sessions: List<ScheduledSessionWindow>) {
+        val dataList = mutableListOf<AssessmentItem>()
+        var minutes = 0
+        sessions.forEach{
+            minutes = minutes + addSession(it, dataList)
+        }
+        listAdapter.submitList(dataList)
+
+        headerAdapter.loading = false
+        headerAdapter.minutes = minutes
+        headerAdapter.notifyDataSetChanged()
+
+    }
+
+    private fun addSession(session: ScheduledSessionWindow, dataList: MutableList<AssessmentItem>) : Int {
+        var minutes = 0
+        for (assessmentRef in session.assessments) {
+            if (assessmentRef.isCompleted) {
+                // Add AssessmentItem
+                dataList.add(AssessmentItem(assessmentRef, session))
+                assessmentRef.assessmentInfo.minutesToComplete?.let {
+                    minutes = minutes + it
+                }
+            }
+        }
+        return minutes
+    }
+
 }

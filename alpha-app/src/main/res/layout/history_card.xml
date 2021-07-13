@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="false"
+    android:layout_marginBottom="16dp"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="142dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <View
+            android:id="@+id/image_background"
+            android:layout_width="142dp"
+            android:layout_height="match_parent"
+            android:background="#ECECEC"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/assessment_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/image_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_as_shape_color_sorting" />
+
+        <ImageView
+            android:id="@+id/check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="16dp"
+            android:tintMode="multiply"
+            app:layout_constraintStart_toEndOf="@+id/image_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_assessment_check" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toEndOf="@+id/image_background"
+            app:layout_constraintTop_toBottomOf="@id/check"
+            tools:text="Jan 25th, 2021"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="14dp"
+            android:textSize="16sp"
+            android:textColor="#2A2A2A"
+            app:layout_constraintStart_toEndOf="@+id/image_background"
+            app:layout_constraintTop_toBottomOf="@id/date"
+            tools:text="Shape-Color Sorting" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginBottom="10dp"
+            android:text="3 min"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintStart_toEndOf="@+id/image_background"
+            tools:text="3 min"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
