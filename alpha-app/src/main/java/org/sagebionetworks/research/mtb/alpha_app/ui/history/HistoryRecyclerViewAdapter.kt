@@ -3,7 +3,6 @@ package org.sagebionetworks.research.mtb.alpha_app.ui.history
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -12,9 +11,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
+import org.sagebionetworks.bridge.kmm.shared.repo.AssessmentHistoryRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledAssessmentReference
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
 import org.sagebionetworks.research.mtb.alpha_app.R
@@ -24,7 +23,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentItem, HistoryRecyclerViewAdapter.AssessmentHistoryViewHolder>(ItemDiffCallback()) {
+class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, HistoryRecyclerViewAdapter.AssessmentHistoryViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssessmentHistoryViewHolder {
         return AssessmentHistoryViewHolder.from(parent)
@@ -38,24 +37,23 @@ class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentItem, HistoryRecycler
 
     class AssessmentHistoryViewHolder(val binding: HistoryCardBinding): RecyclerView.ViewHolder(binding.root) {
 
-        private var currentItem: AssessmentItem? = null
+        private var currentItem: AssessmentHistoryRecord? = null
 
-        fun bind(assessmentItem: AssessmentItem) {
-            currentItem = assessmentItem
-            setupCard(assessmentItem.assessmentRef)
+        fun bind(historyItem: AssessmentHistoryRecord) {
+            currentItem = historyItem
+            setupCard(historyItem)
         }
 
-        fun setupCard(assessmentRef: ScheduledAssessmentReference) {
+        fun setupCard(historyItem: AssessmentHistoryRecord) {
             val context = binding.root.context
-            val assessmentInfo = assessmentRef.assessmentInfo
+            val assessmentInfo = historyItem.assessmentInfo
             binding.title.text = assessmentInfo.label
-            val adherenceRecord = assessmentRef.adherenceRecordList?.first { it.finishedOn != null }
-            val localDateTime = adherenceRecord?.finishedOn?.toLocalDateTime(TimeZone.currentSystemDefault())?.toJavaLocalDateTime()
-            val text = localDateTime?.format(
+            val localDateTime = historyItem.finishedOn.toLocalDateTime(TimeZone.currentSystemDefault())?.toJavaLocalDateTime()
+            val text = localDateTime.format(
                 DateTimeFormatter.ofLocalizedDate(
                     FormatStyle.LONG))
             binding.date.text = text
-            assessmentInfo.minutesToComplete?.let {
+            historyItem.minutes.let {
                 binding.time.text = context.getString(R.string.number_minutes, it)
             }
             val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground)
@@ -78,20 +76,20 @@ class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentItem, HistoryRecycler
 
 }
 
-class ItemDiffCallback : DiffUtil.ItemCallback<AssessmentItem>() {
-    override fun areItemsTheSame(oldItem: AssessmentItem, newItem: AssessmentItem): Boolean {
-        return oldItem.id == newItem.id
+class ItemDiffCallback : DiffUtil.ItemCallback<AssessmentHistoryRecord>() {
+    override fun areItemsTheSame(oldItem: AssessmentHistoryRecord, newItem: AssessmentHistoryRecord): Boolean {
+        return oldItem.instanceGuid == newItem.instanceGuid && oldItem.startedOn == newItem.startedOn
     }
     @SuppressLint("DiffUtilEquals")
-    override fun areContentsTheSame(oldItem: AssessmentItem, newItem: AssessmentItem): Boolean {
+    override fun areContentsTheSame(oldItem: AssessmentHistoryRecord, newItem: AssessmentHistoryRecord): Boolean {
         return oldItem == newItem
     }
 }
 
-data class AssessmentItem(
-    val assessmentRef: ScheduledAssessmentReference,
-    val session: ScheduledSessionWindow
-) {
-    val id: String
-        get() = assessmentRef.instanceGuid
-}
+//data class HistoryItem(
+//    val assessmentHistoryRecord: AssessmentHistoryRecord,
+//    //val session: ScheduledSessionWindow
+//) {
+//    val id: String
+//        get() = assessmentHistoryRecord.instanceGuid + assessmentHistoryRecord.startedOn
+//}

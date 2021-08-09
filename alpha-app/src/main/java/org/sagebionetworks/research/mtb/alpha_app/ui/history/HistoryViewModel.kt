@@ -39,7 +39,6 @@ class HistoryViewModel(private val timelineRepo: ScheduleTimelineRepo,
         studyId?.let {
             sessionLoadDate = LocalDate.now()
             timelineJob = viewModelScope.launch {
-                //TODO: Get completed sessions
                 timelineRepo.getPastSessions(studyId).collect {
                     _sessionLiveData.postValue(it)
                 }

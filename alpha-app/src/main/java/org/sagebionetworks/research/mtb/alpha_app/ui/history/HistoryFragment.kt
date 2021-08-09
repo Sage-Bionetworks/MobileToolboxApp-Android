@@ -67,31 +67,18 @@ class HistoryFragment : Fragment() {
     }
 
     private fun sessionsLoaded(sessions: List<ScheduledSessionWindow>) {
-        val dataList = mutableListOf<AssessmentItem>()
-        var minutes = 0
-        sessions.forEach{
-            minutes = minutes + addSession(it, dataList)
-        }
-        listAdapter.submitList(dataList)
+        val records = sessions.flatMap {
+            it.assessments.flatMap { assessment -> assessment.history() }
+        }.sortedBy { it.finishedOn }
+
+        var minutes = records.sumOf { it.minutes }
+
+        listAdapter.submitList(records)
 
         headerAdapter.loading = false
         headerAdapter.minutes = minutes
         headerAdapter.notifyDataSetChanged()
 
-    }
-
-    private fun addSession(session: ScheduledSessionWindow, dataList: MutableList<AssessmentItem>) : Int {
-        var minutes = 0
-        for (assessmentRef in session.assessments) {
-            if (assessmentRef.isCompleted) {
-                // Add AssessmentItem
-                dataList.add(AssessmentItem(assessmentRef, session))
-                assessmentRef.assessmentInfo.minutesToComplete?.let {
-                    minutes = minutes + it
-                }
-            }
-        }
-        return minutes
     }
 
 }
