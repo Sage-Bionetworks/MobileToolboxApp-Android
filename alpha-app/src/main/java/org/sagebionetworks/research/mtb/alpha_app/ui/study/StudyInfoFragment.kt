@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.research.mtb.alpha_app.R
 import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentStudyInfoBinding
 
 class StudyInfoFragment : Fragment() {
 
-    private lateinit var studyInfoViewModel: StudyInfoViewModel
     private var _binding: FragmentStudyInfoBinding? = null
 
     // This property is only valid between onCreateView and
@@ -25,8 +25,6 @@ class StudyInfoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        studyInfoViewModel =
-            ViewModelProvider(this).get(StudyInfoViewModel::class.java)
 
         _binding = FragmentStudyInfoBinding.inflate(inflater, container, false)
         val root: View = binding.root

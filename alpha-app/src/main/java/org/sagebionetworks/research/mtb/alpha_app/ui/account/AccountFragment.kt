@@ -11,27 +11,22 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.research.mtb.alpha_app.R
 import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentAccountBinding
 
 class AccountFragment : Fragment() {
 
-    private lateinit var accountViewModel: AccountViewModel
-    private var _binding: FragmentAccountBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    private val accountViewModel: AccountViewModel by viewModel()
+    private lateinit var binding: FragmentAccountBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        accountViewModel =
-            ViewModelProvider(this).get(AccountViewModel::class.java)
 
-        _binding = FragmentAccountBinding.inflate(inflater, container, false)
+        binding = FragmentAccountBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.viewPager.adapter = AccountPagerAdapter(this)
@@ -59,11 +54,6 @@ class AccountFragment : Fragment() {
             SETTINGS_PAGE_INDEX -> getString(R.string.settings)
             else -> null
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 }

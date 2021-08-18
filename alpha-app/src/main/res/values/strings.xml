@@ -6,6 +6,12 @@
     <string name="opens">Opens: %1$s</string>
     <string name="number_minutes">%1$d min</string>
     <string name="good_to_go">Good to go!</string>
+    <string name="funder">Funder</string>
+    <string name="institution">Institution</string>
+    <string name="investigator">Investigator</string>
+    <string name="principal_investigator">Principal Investigator</string>
+    <string name="irb_ethics_board">"IRB/Ethics Board of Record"</string>
+    <string name="study_support">"Study Support"</string>
     <string name="thank_you">Thank you for your patience. \n\n You may exit the app</string>
     <string name="hang_tight">Hang tight...</string>
     <string name="please_dont_close">Please don\'t close the app quite yet, we\'re uploading your contributions to the cloud.</string>
@@ -20,5 +26,13 @@
     <string name="nice_you_re_all_up_to_date">nice, you\'re all up to date</string>
     <string name="about_the_study">about the study</string>
     <string name="contact_and_support">contact &amp; support</string>
+    <string name="general_support">General Support</string>
+    <string name="for_general_questions">For general questions about the study or to withdraw from the study, please contact:</string>
+    <string name="to_withdraw">To <b>withdraw from this study</b>, you’ll need the following info:</string>
+    <string name="study_id">&lt;b>Study ID:&lt;/b> %1$s</string>
+    <string name="participant_id">&lt;b>Participant ID:&lt;/b> %1$s</string>
+    <string name="registration_phone_number">&lt;b>Registration Phone Number:&lt;/b> %1$s</string>
+    <string name="your_participant_rights">Your Participant Rights</string>
+    <string name="for_questions">For questions about your rights as a research participant, please contact :</string>
 
 </resources>
