@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
@@ -16,6 +17,7 @@ import org.sagebionetworks.assessmentmodel.JsonModuleInfo
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
 import org.sagebionetworks.assessmentmodel.navigation.NodeState
+import org.sagebionetworks.assessmentmodel.navigation.SaveResults
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.assessmentmodel.presentation.RootAssessmentViewModel
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
@@ -27,6 +29,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
     val archiveUploader: AssessmentResultArchiveUploader by inject()
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     lateinit var adherenceRecord: AdherenceRecord
+    lateinit var sessionExpiration: Instant
 
     //Fix for June so that MTB assessments are full screen
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -38,6 +41,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
         val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!
         val jsonCoder = Json {ignoreUnknownKeys = true }
         adherenceRecord = jsonCoder.decodeFromString(adherenceRecordString)
+        sessionExpiration = Instant.fromEpochMilliseconds(intent.getLongExtra(ARG_SESSION_EXPIRATION_KEY, Clock.System.now().toEpochMilliseconds()))
         super.onCreate(savedInstanceState)
     }
 
@@ -54,12 +58,14 @@ class MtbAssessmentActivity : AssessmentActivity() {
                     customNodeStateProvider,
                     archiveUploader,
                     adherenceRecordRepo,
-                    adherenceRecord
+                    adherenceRecord,
+                    sessionExpiration
                 )
         ).get(MtbRootAssessmentViewModel::class.java)
 
     companion object {
         const final val ARG_ADHERENCE_RECORD_KEY = "adherence_record_key"
+        const final val ARG_SESSION_EXPIRATION_KEY = "session_expiration_key"
     }
 
 }
@@ -72,25 +78,38 @@ class MtbRootAssessmentViewModel(
     nodeStateProvider: CustomNodeStateProvider?,
     val archiveUploader: AssessmentResultArchiveUploader,
     val adherenceRecordRepo: AdherenceRecordRepo,
-    val adherenceRecord: AdherenceRecord
+    val adherenceRecord: AdherenceRecord,
+    val sessionExpiration: Instant
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
     val handleReadyToSave = MutableLiveData<String>()
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
-        if (reason.markFinished) {
-            val finishedTimeStamp = nodeState.currentResult.endDateTime ?: Clock.System.now()
+        if (reason.markFinished || reason.declined) {
+            val finishedTimeStamp = if (reason.markFinished) {
+                nodeState.currentResult.endDateTime ?: Clock.System.now()
+            } else {
+                null
+            }
+            val startedTimeStamp = nodeState.currentResult.startDateTime
             val studyId = archiveUploader.authenticationRepository.currentStudyId()!!
-            adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord.copy(finishedOn = finishedTimeStamp), studyId)
+            adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord.copy(startedOn = startedTimeStamp,
+                finishedOn = finishedTimeStamp, declined = reason.declined), studyId)
         }
-        if (reason.saveResult) {
+        if (reason.saveResult == SaveResults.Now || reason.saveResult == SaveResults.WhenSessionExpires) {
             val moduleInfo =
                 registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
             val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
             val assessmentResult = nodeState.currentResult as AssessmentResult
 
+            val sessionExpire: Instant? = if (reason.saveResult == SaveResults.WhenSessionExpires) {
+                sessionExpiration
+            } else {
+                null
+            }
+
             // TODO: move to coroutine - liujoshua 04/09/2021
-            archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder)
+            archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder, adherenceRecord.instanceGuid, sessionExpire)
         }
     }
 
@@ -109,7 +128,8 @@ open class MtbRootAssessmentViewModelFactory() {
         nodeStateProvider: CustomNodeStateProvider?,
         archiveUploader: AssessmentResultArchiveUploader,
         adherenceRecordRepo: AdherenceRecordRepo,
-        adherenceRecord: AdherenceRecord
+        adherenceRecord: AdherenceRecord,
+        sessionExpiration: Instant
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -122,7 +142,8 @@ open class MtbRootAssessmentViewModelFactory() {
                         nodeStateProvider,
                         archiveUploader,
                         adherenceRecordRepo,
-                        adherenceRecord
+                        adherenceRecord,
+                        sessionExpiration
                     ) as T
                 }
 

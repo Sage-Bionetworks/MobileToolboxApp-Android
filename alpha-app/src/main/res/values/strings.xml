@@ -3,10 +3,20 @@
 
     <string name="current_activities">current activities</string>
     <string name="due_on">Due on: %1$s</string>
+    <string name="opens">Opens: %1$s</string>
     <string name="number_minutes">%1$d min</string>
     <string name="good_to_go">Good to go!</string>
     <string name="thank_you">Thank you for your patience. \n\n You may exit the app</string>
     <string name="hang_tight">Hang tight...</string>
     <string name="please_dont_close">Please don\'t close the app quite yet, we\'re uploading your contributions to the cloud.</string>
+    <string name="title_home">Home</string>
+    <string name="title_past_activities">Past Activities</string>
+    <string name="title_study_info">Study Info</string>
+    <string name="title_account">Account</string>
+    <string name="profile">profile</string>
+    <string name="settings">settings</string>
+    <string name="thank_you_for_your_contributions">Thank you for your contributions!</string>
+    <string name="minutes">minutes</string>
+    <string name="nice_you_re_all_up_to_date">nice, you\'re all up to date</string>
 
 </resources>
