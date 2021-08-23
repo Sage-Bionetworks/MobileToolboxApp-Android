@@ -78,7 +78,7 @@ dependencies {
     implementation("net.danlew:android.joda:2.9.9.4")
     implementation("androidx.recyclerview:recyclerview:1.2.0")
 
-    val bridgeClientKmmVersion = "0.2.19"
+    val bridgeClientKmmVersion = "0.2.20"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
