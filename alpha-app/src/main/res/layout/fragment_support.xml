@@ -38,7 +38,7 @@
                 android:padding="32dp"
                 android:orientation="vertical"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_rect_background">
+                android:background="@drawable/rounded_rect_background_blue">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
