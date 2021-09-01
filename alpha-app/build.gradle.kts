@@ -78,7 +78,7 @@ dependencies {
     implementation("net.danlew:android.joda:2.9.9.4")
     implementation("androidx.recyclerview:recyclerview:1.2.0")
 
-    val bridgeClientKmmVersion = "0.2.20"
+    val bridgeClientKmmVersion = "0.2.21"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
@@ -87,18 +87,18 @@ dependencies {
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
-//    implementation("edu.northwestern.mobiletoolbox:mtbnavigation:0.4.3-SNAPSHOT")
+    implementation("edu.northwestern.mobiletoolbox:bridge:1.0.3")
 
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:0.1.34")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:0.1.35")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:0.1.33")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:0.1.11")
-    implementation("edu.northwestern.mobiletoolbox:flanker:0.1.19")
-    implementation("edu.northwestern.mobiletoolbox:spelling:0.1.16")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:0.1.16")
-    implementation("edu.northwestern.mobiletoolbox:number_match:0.1.16")
-    implementation("edu.northwestern.mobiletoolbox:fname:0.1.16")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:0.1.16")
+    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:flanker:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:spelling:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:vocabulary:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:number_match:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:fname:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:1.2.1")
 
     val assessment_version = "0.4.6"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
@@ -120,9 +120,9 @@ dependencies {
     implementation(kotlin("reflect", Versions.kotlin))
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3-native-mt") {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt") {
         version {
-            strictly("1.4.3-native-mt")
+            strictly("1.5.1-native-mt")
         }
     }
 
