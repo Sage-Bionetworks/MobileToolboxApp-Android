@@ -63,8 +63,8 @@ class AboutStudyFragment : Fragment() {
 
         val studyRoles = listOf(ContactRole.PRINCIPAL_INVESTIGATOR, ContactRole.INVESTIGATOR, ContactRole.SPONSOR)
         val contacts = study.contacts
-            ?.filter { studyRoles.contains(it.role) }
-            ?.sortedBy { studyRoles.indexOf(it) } ?: listOf()
+            ?.filter { contact ->  studyRoles.contains(contact.role) }
+            ?.sortedBy { contact: Contact ->  studyRoles.indexOf(contact.role) } ?: listOf()
 
         val firstAffiliatedContact = contacts.firstOrNull{it.affiliation != null}
         val institutionName = firstAffiliatedContact?.affiliation
