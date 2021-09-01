@@ -32,6 +32,7 @@ import org.sagebionetworks.research.mtb.alpha_app.ui.today.TodayViewModel
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
 import org.sagebionetworks.research.mtb.alpha_app.ui.history.HistoryViewModel
+import org.sagebionetworks.research.mtb.alpha_app.ui.study.StudyInfoViewModel
 
 val appModule = module {
 
@@ -79,5 +80,6 @@ val appModule = module {
     factory<FileLoader> { FileLoaderAndroid(get()) }
     viewModel { TodayViewModel(get(), get(), get()) }
     viewModel { HistoryViewModel(get(), get(), get()) }
+    viewModel { StudyInfoViewModel(get(), get()) }
 
 }

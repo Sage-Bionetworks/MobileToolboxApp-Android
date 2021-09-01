@@ -168,20 +168,17 @@ class TodayFragment : Fragment() {
             instanceGuid = assessmentRef.instanceGuid,
             startedOn = Clock.System.now(),
             eventTimestamp = session.eventTimeStamp.toString(),
-            finishedOn = Clock.System.now()
             )
-        adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord, authRepo.currentStudyId()!!)
-
-//        val assessmentId = assessmentIdentifierMap.get(assessmentRef.assessmentInfo.identifier) ?: assessmentRef.assessmentInfo.identifier
-//        val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
-//        intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
-//        intent.putExtra(MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY, Json.encodeToString(adherenceRecord))
-//        intent.putExtra(
-//            MtbAssessmentActivity.ARG_SESSION_EXPIRATION_KEY, session.endDateTime.toInstant(
-//            TimeZone.currentSystemDefault()).toEpochMilliseconds())
-//        //Fix for June so that MTB assessments are full screen
-//        intent.putExtra(AssessmentActivity.ARG_THEME, edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen)
-//        startActivity(intent)
+        val assessmentId = assessmentIdentifierMap.get(assessmentRef.assessmentInfo.identifier) ?: assessmentRef.assessmentInfo.identifier
+        val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
+        intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
+        intent.putExtra(MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY, Json.encodeToString(adherenceRecord))
+        intent.putExtra(
+            MtbAssessmentActivity.ARG_SESSION_EXPIRATION_KEY, session.endDateTime.toInstant(
+            TimeZone.currentSystemDefault()).toEpochMilliseconds())
+        //Fix for June so that MTB assessments are full screen
+        intent.putExtra(AssessmentActivity.ARG_THEME, edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen)
+        startActivity(intent)
     }
 
 }
