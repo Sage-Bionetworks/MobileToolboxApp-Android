@@ -85,17 +85,16 @@ class MtbRootAssessmentViewModel(
     val handleReadyToSave = MutableLiveData<String>()
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
-        if (reason.markFinished || reason.declined) {
-            val finishedTimeStamp = if (reason.markFinished) {
-                nodeState.currentResult.endDateTime ?: Clock.System.now()
-            } else {
-                null
-            }
-            val startedTimeStamp = nodeState.currentResult.startDateTime
-            val studyId = archiveUploader.authenticationRepository.currentStudyId()!!
-            adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord.copy(startedOn = startedTimeStamp,
-                finishedOn = finishedTimeStamp, declined = reason.declined), studyId)
+        val finishedTimeStamp = if (reason.markFinished) {
+            nodeState.currentResult.endDateTime ?: Clock.System.now()
+        } else {
+            null
         }
+        val startedTimeStamp = nodeState.currentResult.startDateTime
+        val studyId = archiveUploader.authenticationRepository.currentStudyId()!!
+        adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord.copy(startedOn = startedTimeStamp,
+            finishedOn = finishedTimeStamp, declined = reason.declined), studyId)
+
         if (reason.saveResult == SaveResults.Now || reason.saveResult == SaveResults.WhenSessionExpires) {
             val moduleInfo =
                 registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
