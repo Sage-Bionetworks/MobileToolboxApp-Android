@@ -1,5 +1,6 @@
 package org.sagebionetworks.research.mtb.alpha_app.ui.study
 
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
@@ -17,7 +18,6 @@ import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.research.mtb.alpha_app.R
 import org.sagebionetworks.research.mtb.alpha_app.databinding.ContactBinding
 import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentAboutStudyBinding
-import org.sagebionetworks.research.mtb.alpha_app.databinding.FragmentSupportBinding
 
 class AboutStudyFragment : Fragment() {
 
@@ -49,6 +49,10 @@ class AboutStudyFragment : Fragment() {
         })
         // Inflate the layout for this fragment
         binding = FragmentAboutStudyBinding.inflate(inflater)
+        binding.privacyNoticeButton.setOnClickListener {
+            val launchIntent = Intent(requireContext(), PrivacyNoticeActivity::class.java)
+            startActivity(launchIntent)
+        }
         return binding.root
     }
 

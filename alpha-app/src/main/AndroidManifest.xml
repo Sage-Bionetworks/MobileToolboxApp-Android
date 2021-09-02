@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/BlueberryTheme">
-        <activity android:name=".ui.login.LoginActivity"></activity>
+        <activity android:name=".ui.study.PrivacyNoticeActivity"></activity>
+        <activity android:name=".ui.login.LoginActivity" />
         <!--
         https://github.com/readdle/swift-android-toolchain/issues/18
                 android:allowNativeHeapPointerTagging="false"

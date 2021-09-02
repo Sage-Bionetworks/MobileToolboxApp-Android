@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="privacy_notice">Privacy Notice</string>
+    <string name="review_privacy_notice">Review Privacy Notice</string>
+    <string name="we_will">We will</string>
+    <string name="we_wont">We won\'t</string>
+    <string name="you_can">You can</string>
+    <string name="full_notice">Full Notice</string>
+
+    <string name="privacy_we_will_collect_pii">Collect the data you give us when you register and when you use the App. This may include sensitive data like your health information.</string>
+    <string name="privacy_we_will_collect_data">Collect standard usage data or log information.</string>
+    <string name="privacy_we_will_protect_data">Protect your privacy and store the data in a secure cloud server in the US.</string>
+    <string name="privacy_we_will_share_data">Share de-identified data with other researchers in the US and abroad.</string>
+    <string name="privacy_we_will_store_data">Retain your data as long as we need it unless you request deletion.</string>
+    <string name="privacy_we_will_delete_data">"Delete your data when you ask us to.</string>
+    <string name="privacy_we_will_notify_changes">Tell you if we make changes to our privacy policy.</string>
+
+    <string name="privacy_we_wont_access_contact">Access your contacts, photos or other personal information stored on your phone.</string>
+    <string name="privacy_we_wont_sell_data">Sell or rent your data.</string>
+    <string name="privacy_we_wont_track_other_apps">Track your browsing activities on other Apps.</string>
+    <string name="privacy_we_wont_use_for_advertising">Use your data for advertising.</string>
+
+    <string name="privacy_you_can_request_access">Ask to access, download or delete your data.</string>
+    <string name="privacy_you_can_allow_passive_data">Decide if we can collect passive data from your device, like how much time you use your device each day.</string>
+    <string name="privacy_you_can_optional_permissions">Decide what optional information to give us. For example, giving us your zipcode will tell us about the weather or air quality where you are.</string>
+    <string name="privacy_you_can_permit_microphone">Allow us to turn on your phone camera or microphone when it is necessary to use the App.</string>
+    <string name="privacy_you_can_choose_share">Choose to share your data for future research.</string>
+    <string name="privacy_you_can_recieve_notifications">Opt in to receive notifications and invitations about other research.</string>
+
+</resources>
