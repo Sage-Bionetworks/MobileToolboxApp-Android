@@ -18,7 +18,7 @@ import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.ActivityEventsRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
-import org.sagebionetworks.research.mtb.alpha_app.MainActivity
+import org.sagebionetworks.research.mtb.alpha_app.MtbMainActivity
 import org.sagebionetworks.research.mtb.alpha_app.R
 import java.time.LocalDate
 import java.time.LocalTime
@@ -45,13 +45,13 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
             val sessionsListResource = timelineRepo.getSessionsForToday(studyId).firstOrNull {
                 it is ResourceResult.Success
             }
-            val sessionsList = (sessionsListResource as? ResourceResult.Success)?.data
+            val sessionsList = (sessionsListResource as? ResourceResult.Success)?.data?.scheduledSessionWindows
             if (sessionsList != null && sessionsList.isNotEmpty()) {
                 val sessionWindow = sessionsList[0]
                 if (sessionWindow.sessionInfo.notifications?.isNotEmpty() == true) {
                     val notificationMessage = sessionWindow.sessionInfo.notifications?.get(0)
                     createNotificationChannel(context)
-                    val activityIntent = Intent(context, MainActivity::class.java).apply {
+                    val activityIntent = Intent(context, MtbMainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                     val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0)

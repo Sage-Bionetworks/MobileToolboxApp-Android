@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.sagebionetworks.research.mtb.alpha_app">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:name="org.sagebionetworks.research.mtb.alpha_app.MtbAlphaApplication"
+        android:name=".MtbAlphaApplication"
         android:allowBackup="false"
         android:allowNativeHeapPointerTagging="false"
         android:icon="@mipmap/ic_app_launcher"
@@ -11,26 +15,24 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/BlueberryTheme">
+        <activity android:name=".ui.login.LoginActivity"></activity>
         <!--
         https://github.com/readdle/swift-android-toolchain/issues/18
                 android:allowNativeHeapPointerTagging="false"
         -->
-
-        <activity android:name="org.sagebionetworks.research.mtb.alpha_app.MainActivity">
+        <activity android:name=".MtbMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.sagebionetworks.research.mtb.alpha_app.ui.AssessmentListActivity"/>
-        <activity android:name="org.sagebionetworks.research.mtb.alpha_app.MtbAssessmentActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.AssessmentListActivity" />
+        <activity
+            android:name=".MtbAssessmentActivity"
+            android:screenOrientation="portrait" />
+
         <receiver android:name=".notif.AlarmReceiver" />
     </application>
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -7,4 +7,72 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearance.Sage" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="TextAppearance.Sage.H1" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/playfair_display_italic</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+    <style name="TextAppearance.Sage.H2" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/playfair_display_italic</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.Sage.H3" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+    <style name="TextAppearance.Sage.H4" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Sage.H5" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextAppearance.Sage.H6" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TextAppearance.Sage.H7" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextAppearance.Sage.P1" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="TextAppearance.Sage.P2" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Sage.P3" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Sage.P4" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato_italic</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TextAppearance.Sage.P5" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TextAppearance.Sage.P6" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="TextAppearance.Sage.P7" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="TextAppearance.Sage.Btn" parent="TextAppearance.Sage">
+        <item name="fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>
