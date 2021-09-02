@@ -43,9 +43,10 @@ class ProfileFragment : Fragment() {
         }
         viewModel.authRepo.session()?.let { userSessionInfo ->
             userSessionInfo.externalId?.let {
+                val participantId = it.substringBefore(":")
                 val propBinding = PropertyRowBinding.inflate(inflater)
                 propBinding.name.text = getString(R.string.participant_id_label)
-                propBinding.value.text = it
+                propBinding.value.text = participantId
                 binding.profileContainer.addView(propBinding.root)
             }
             userSessionInfo.phone?.let { phone ->

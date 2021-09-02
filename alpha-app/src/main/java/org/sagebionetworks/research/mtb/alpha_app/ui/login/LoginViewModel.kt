@@ -9,6 +9,7 @@ import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.StudyInfo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
+import java.util.Locale
 
 class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: StudyRepo) : ViewModel() {
 
@@ -38,7 +39,8 @@ class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: Stud
     fun login(externalId: String) {
 
         viewModelScope.launch {
-
+            val studyId = studyInfo?.identifier ?: ""
+            val externalId = "$externalId:${studyId.lowercase(Locale.US)}"
             val userSessionResult = authRepo.signInExternalId(externalId, externalId)
             if (userSessionResult is ResourceResult.Success && userSessionResult.data.authenticated == true) {
                 _signInResult.value = SignInResult.Success
