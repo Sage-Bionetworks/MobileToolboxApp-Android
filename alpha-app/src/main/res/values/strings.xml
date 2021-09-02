@@ -34,15 +34,23 @@
     <string name="for_general_questions">For general questions about the study or to withdraw from the study, please contact:</string>
     <string name="to_withdraw">To <b>withdraw from this study</b>, you’ll need the following info:</string>
     <string name="to_withdraw_account">To <b>withdraw</b> from this study, please contact your Study Contact from the <u><b>Study Info page.</b></u></string>
-    <string name="study_id">&lt;b>Study ID:&lt;/b> %1$s</string>
+    <string name="study_id">Study ID: %1$s</string>
+    <string name="study_id_bold">&lt;b>Study ID:&lt;/b> %1$s</string>
     <string name="study_id_label">Study ID:</string>
+    <string name="study_id_hint">Study ID</string>
     <string name="participant_id">&lt;b>Participant ID:&lt;/b> %1$s</string>
     <string name="participant_id_label">Participant ID:</string>
+    <string name="participant_id_hint">Participant ID</string>
+    <string name="participant_login_error">Sorry we cannot find this participant. Please try again or contact your Study Coordinator.</string>
+    <string name="find_study_error">Sorry we cannot find this study. Please try again or contact your Study Coordinator.</string>
     <string name="phone_label">Phone #:</string>
     <string name="version_label">Version:</string>
     <string name="registration_phone_number">&lt;b>Registration Phone Number:&lt;/b> %1$s</string>
     <string name="your_participant_rights">Your Participant Rights</string>
     <string name="for_questions">For questions about your rights as a research participant, please contact :</string>
     <string name="logout">Log out</string>
+    <string name="welcome_please_enter_study">Welcome! Please enter your Study ID below to begin.</string>
+    <string name="welcome_to_study">Welcome to %1$s</string>
+    <string name="login">Login</string>
 
 </resources>

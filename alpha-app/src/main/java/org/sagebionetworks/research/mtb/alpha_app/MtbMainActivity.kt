@@ -10,6 +10,7 @@ import org.koin.android.ext.android.inject
 import org.sagebionetworks.bridge.kmm.presentation.auth.ExternalIdSignInActivity
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mtb.alpha_app.databinding.ActivityMtbMainBinding
+import org.sagebionetworks.research.mtb.alpha_app.ui.login.LoginActivity
 
 class MtbMainActivity : AppCompatActivity() {
 
@@ -31,7 +32,7 @@ class MtbMainActivity : AppCompatActivity() {
         super.onResume()
         if (!authenticationRepository.isAuthenticated()) {
             // Show sign-in screen
-            val launchIntent = Intent(this, ExternalIdSignInActivity::class.java)
+            val launchIntent = Intent(this, LoginActivity::class.java)
                 .setData(intent.data)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 

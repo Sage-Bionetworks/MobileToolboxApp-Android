@@ -50,7 +50,7 @@ class SupportFragment : Fragment() {
     }
 
     private fun studyLoaded(study: Study) {
-        binding.studyId.text = Html.fromHtml(getString(R.string.study_id, study.identifier))
+        binding.studyId.text = Html.fromHtml(getString(R.string.study_id_bold, study.identifier))
         viewModel.userSessionInfo?.externalId?.let {
             binding.participantId.text = Html.fromHtml(getString(R.string.participant_id, it))
             binding.participantId.visibility = View.VISIBLE
