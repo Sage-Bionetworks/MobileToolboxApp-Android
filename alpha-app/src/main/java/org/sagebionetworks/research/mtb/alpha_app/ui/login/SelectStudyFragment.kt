@@ -43,7 +43,8 @@ class SelectStudyFragment : Fragment() {
                     binding.studyIdInputLayout.error = null
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.container, ParticipantIdSignInFragment.newInstance())
-                        .commitNow()
+                        .addToBackStack(null)
+                        .commit()
                 }
                 is ResourceResult.InProgress -> {
 

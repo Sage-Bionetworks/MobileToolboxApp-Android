@@ -42,6 +42,24 @@ class PrivacyNoticeFragment : Fragment() {
         }
     }
 
+    fun goNext(): Boolean {
+        val curIndex = binding.viewPager.currentItem
+        if (curIndex < 2) {
+            binding.viewPager.setCurrentItem(curIndex + 1, true)
+            return true
+        }
+        return false
+    }
+
+    fun goPrev(): Boolean {
+        val curIndex = binding.viewPager.currentItem
+        if (curIndex > 0) {
+            binding.viewPager.setCurrentItem(curIndex - 1, true)
+            return true
+        }
+        return false
+    }
+
 }
 
 const val WE_WILL_PAGE_INDEX = 0

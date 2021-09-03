@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,8 +41,11 @@ class ParticipantIdSignInFragment : Fragment() {
                     binding.participantIdInputLayout.error = null
                     binding.progressOverlay.progressOverlay.visibility = View.GONE
                     //TODO: Show welcome screen next -nbrown 8/26/2021
-                    requireActivity().setResult(AppCompatActivity.RESULT_OK)
-                    requireActivity().finish()
+                    // Showing Privacy Notice for now
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, PrivacyNoticeOnboardingFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit()
                 }
                 is LoginViewModel.SignInResult.Failed -> {
                     binding.progressOverlay.progressOverlay.visibility = View.GONE
@@ -74,9 +76,7 @@ class ParticipantIdSignInFragment : Fragment() {
     }
 
     private fun goBack() {
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.container, SelectStudyFragment.newInstance())
-            .commitNow()
+        parentFragmentManager.popBackStack()
     }
 
 }
