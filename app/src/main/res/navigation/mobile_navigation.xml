@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_today" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.history.HistoryFragment"
+        android:label="@string/title_past_activities"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/navigation_study_info"
+        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyInfoFragment"
+        android:label="@string/title_study_info"
+        tools:layout="@layout/fragment_study_info" />
+
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.account.AccountFragment"
+        android:label="@string/title_study_info"
+        tools:layout="@layout/fragment_account" />
+</navigation>

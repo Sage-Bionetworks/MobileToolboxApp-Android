@@ -1,5 +1,5 @@
-include ':alpha-app'
-rootProject.name = "MTBAlphaApp-Android"
+include ':app'
+rootProject.name = "MobileToolboxApp-Android"
 //
 //includeBuild('../MobileToolboxAndroid') {
 //    dependencySubstitution {
