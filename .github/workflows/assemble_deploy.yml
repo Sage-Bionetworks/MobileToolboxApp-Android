@@ -49,7 +49,7 @@ jobs:
         id: sign_app
         with:
           releaseDirectory: alpha-app/build/outputs/bundle/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          signingKeyBase64: ${{ secrets.KEY_STORE_BASE64 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
