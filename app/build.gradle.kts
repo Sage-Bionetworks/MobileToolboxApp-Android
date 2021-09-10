@@ -14,7 +14,7 @@ android {
         minSdkVersion(23)
         targetSdkVersion(30)
         versionCode = 1
-        versionName = "0.1.$versionCode"
+        versionName = "0.8.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
