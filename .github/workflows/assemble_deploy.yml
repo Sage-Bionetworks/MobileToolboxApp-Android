@@ -18,8 +18,8 @@ jobs:
         env:
           STUDY_PUBLIC_KEY_BASE64: ${{ secrets.STUDY_PUBLIC_KEY_BASE64 }}
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/alpha-app/src/main/assets/
-          echo "$STUDY_PUBLIC_KEY_BASE64" | base64 --decode > ${GITHUB_WORKSPACE}/alpha-app/src/main/assets/study_public_key.pem
+          mkdir -p ${GITHUB_WORKSPACE}/app/src/main/assets/
+          echo "$STUDY_PUBLIC_KEY_BASE64" | base64 --decode > ${GITHUB_WORKSPACE}/app/src/main/assets/study_public_key.pem
         
       - uses: actions/cache@v1
         with:
@@ -48,7 +48,7 @@ jobs:
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: alpha-app/build/outputs/bundle/release
+          releaseDirectory: app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.KEY_STORE_BASE64 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -56,10 +56,10 @@ jobs:
       # 4
       - uses: actions/upload-artifact@master
         with:
-          name: alpha-app-release.aab
+          name: app-release.aab
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
       # 5
       - uses: actions/upload-artifact@master
         with:
           name: mapping.txt
-          path: alpha-app/build/outputs/mapping/release/mapping.txt
+          path: app/build/outputs/mapping/release/mapping.txt

@@ -5,5 +5,5 @@
     android:id="@+id/fragment_container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="org.sagebionetworks.research.mtb.alpha_app.ui.study.PrivacyNoticeFragment"
+    android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeFragment"
     tools:context=".ui.study.PrivacyNoticeActivity"/>
