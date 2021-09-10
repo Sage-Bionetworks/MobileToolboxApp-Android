@@ -117,7 +117,8 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
             assessmentInfo.minutesToComplete?.let {
                 binding.time.text = context.getString(R.string.number_minutes, it)
             }
-            val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground)
+
+            val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground ?: "#000000")
             binding.imageBackground.background = ColorDrawable(foregroundColor)
             TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
                 binding.assessmentImage.setImageDrawable(context.resources.getDrawable(it))
