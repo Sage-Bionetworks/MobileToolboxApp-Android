@@ -54,7 +54,7 @@ class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, Histor
             historyItem.minutes.let {
                 binding.time.text = context.getString(R.string.number_minutes, it)
             }
-            val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground)
+            val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground ?: "#000000")
             binding.imageBackground.background = ColorDrawable(foregroundColor)
             binding.check.imageTintList = ColorStateList.valueOf(foregroundColor)
             binding.check.imageTintMode = PorterDuff.Mode.MULTIPLY
