@@ -1,8 +1,9 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.today
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -12,12 +13,13 @@ import org.sagebionetworks.bridge.kmm.shared.repo.ActivityEventsRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionTimelineSlice
+import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 import java.time.LocalDate
 
 class TodayViewModel(private val timelineRepo: ScheduleTimelineRepo,
                      private val authRepo: AuthenticationRepository,
-                     private val activityEventsRepo: ActivityEventsRepo
-                     ) : ViewModel() {
+                     application: Application
+                     ) : AndroidViewModel(application) {
     init {
         loadTodaysSessions()
     }
@@ -40,6 +42,9 @@ class TodayViewModel(private val timelineRepo: ScheduleTimelineRepo,
             timelineJob = viewModelScope.launch {
                 timelineRepo.getSessionsForToday(studyId).collect {
                     _sessionLiveData.postValue(it)
+                    if (it is ResourceResult.Success) {
+                        ScheduleNotificationsWorker.runScheduleNotificationWorker(getApplication())
+                    }
                 }
             }
         }

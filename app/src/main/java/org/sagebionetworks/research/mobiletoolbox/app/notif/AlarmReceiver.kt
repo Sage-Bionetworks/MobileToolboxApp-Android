@@ -7,11 +7,9 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.serialization.decodeFromString
@@ -19,9 +17,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
-import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledNotification
 import org.sagebionetworks.research.mobiletoolbox.app.MtbMainActivity
 import org.sagebionetworks.research.mobiletoolbox.app.R
@@ -32,31 +28,26 @@ import java.time.ZoneId
 class AlarmReceiver : BroadcastReceiver(), KoinComponent{
 
     private val authRepo: AuthenticationRepository by inject()
-    private val timelineRepo: ScheduleTimelineRepo by inject()
-
-    private val adherenceRecordRepo: AdherenceRecordRepo by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         val studyId = authRepo.session()?.studyIds?.get(0)
         if (studyId == null) return // User is no longer logged in, so we don't have a session
-        runBlocking {
 
-            val notifJson = intent.getStringExtra(KEY_NOTIFICATION_JSON)
-            notifJson?.let {
-                //We have a notification to show
-                val jsonCoder = Json {ignoreUnknownKeys = true }
-                val notification: ScheduledNotification = jsonCoder.decodeFromString(notifJson)
+        val notifJson = intent.getStringExtra(KEY_NOTIFICATION_JSON)
+        notifJson?.let {
+            //We have a notification to show
+            val jsonCoder = Json {ignoreUnknownKeys = true }
+            val notification: ScheduledNotification = jsonCoder.decodeFromString(notifJson)
 
-                val recordList = adherenceRecordRepo.getCachedAdherenceRecords(listOf(notification.instanceGuid), studyId).get(notification.instanceGuid)
-                val isCompleted = recordList?.first()?.finishedOn != null
-                if (!isCompleted) {
-                    //Scheduled assessment still needs to be done, so show the notification
-                    showNotification(context, notification)
-                    notification.repeatInterval?.let {
-                        //If this is a repeating notification schedule next one
-                        scheduleNotificationAlarm(context, notification)
-                    }
-                } else { }
+            //Ideally we determine if the notification needs to be shown based on the completion status of the Session.
+            // Currently there isn't a performant way given a Session instance id to get it's completion status.
+            // We are recomputing the notifications everytime the today screen gets new data,
+            // so we should only be showing notifications that still need to be completed. -nbrown 9/13/2001
+
+            showNotification(context, notification)
+            notification.repeatInterval?.let {
+                //If this is a repeating notification schedule next one
+                scheduleNotificationAlarm(context, notification, intent.getIntExtra(KEY_REQUEST_CODE, 0))
             }
         }
     }
@@ -103,18 +94,25 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
     companion object {
         const val CHANNEL_ID = "AssessmentReminderChannel"
         const val KEY_NOTIFICATION_JSON = "NotificationJson"
+        const val KEY_REQUEST_CODE = "RequestCode"
 
+        fun clearNotification(context: Context, alarmManager: AlarmManager, requestCode: Int) {
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
+                intent.putExtra(KEY_REQUEST_CODE, requestCode)
+                PendingIntent.getBroadcast(context, requestCode, intent, 0)
+            }
+            alarmManager.cancel(alarmIntent)
+        }
 
-        fun scheduleNotificationAlarm(context: Context, notification: ScheduledNotification) {
+        fun scheduleNotificationAlarm(context: Context, notification: ScheduledNotification, requestCode: Int) {
             notification.nextScheduledTime()?.let { scheduledTime ->
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 val alarmTimeInstant = scheduledTime.atZone(ZoneId.systemDefault()).toInstant()
                 val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
-                    val uniqueId = "scheme:///" + notification.instanceGuid + scheduledTime.toString()
-                    intent.data = Uri.parse(uniqueId)
-                    intent.action = uniqueId
                     intent.putExtra(KEY_NOTIFICATION_JSON, Json.encodeToString(notification))
-                    PendingIntent.getBroadcast(context, uniqueId.hashCode(), intent, 0)
+                    intent.putExtra(KEY_REQUEST_CODE, requestCode)
+                    PendingIntent.getBroadcast(context, requestCode, intent, 0)
                 }
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTimeInstant.toEpochMilli(), alarmIntent)
             }

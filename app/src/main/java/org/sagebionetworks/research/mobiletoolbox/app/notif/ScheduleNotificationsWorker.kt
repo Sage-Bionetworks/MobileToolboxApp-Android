@@ -1,17 +1,19 @@
 package org.sagebionetworks.research.mobiletoolbox.app.notif
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.work.Constraints
+import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.runBlocking
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
@@ -21,30 +23,46 @@ class ScheduleNotificationsWorker(appContext: Context, workerParams: WorkerParam
                                   private val authRepo: AuthenticationRepository,
                                   private val timelineRepo: ScheduleTimelineRepo
 ):
-    Worker(appContext, workerParams) {
+    CoroutineWorker(appContext, workerParams) {
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         var result = Result.success()
-        val studyId = authRepo.session()?.studyIds?.get(0)
-        if (studyId == null) return result // User is no longer logged in, so we don't have a session
-        runBlocking {
-            //Get sessions for today
-            val sessionsListResource =
-                timelineRepo.getSessionsForToday(studyId, includeAllNotifications = true)
-                    .firstOrNull {
-                        it is ResourceResult.Success
-                    }
-            if (sessionsListResource == null) {
-                result = Result.retry()
-            }
-            val notificationsList =
-                (sessionsListResource as? ResourceResult.Success)?.data?.notifications
+        // If we don't have a study id the user is no longer logged in, so we don't have a session
+        val studyId = authRepo.session()?.studyIds?.get(0) ?: return result
 
-            //Schedule notifications - Each app can have a max of 500 alarms scheduled
-            // Worker should run everyday, so 100 is more than plenty -nbrown 9/9/2001
-            notificationsList?.take(100)?.forEach { notification ->
-                AlarmReceiver.scheduleNotificationAlarm(applicationContext, notification)
-            }
+        //Get sessions for today
+        val sessionsListResource =
+            timelineRepo.getSessionsForToday(studyId, includeAllNotifications = true)
+                .firstOrNull {
+                    it is ResourceResult.Success
+                }
+        if (sessionsListResource == null) {
+            result = Result.retry()
+        }
+        val notificationsList =
+            (sessionsListResource as? ResourceResult.Success)?.data?.notifications
+
+
+        //Schedule notifications - Each app can have a max of 500 alarms scheduled
+        // Worker should run everyday, so 100 is more than plenty -nbrown 9/9/2001
+        val numToSchedule = 100
+        //First schedule/updated notification alarms
+        var requestCode = 0
+        notificationsList?.take(numToSchedule)?.forEach { notification ->
+            //Each alarm has a unique request code so they don't clobber each other
+            AlarmReceiver.scheduleNotificationAlarm(applicationContext, notification, requestCode)
+            requestCode++
+        }
+        //Second cancel any old alarms that weren't updated
+        for (i in requestCode until numToSchedule) {
+            val alarmManager =
+                applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmIntent =
+                Intent(applicationContext, AlarmReceiver::class.java).let { intent ->
+                    intent.putExtra(AlarmReceiver.KEY_REQUEST_CODE, i)
+                    PendingIntent.getBroadcast(applicationContext, i, intent, 0)
+                }
+            alarmManager.cancel(alarmIntent)
         }
 
         // Indicate whether the work finished successfully with the Result
