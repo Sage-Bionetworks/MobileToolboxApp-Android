@@ -60,7 +60,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textVisiblePassword"
-            android:hint="@string/participant_id_hint" />
+            android:hint="@string/participant_id_hint"
+            android:nextFocusDown="@id/next_button"
+            android:nextFocusForward="@id/next_button"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
