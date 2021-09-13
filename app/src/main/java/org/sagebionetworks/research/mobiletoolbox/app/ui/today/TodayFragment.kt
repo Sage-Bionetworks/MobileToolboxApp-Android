@@ -118,7 +118,7 @@ class TodayFragment : Fragment() {
         val dataList = mutableListOf<DataItem>()
         var availableAssessmentAdded = false
         sessions.forEach{
-            availableAssessmentAdded = availableAssessmentAdded || addSession(it, dataList)
+            availableAssessmentAdded = addSession(it, dataList) || availableAssessmentAdded
         }
         listAdapter.submitList(dataList)
 
