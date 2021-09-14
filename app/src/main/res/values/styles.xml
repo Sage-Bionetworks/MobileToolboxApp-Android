@@ -63,11 +63,11 @@
     </style>
     <style name="TextAppearance.Sage.P6" parent="TextAppearance.Sage">
         <item name="fontFamily">@font/poppins_regular</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
     <style name="TextAppearance.Sage.P7" parent="TextAppearance.Sage">
-        <item name="fontFamily">@font/poppins_medium</item>
-        <item name="android:textSize">10sp</item>
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextAppearance.Sage.Btn" parent="TextAppearance.Sage">

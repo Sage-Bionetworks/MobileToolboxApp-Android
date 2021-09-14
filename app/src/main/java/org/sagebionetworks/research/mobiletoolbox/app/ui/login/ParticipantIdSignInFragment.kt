@@ -44,7 +44,7 @@ class ParticipantIdSignInFragment : Fragment() {
                     //TODO: Show welcome screen next -nbrown 8/26/2021
                     // Showing Privacy Notice for now
                     parentFragmentManager.beginTransaction()
-                        .replace(R.id.container, PrivacyNoticeOnboardingFragment.newInstance())
+                        .replace(R.id.container, WelcomeScreenFragment.newInstance())
                         .addToBackStack(null)
                         .commit()
                     ScheduleNotificationsWorker.runScheduleNotificationWorker(requireContext())

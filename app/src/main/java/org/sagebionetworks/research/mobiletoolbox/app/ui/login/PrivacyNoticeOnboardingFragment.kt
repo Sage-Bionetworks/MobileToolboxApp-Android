@@ -39,7 +39,9 @@ class PrivacyNoticeOnboardingFragment : Fragment() {
 
     private fun onPrevClicked() {
         val privacyNoticeFragment = childFragmentManager.findFragmentByTag("privacy_notice") as PrivacyNoticeFragment
-        privacyNoticeFragment.goPrev()
+        if (!privacyNoticeFragment.goPrev()) {
+            parentFragmentManager.popBackStack()
+        }
     }
 
     companion object {

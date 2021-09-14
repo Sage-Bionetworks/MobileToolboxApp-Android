@@ -52,5 +52,10 @@
     <string name="welcome_please_enter_study">Welcome! Please enter your Study ID below to begin.</string>
     <string name="welcome_to_study">Welcome to %1$s</string>
     <string name="login">Login</string>
+    <string name="continue_string">Continue</string>
+    <string name="welcome_screen_default_body">We are excited that you will be participating. We hope that you will find this study helpful.</string>
+    <string name="welcome_screen_default_salutation">Sincerely,</string>
+    <string name="welcome_screen_default_from">The %1$s team</string>
+    <string name="welcome_screen_disclaimer">This is a research Study. It does not provide medical advice, diagnosis, or treatment.</string>
 
 </resources>
