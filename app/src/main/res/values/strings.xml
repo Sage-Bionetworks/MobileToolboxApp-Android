@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MTB: Norming</string>
+    <string name="app_name">Mobile Toolbox</string>
 
     <string name="cancel">Cancel</string>
     <string name="confirm_log_out_title">Confirm log out</string>
