@@ -14,7 +14,7 @@ android {
         minSdkVersion(23)
         targetSdkVersion(30)
         versionCode = 1
-        versionName = "0.1.$versionCode"
+        versionName = "0.8.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -88,18 +88,8 @@ dependencies {
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
-    implementation("edu.northwestern.mobiletoolbox:bridge:1.0.3")
 
-    implementation("edu.northwestern.mobiletoolbox:mtb-common-ui:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:memory-for-sequences:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:dimensional_change_card_sort:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:picture_sequence_memory:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:flanker:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:spelling:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:vocabulary:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:number_match:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:fname:1.2.1")
-    implementation("edu.northwestern.mobiletoolbox:dichotomous_engine:1.2.1")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.2.4")
 
     val assessment_version = "0.4.6"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
