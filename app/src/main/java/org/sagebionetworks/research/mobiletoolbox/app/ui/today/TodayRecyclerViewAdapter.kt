@@ -111,6 +111,10 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
                 binding.root.foreground = ColorDrawable(Color.parseColor("#B3FFFFFF"))
                 binding.root.isEnabled = false
                 binding.root.isClickable = false
+            } else {
+                binding.root.foreground = null
+                binding.root.isEnabled = true
+                binding.root.isClickable = true
             }
             val assessmentInfo = assessmentRef.assessmentInfo
             binding.title.text = assessmentInfo.label

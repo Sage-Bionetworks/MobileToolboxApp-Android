@@ -16,6 +16,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:labelVisibilityMode="labeled"
+        app:itemTextColor="@color/textColor"
+        app:itemTextAppearanceActive="@style/TextAppearance.Sage.NavActive"
+        app:itemTextAppearanceInactive="@style/TextAppearance.Sage.NavInactive"
         app:menu="@menu/bottom_nav_menu" />
 
     <fragment

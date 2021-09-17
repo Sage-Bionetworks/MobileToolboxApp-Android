@@ -23,13 +23,13 @@
     <string name="title_past_activities">Past Activities</string>
     <string name="title_study_info">Study Info</string>
     <string name="title_account">Account</string>
-    <string name="profile">profile</string>
-    <string name="settings">settings</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
     <string name="thank_you_for_your_contributions">Thank you for your contributions!</string>
     <string name="minutes">minutes</string>
     <string name="nice_you_re_all_up_to_date">nice, you\'re all up to date</string>
-    <string name="about_the_study">about the study</string>
-    <string name="contact_and_support">contact &amp; support</string>
+    <string name="about_the_study">About the study</string>
+    <string name="contact_and_support">Contact &amp; Support</string>
     <string name="general_support">General Support</string>
     <string name="for_general_questions">For general questions about the study or to withdraw from the study, please contact:</string>
     <string name="to_withdraw">To <b>withdraw from this study</b>, you’ll need the following info:</string>
