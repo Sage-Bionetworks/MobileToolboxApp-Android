@@ -12,6 +12,7 @@ import org.koin.core.logger.Level
 import org.sagebionetworks.bridge.kmm.presentation.di.presentationModule
 import org.sagebionetworks.bridge.kmm.shared.di.*
 import org.sagebionetworks.research.mobiletoolbox.app.notif.AlarmReceiver
+import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 
 
 class MtbApplication : MultiDexApplication(), KoinComponent {
@@ -32,6 +33,6 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
         }
 
         MTBKitCore.boot(this)
-        AlarmReceiver.scheduleReminderAlarm(this)
+        ScheduleNotificationsWorker.enqueueDailyScheduleNotificationWorker(this)
     }
 }

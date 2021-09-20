@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentParticipantIdSignInBinding
+import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 
 class ParticipantIdSignInFragment : Fragment() {
 
@@ -46,6 +47,7 @@ class ParticipantIdSignInFragment : Fragment() {
                         .replace(R.id.container, PrivacyNoticeOnboardingFragment.newInstance())
                         .addToBackStack(null)
                         .commit()
+                    ScheduleNotificationsWorker.runScheduleNotificationWorker(requireContext())
                 }
                 is LoginViewModel.SignInResult.Failed -> {
                     binding.progressOverlay.progressOverlay.visibility = View.GONE
