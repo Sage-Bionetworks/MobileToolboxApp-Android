@@ -12,8 +12,8 @@ import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
 
-class StudyInfoViewModel(private val studyRepo: StudyRepo,
-                         private val authRepo: AuthenticationRepository) : ViewModel() {
+open class StudyInfoViewModel(private val studyRepo: StudyRepo,
+                              private val authRepo: AuthenticationRepository) : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is study info Fragment"

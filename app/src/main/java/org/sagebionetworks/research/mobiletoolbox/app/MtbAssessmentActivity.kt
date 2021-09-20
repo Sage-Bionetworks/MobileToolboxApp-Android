@@ -8,7 +8,6 @@ import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
@@ -23,6 +22,8 @@ import org.sagebionetworks.assessmentmodel.presentation.RootAssessmentViewModel
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
+import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
+import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderConfigJsonCoder
 
 class MtbAssessmentActivity : AssessmentActivity() {
 
@@ -30,6 +31,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     lateinit var adherenceRecord: AdherenceRecord
     lateinit var sessionExpiration: Instant
+    lateinit var recorderScheduledAssessmentConfig: List<RecorderScheduledAssessmentConfig>
 
     //Fix for June so that MTB assessments are full screen
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -39,9 +41,18 @@ class MtbAssessmentActivity : AssessmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!
-        val jsonCoder = Json {ignoreUnknownKeys = true }
-        adherenceRecord = jsonCoder.decodeFromString(adherenceRecordString)
-        sessionExpiration = Instant.fromEpochMilliseconds(intent.getLongExtra(ARG_SESSION_EXPIRATION_KEY, Clock.System.now().toEpochMilliseconds()))
+        adherenceRecord = recorderConfigJsonCoder.decodeFromString(adherenceRecordString)
+        sessionExpiration = Instant.fromEpochMilliseconds(
+            intent.getLongExtra(
+                ARG_SESSION_EXPIRATION_KEY,
+                Clock.System.now().toEpochMilliseconds()
+            )
+        )
+        recorderScheduledAssessmentConfig = intent.getStringExtra(ARG_RECORDER_CONFIG_KEY)
+            ?.let { recorderConfigJsonCoder.decodeFromString(it) } ?: listOf()
+
+        // TODO: call recorders
+
         super.onCreate(savedInstanceState)
     }
 
@@ -66,6 +77,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
     companion object {
         const final val ARG_ADHERENCE_RECORD_KEY = "adherence_record_key"
         const final val ARG_SESSION_EXPIRATION_KEY = "session_expiration_key"
+        const final val ARG_RECORDER_CONFIG_KEY = "recorder_config_key"
     }
 
 }
@@ -92,8 +104,12 @@ class MtbRootAssessmentViewModel(
         }
         val startedTimeStamp = nodeState.currentResult.startDateTime
         val studyId = archiveUploader.authenticationRepository.currentStudyId()!!
-        adherenceRecordRepo.createUpdateAdherenceRecord(adherenceRecord.copy(startedOn = startedTimeStamp,
-            finishedOn = finishedTimeStamp, declined = reason.declined), studyId)
+        adherenceRecordRepo.createUpdateAdherenceRecord(
+            adherenceRecord.copy(
+                startedOn = startedTimeStamp,
+                finishedOn = finishedTimeStamp, declined = reason.declined
+            ), studyId
+        )
 
         if (reason.saveResult == SaveResults.Now || reason.saveResult == SaveResults.WhenSessionExpires) {
             val moduleInfo =
@@ -108,7 +124,12 @@ class MtbRootAssessmentViewModel(
             }
 
             // TODO: move to coroutine - liujoshua 04/09/2021
-            archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder, adherenceRecord.instanceGuid, sessionExpire)
+            archiveUploader.archiveResultAndQueueUpload(
+                assessmentResult,
+                jsonCoder,
+                adherenceRecord.instanceGuid,
+                sessionExpire
+            )
         }
     }
 
