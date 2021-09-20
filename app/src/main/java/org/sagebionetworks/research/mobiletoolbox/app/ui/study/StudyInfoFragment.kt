@@ -29,6 +29,7 @@ class StudyInfoFragment : Fragment() {
 
         binding.viewPager.adapter = StudyPagerAdapter(this)
 
+        binding.tabLayout.tabIconTint = null
         // Set the icon and text for each tab
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.setIcon(getTabIcon(position))
@@ -40,8 +41,8 @@ class StudyInfoFragment : Fragment() {
 
     private fun getTabIcon(position: Int): Int {
         return when (position) {
-            ABOUT_STUDY_PAGE_INDEX -> R.drawable.ic_about_study
-            CONTACT_PAGE_INDEX -> R.drawable.ic_contact_support
+            ABOUT_STUDY_PAGE_INDEX -> R.drawable.about_study
+            CONTACT_PAGE_INDEX -> R.drawable.contact_support
             else -> throw IndexOutOfBoundsException()
         }
     }
