@@ -31,7 +31,7 @@ class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: Stud
     }
 
     fun clearStudy() {
-        _studyInfoLiveData.value = null
+        _studyInfoLiveData.value = ResourceResult.InProgress
         studyInfo = null
     }
 
