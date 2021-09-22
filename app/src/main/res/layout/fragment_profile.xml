@@ -37,7 +37,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextAppearance.Sage.P3"
+                style="@style/TextAppearance.Sage.P2"
                 android:text="@string/to_withdraw_account"/>
 
         </LinearLayout>

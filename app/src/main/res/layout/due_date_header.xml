@@ -21,7 +21,7 @@
         android:padding="16dp"
         android:drawablePadding="4dp"
         android:background="@color/backgroundGrey"
-        android:textColor="#000000"
+        android:textAppearance="@style/TextAppearance.Sage.H7"
         android:text="@string/due_on"
         app:drawableStartCompat="@drawable/ic_session_clock_icon" />
     <TextView
@@ -33,7 +33,7 @@
         android:padding="16dp"
         android:drawablePadding="4dp"
         android:background="@color/backgroundGrey"
-        android:textColor="#000000"
+        android:textAppearance="@style/TextAppearance.Sage.H7"
         android:text="@string/opens"
         app:drawableStartCompat="@drawable/ic_session_lock_icon" />
 </FrameLayout>

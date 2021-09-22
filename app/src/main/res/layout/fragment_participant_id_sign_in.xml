@@ -39,7 +39,7 @@
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
         android:paddingTop="32dp"
-        android:textAppearance="@style/TextAppearance.Sage.P3"
+        android:textAppearance="@style/TextAppearance.Sage.P1"
         tools:text="Study ID: test"
         app:layout_constraintTop_toBottomOf="@id/study_name"/>
 
