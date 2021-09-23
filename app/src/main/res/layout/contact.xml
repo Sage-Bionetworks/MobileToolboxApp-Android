@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         tools:text="position"
-        android:textAppearance="@style/TextAppearance.Sage.H7"
+        android:textAppearance="@style/TextAppearance.Sage.P2"
         app:layout_constraintLeft_toRightOf="@id/phone_icon"
         app:layout_constraintTop_toBottomOf="@id/name" />
 
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         tools:text="phone"
-        android:textAppearance="@style/TextAppearance.Sage.P5"
+        android:textAppearance="@style/TextAppearance.Sage.P2"
         app:layout_constraintLeft_toRightOf="@id/phone_icon"
         app:layout_constraintTop_toBottomOf="@id/position" />
 
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         tools:text="email"
-        android:textAppearance="@style/TextAppearance.Sage.P5"
+        android:textAppearance="@style/TextAppearance.Sage.P2"
         app:layout_constraintLeft_toRightOf="@id/email_icon"
         app:layout_constraintTop_toBottomOf="@id/phone" />
 

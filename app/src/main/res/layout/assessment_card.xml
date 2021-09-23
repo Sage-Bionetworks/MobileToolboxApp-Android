@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="11dp"
             android:layout_marginTop="14dp"
-            android:textSize="16sp"
             android:textColor="#2A2A2A"
+            android:textAppearance="@style/TextAppearance.Sage.H4"
             app:layout_constraintStart_toEndOf="@+id/image_background"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Shape-Color Sorting" />
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:layout_marginBottom="10dp"
-            android:text="3 min"
+            android:textAppearance="@style/TextAppearance.Sage.H6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="3 min"/>

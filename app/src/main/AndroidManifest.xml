@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeActivity"></activity>
+        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeActivity"/>
         <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.login.LoginActivity" />
         <!--
         https://github.com/readdle/swift-android-toolchain/issues/18
@@ -29,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.AssessmentListActivity" />
         <activity
             android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbAssessmentActivity"
             android:screenOrientation="portrait" />

@@ -19,6 +19,6 @@
         android:layout_marginLeft="32dp"
         android:layout_gravity="center_vertical"
         tools:text="Collect the data you give us when you register and when you use the App. This may include sensitive data like your health information."
-        android:textAppearance="@style/TextAppearance.Sage.P3" />
+        android:textAppearance="@style/TextAppearance.Sage.P1" />
 
 </LinearLayout>

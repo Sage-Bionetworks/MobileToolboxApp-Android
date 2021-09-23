@@ -33,15 +33,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                android:textColor="#727272"
-                android:textSize="21dp"
+                android:textAppearance="@style/TextAppearance.Sage.H3"
                 tools:text="43"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                android:textColor="#727272"
+                android:textAppearance="@style/TextAppearance.Sage.H7"
                 android:text="@string/minutes"/>
         </LinearLayout>
     </FrameLayout>
@@ -50,10 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:fontFamily="@font/playfair_display_italic"
+        android:textAppearance="@style/TextAppearance.Sage.H2"
         android:text="@string/thank_you_for_your_contributions"
-        android:textAlignment="center"
-        android:textColor="#2A2727"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        android:textAlignment="center" />
 </LinearLayout>
