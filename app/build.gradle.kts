@@ -13,8 +13,8 @@ android {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 2
-        versionName = "0.8.$versionCode"
+        versionCode = 3
+        versionName = "0.9.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -89,7 +89,7 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.2.4")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.2.6")
 
     val assessment_version = "0.4.6"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
