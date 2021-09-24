@@ -108,7 +108,7 @@ class MtbRootAssessmentViewModel(
             }
 
             // TODO: move to coroutine - liujoshua 04/09/2021
-            archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder, adherenceRecord.instanceGuid, sessionExpire)
+            archiveUploader.archiveResultAndQueueUpload(assessmentResult, jsonCoder, adherenceRecord.instanceGuid, adherenceRecord.eventTimestamp, sessionExpire)
         }
     }
 

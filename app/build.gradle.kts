@@ -13,8 +13,8 @@ android {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 3
-        versionName = "0.9.$versionCode"
+        versionCode = 4
+        versionName = "0.10.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -79,7 +79,7 @@ dependencies {
     implementation("net.danlew:android.joda:2.9.9.4")
     implementation("androidx.recyclerview:recyclerview:1.2.0")
 
-    val bridgeClientKmmVersion = "0.2.22"
+    val bridgeClientKmmVersion = "0.2.24"
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
