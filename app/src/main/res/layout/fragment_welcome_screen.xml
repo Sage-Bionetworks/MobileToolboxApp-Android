@@ -18,8 +18,8 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
                 android:padding="8dp"
                 android:layout_gravity="center"/>
         </FrameLayout>
@@ -38,7 +38,7 @@
 
             <TextView
                 android:id="@+id/body"
-                android:textAppearance="@style/TextAppearance.Sage.P3"
+                android:textAppearance="@style/TextAppearance.Sage.P1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -46,7 +46,7 @@
 
             <TextView
                 android:id="@+id/salutation"
-                android:textAppearance="@style/TextAppearance.Sage.P3"
+                android:textAppearance="@style/TextAppearance.Sage.P1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -54,7 +54,7 @@
 
             <TextView
                 android:id="@+id/from"
-                android:textAppearance="@style/TextAppearance.Sage.P3"
+                android:textAppearance="@style/TextAppearance.Sage.P1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -62,7 +62,7 @@
 
             <TextView
                 android:id="@+id/disclaimer"
-                android:textAppearance="@style/TextAppearance.Sage.P4"
+                android:textAppearance="@style/TextAppearance.Sage.P1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="128dp"
