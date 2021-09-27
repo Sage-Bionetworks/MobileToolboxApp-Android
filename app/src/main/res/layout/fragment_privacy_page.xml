@@ -5,6 +5,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fadeScrollbars="false"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbarSize="6dp"
     android:background="@color/white">
     <LinearLayout
         android:orientation="vertical"
@@ -19,7 +22,7 @@
             android:orientation="vertical">
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/full_notice_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

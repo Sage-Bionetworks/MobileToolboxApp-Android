@@ -54,15 +54,10 @@ class ScheduleNotificationsWorker(appContext: Context, workerParams: WorkerParam
             requestCode++
         }
         //Second cancel any old alarms that weren't updated
+        val alarmManager =
+            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         for (i in requestCode until numToSchedule) {
-            val alarmManager =
-                applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val alarmIntent =
-                Intent(applicationContext, AlarmReceiver::class.java).let { intent ->
-                    intent.putExtra(AlarmReceiver.KEY_REQUEST_CODE, i)
-                    PendingIntent.getBroadcast(applicationContext, i, intent, 0)
-                }
-            alarmManager.cancel(alarmIntent)
+            AlarmReceiver.clearNotification(applicationContext, alarmManager, i)
         }
 
         // Indicate whether the work finished successfully with the Result

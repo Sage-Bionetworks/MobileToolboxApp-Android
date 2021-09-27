@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
         android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.Sage.H7"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textColor="#727272"
         tools:text="January 22, 2021"/>
     <ProgressBar
         android:id="@+id/loading"
@@ -25,12 +25,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.Sage.H2"
         android:fontFamily="@font/playfair_display_italic"
         android:text="@string/current_activities"
-        android:textAlignment="center"
         android:textColor="#2A2727"
-        android:textSize="18sp"
-        android:textStyle="italic" />
+        android:textAlignment="center" />
     <FrameLayout
         android:id="@+id/up_to_date"
         android:layout_width="match_parent"
@@ -47,9 +46,8 @@
             android:gravity="center"
             android:fontFamily="@font/playfair_display_italic"
             android:text="@string/nice_you_re_all_up_to_date"
-            android:textAlignment="center"
             android:textColor="#2A2727"
-            android:textSize="18sp"
-            android:textStyle="italic" />
+            android:textAppearance="@style/TextAppearance.Sage.H2"
+            android:textAlignment="center" />
     </FrameLayout>
 </LinearLayout>

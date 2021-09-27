@@ -26,6 +26,7 @@ class AccountFragment : Fragment() {
         val root: View = binding.root
 
         binding.viewPager.adapter = AccountPagerAdapter(this)
+        binding.tabLayout.tabIconTint = null
 
         // Set the icon and text for each tab
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
@@ -38,8 +39,8 @@ class AccountFragment : Fragment() {
 
     private fun getTabIcon(position: Int): Int {
         return when (position) {
-            PROFILE_PAGE_INDEX -> R.drawable.ic_nav_account
-            SETTINGS_PAGE_INDEX -> R.drawable.ic_nav_settings
+            PROFILE_PAGE_INDEX -> R.drawable.nav_account
+            SETTINGS_PAGE_INDEX -> R.drawable.nav_settings
             else -> throw IndexOutOfBoundsException()
         }
     }

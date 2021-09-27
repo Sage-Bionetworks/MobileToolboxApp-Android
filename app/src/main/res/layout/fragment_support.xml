@@ -18,12 +18,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Sage.H3"
+                android:textAppearance="@style/TextAppearance.Sage.H4"
                 android:text="@string/general_support"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Sage.P5"
+                android:textAppearance="@style/TextAppearance.Sage.P1"
                 android:text="@string/for_general_questions"/>
             <LinearLayout
                 android:id="@+id/support_contacts"
@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Sage.P5"
+                    android:textAppearance="@style/TextAppearance.Sage.P1"
                     android:text="@string/to_withdraw"/>
                 <TextView
                     android:id="@+id/study_id"
@@ -50,20 +50,20 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:textAppearance="@style/TextAppearance.Sage.P5"
+                    android:textAppearance="@style/TextAppearance.Sage.P1"
                     android:text="@string/study_id_bold"/>
                 <TextView
                     android:id="@+id/participant_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Sage.P5"
+                    android:textAppearance="@style/TextAppearance.Sage.P1"
                     android:text="@string/participant_id"
                     android:visibility="gone"/>
                 <TextView
                     android:id="@+id/registration_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.Sage.P5"
+                    android:textAppearance="@style/TextAppearance.Sage.P1"
                     android:text="@string/registration_phone_number"
                     android:visibility="gone"/>
 
@@ -80,12 +80,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Sage.H3"
+                android:textAppearance="@style/TextAppearance.Sage.H4"
                 android:text="@string/your_participant_rights"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.Sage.P5"
+                android:textAppearance="@style/TextAppearance.Sage.P1"
                 android:text="@string/for_questions"/>
             <LinearLayout
                 android:id="@+id/irb_contacts"

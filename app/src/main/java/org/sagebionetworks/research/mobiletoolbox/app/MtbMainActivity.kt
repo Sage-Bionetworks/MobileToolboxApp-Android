@@ -25,6 +25,7 @@ class MtbMainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_mtb_main)
         navView.setupWithNavController(navController)
+        navView.itemIconTintList = null
     }
 
     override fun onResume() {

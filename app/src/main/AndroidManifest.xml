@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbApplication"
@@ -14,8 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="false"
-        android:theme="@style/BlueberryTheme">
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeActivity"></activity>
+        android:theme="@style/AppTheme">
+        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeActivity"/>
         <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.login.LoginActivity" />
         <!--
         https://github.com/readdle/swift-android-toolchain/issues/18
@@ -28,12 +29,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.AssessmentListActivity" />
         <activity
             android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbAssessmentActivity"
             android:screenOrientation="portrait" />
 
-        <receiver android:name="org.sagebionetworks.research.mobiletoolbox.app.notif.AlarmReceiver" />
+        <receiver android:name=".notif.AlarmReceiver" />
+        <receiver android:name=".notif.BootReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
