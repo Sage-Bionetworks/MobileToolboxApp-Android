@@ -1,36 +1,33 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.login
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Html
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermissionPageBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermissionsBinding
-import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyNoticeBinding
-import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyPageBinding
-import org.sagebionetworks.research.mobiletoolbox.app.databinding.PrivacyNoticeRowBinding
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeFragment
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyPageFragment
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyPagerAdapter
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.WE_WILL_PAGE_INDEX
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.WE_WONT_PAGE_INDEX
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.YOU_CAN_PAGE_INDEX
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [PermissionsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PermissionsFragment : Fragment() {
 
     private lateinit var binding: FragmentPermissionsBinding
+    private lateinit var pageMap: Map<Int, PermissionPage>
+
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            // Don't care what user answered, just go to next screen.
+            goNext()
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +39,7 @@ class PermissionsFragment : Fragment() {
         val root: View = binding.root
 
         //TODO: Determine which pages to show based on appConfig -nbrown 9/28/2021
-        val pageMap = mapOf(
+        pageMap = mapOf(
             0 to PermissionPage.NOTIFICATION_PAGE,
             1 to PermissionPage.INTRO_PAGE,
             2 to PermissionPage.LOCATION_PAGE,
@@ -64,7 +61,17 @@ class PermissionsFragment : Fragment() {
         return root
     }
 
-    fun onNextClicked() {
+    private fun onNextClicked() {
+        val curIndex = binding.viewPager.currentItem
+        val permission = pageMap[curIndex]?.permission
+        if (permission != null) {
+            requestPermission(permission)
+        } else {
+            goNext()
+        }
+    }
+
+    private fun goNext() {
         val curIndex = binding.viewPager.currentItem
         if (curIndex < binding.viewPager.adapter!!.itemCount - 1) {
             binding.viewPager.setCurrentItem(curIndex + 1, true)
@@ -74,13 +81,22 @@ class PermissionsFragment : Fragment() {
         requireActivity().finish()
     }
 
-    fun onPrevClicked() {
+    private fun onPrevClicked() {
         val curIndex = binding.viewPager.currentItem
         if (curIndex > 0) {
             binding.viewPager.setCurrentItem(curIndex - 1, true)
             return
         }
         parentFragmentManager.popBackStack()
+    }
+
+    private fun requestPermission(permission: String) {
+        if (ContextCompat.checkSelfPermission(requireContext(), permission) ==
+            PackageManager.PERMISSION_GRANTED) {
+            goNext()
+        } else {
+            requestPermissionLauncher.launch(permission)
+        }
     }
 
     companion object {
@@ -90,12 +106,12 @@ class PermissionsFragment : Fragment() {
     }
 }
 
-enum class PermissionPage {
-    NOTIFICATION_PAGE,
-    INTRO_PAGE,
-    LOCATION_PAGE,
-    MICROPHONE_PAGE,
-    MOTION_PAGE
+enum class PermissionPage(val permission: String?) {
+    NOTIFICATION_PAGE(null),
+    INTRO_PAGE(null),
+    LOCATION_PAGE(Manifest.permission.ACCESS_COARSE_LOCATION),
+    MICROPHONE_PAGE(Manifest.permission.RECORD_AUDIO),
+    MOTION_PAGE(null)
 }
 
 class PermissionsPagerAdapter(private val pageMap: Map<Int, PermissionPage>, fragment: Fragment) : FragmentStateAdapter(fragment) {
@@ -144,7 +160,7 @@ class PermissionPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPermissionPageBinding.inflate(inflater, container, false)
         val iconIdentifier = arguments?.getInt(KEY_ICON_RESOURCE) ?: throw IllegalArgumentException()
         val headerStringIdentifier = arguments?.getInt(KEY_HEADER_STRING_RESOURCE) ?: throw IllegalArgumentException()
@@ -154,5 +170,6 @@ class PermissionPageFragment : Fragment() {
         binding.body.text = getString(bodyStringIdentifier)
         return binding.root
     }
+
 
 }
