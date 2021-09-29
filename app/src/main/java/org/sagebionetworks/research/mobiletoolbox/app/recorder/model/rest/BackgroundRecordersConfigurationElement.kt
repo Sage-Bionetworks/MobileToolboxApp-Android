@@ -1,6 +1,7 @@
 package org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest
 
 import kotlinx.serialization.Serializable
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherServiceProviderName
 
 @Serializable
 data class BackgroundRecordersConfigurationElement(
@@ -11,14 +12,14 @@ data class BackgroundRecordersConfigurationElement(
     data class Recorder(
         val identifier: String,
         val type: String,
-        val services: List<RecorderService>?= listOf()
+        val services: List<RecorderService>? = listOf()
     )
 
     @Serializable
     data class RecorderService(
         val identifier: String,
         val type: String,
-        val provider: String,
+        val provider: WeatherServiceProviderName,
         val key: String
     )
 }
