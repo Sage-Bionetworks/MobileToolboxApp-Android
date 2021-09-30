@@ -57,5 +57,7 @@
     <string name="welcome_screen_default_salutation">Sincerely,</string>
     <string name="welcome_screen_default_from">The %1$s team</string>
     <string name="welcome_screen_disclaimer">This is a research Study. It does not provide medical advice, diagnosis, or treatment.</string>
+    <string name="change">Change</string>
+    <string name="notifications">Notifications</string>
 
 </resources>

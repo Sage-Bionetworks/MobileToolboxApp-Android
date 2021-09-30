@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="permission_settings">Permission Settings</string>
+
     <string name="notifications_header">Notifications</string>
     <string name="notifications_body">We will send you a daily reminder or notification on your phone to complete your activities.\n\nYou can choose to make it an alert, a sound, or an icon badge.\n\nYou can say no and still be in the study. This is on by default, to turn this off go to your system settings.</string>
 
