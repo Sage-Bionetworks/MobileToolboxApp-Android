@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonObject
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.repo.AppConfigRepo
@@ -99,17 +100,14 @@ class RecorderConfigViewModel(
      */
     fun getStudyRecorderConfig(): Flow<Map<String, Boolean?>?> {
 
-        return authRepo.session()?.studyIds?.get(0).let { studyId ->
+        return authRepo.currentStudyId().let { studyId ->
             if (studyId == null) {
                 return listOf<Map<String, Boolean?>?>(null).asFlow()
             }
             return@let studyRepo.getStudy(studyId).map {
                 return@map when (it) {
                     is ResourceResult.Success<Study> ->
-                        it.data.clientData?.let { clientDataJson ->
-                            json.decodeFromJsonElement<StudyClientData>(clientDataJson)
-                                .backgroundRecorders
-                        } ?: mapOf()
+                        it.data.backgroundRecorders ?: mapOf()
                     else ->
                         null
                 }
@@ -118,3 +116,16 @@ class RecorderConfigViewModel(
 
     }
 }
+
+val Study.backgroundRecorders: Map<String, Boolean?>?
+    get() = clientData?.let { jsonElement ->
+
+        try {
+            jsonElement.jsonObject["backgroundRecorders"]?.let {
+                Json.decodeFromJsonElement<Map<String, Boolean?>>(it)
+            }
+        } catch (e: Exception) {
+            Log.w("Study", "Failed to decode Study background recorders", e)
+            null
+        }
+    }

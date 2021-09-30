@@ -64,17 +64,6 @@ class TodayFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.sessionLiveData.observe(this, Observer {
-//            when(it) {
-//                is ResourceResult.Success -> {
-//                    sessionsLoaded(it.data.scheduledSessionWindows)
-//                }
-//                is ResourceResult.InProgress -> {
-//
-//                }
-//                is ResourceResult.Failed -> {
-//
-//                }
-//            }
             when (it.second) {
                 is ResourceResult.Success -> {
                     sessionsLoaded((it.second as ResourceResult.Success<ScheduledSessionTimelineSlice>).data.scheduledSessionWindows)
@@ -121,7 +110,7 @@ class TodayFragment : Fragment() {
         val dataList = mutableListOf<DataItem>()
         var availableAssessmentAdded = false
         sessions.forEach {
-            availableAssessmentAdded = availableAssessmentAdded || addSession(it, dataList)
+            availableAssessmentAdded = addSession(it, dataList) || availableAssessmentAdded
         }
         listAdapter.submitList(dataList)
 
