@@ -19,7 +19,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermis
 class PermissionsFragment : Fragment() {
 
     private lateinit var binding: FragmentPermissionsBinding
-    private lateinit var pageMap: Map<Int, PermissionPage>
+    private lateinit var pageTypeMap: Map<Int, PermissionPageType>
 
     val requestPermissionLauncher =
         registerForActivityResult(
@@ -39,14 +39,14 @@ class PermissionsFragment : Fragment() {
         val root: View = binding.root
 
         //TODO: Determine which pages to show based on appConfig -nbrown 9/28/2021
-        pageMap = mapOf(
-            0 to PermissionPage.NOTIFICATION_PAGE,
-            1 to PermissionPage.INTRO_PAGE,
-            2 to PermissionPage.LOCATION_PAGE,
-            3 to PermissionPage.MICROPHONE_PAGE,
-            4 to PermissionPage.MOTION_PAGE
+        pageTypeMap = mapOf(
+            0 to PermissionPageType.NOTIFICATION_PAGE,
+            1 to PermissionPageType.INTRO_PAGE,
+            2 to PermissionPageType.LOCATION_PAGE,
+            3 to PermissionPageType.MICROPHONE_PAGE,
+            4 to PermissionPageType.MOTION_PAGE
         )
-        binding.viewPager.adapter = PermissionsPagerAdapter(pageMap,this)
+        binding.viewPager.adapter = PermissionsPagerAdapter(pageTypeMap,this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
 
         }.attach()
@@ -63,7 +63,7 @@ class PermissionsFragment : Fragment() {
 
     private fun onNextClicked() {
         val curIndex = binding.viewPager.currentItem
-        val permission = pageMap[curIndex]?.permission
+        val permission = pageTypeMap[curIndex]?.permission
         if (permission != null) {
             requestPermission(permission)
         } else {
@@ -106,32 +106,26 @@ class PermissionsFragment : Fragment() {
     }
 }
 
-enum class PermissionPage(val permission: String?) {
-    NOTIFICATION_PAGE(null),
-    INTRO_PAGE(null),
-    LOCATION_PAGE(Manifest.permission.ACCESS_COARSE_LOCATION),
-    MICROPHONE_PAGE(Manifest.permission.RECORD_AUDIO),
-    MOTION_PAGE(null)
+enum class PermissionPageType(
+    val permission: String?,
+    val iconResource: Int,
+    val headerStringIdentifier: Int,
+    val bodyStringIdentifier: Int
+) {
+    NOTIFICATION_PAGE(null, R.drawable.ic_perm_notifications, R.string.notifications_header, R.string.notifications_body),
+    INTRO_PAGE(null, R.drawable.ic_perm_environmental_factors, R.string.intro_header, R.string.intro_body),
+    LOCATION_PAGE(Manifest.permission.ACCESS_COARSE_LOCATION, R.drawable.ic_perm_weather_air, R.string.location_header, R.string.location_body),
+    MICROPHONE_PAGE(Manifest.permission.RECORD_AUDIO, R.drawable.ic_perm_microphone, R.string.microphone_header, R.string.microphone_body),
+    MOTION_PAGE(null, R.drawable.ic_perm_motion_fitness, R.string.motion_sensor_header, R.string.motion_sensor_body)
 }
 
-class PermissionsPagerAdapter(private val pageMap: Map<Int, PermissionPage>, fragment: Fragment) : FragmentStateAdapter(fragment) {
+class PermissionsPagerAdapter(private val pageTypeMap: Map<Int, PermissionPageType>, fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    /**
-     * Mapping of the ViewPager page indexes to their respective Fragments
-     */
-    private val tabFragmentsCreators: Map<PermissionPage, () -> Fragment> = mapOf(
-        PermissionPage.NOTIFICATION_PAGE to { PermissionPageFragment.newInstance(R.drawable.ic_perm_notifications, R.string.notifications_header, R.string.notifications_body) },
-        PermissionPage.INTRO_PAGE to { PermissionPageFragment.newInstance(R.drawable.ic_perm_environmental_factors, R.string.intro_header, R.string.intro_body) },
-        PermissionPage.LOCATION_PAGE to { PermissionPageFragment.newInstance(R.drawable.ic_perm_weather_air, R.string.location_header, R.string.location_body) },
-        PermissionPage.MICROPHONE_PAGE to { PermissionPageFragment.newInstance(R.drawable.ic_perm_microphone, R.string.microphone_header, R.string.microphone_body) },
-        PermissionPage.MOTION_PAGE to { PermissionPageFragment.newInstance(R.drawable.ic_perm_motion_fitness, R.string.motion_sensor_header, R.string.motion_sensor_body) },
-
-    )
-
-    override fun getItemCount() = pageMap.count()
+    override fun getItemCount() = pageTypeMap.count()
 
     override fun createFragment(position: Int): Fragment {
-        return tabFragmentsCreators[pageMap[position]]?.invoke() ?: throw IndexOutOfBoundsException()
+        val permissionPage = pageTypeMap[position] ?:throw IndexOutOfBoundsException()
+        return PermissionPageFragment.newInstance(permissionPage)
     }
 }
 
@@ -139,16 +133,12 @@ class PermissionPageFragment : Fragment() {
 
     companion object {
 
-        const val KEY_ICON_RESOURCE = "key_icon_resource"
-        const val KEY_HEADER_STRING_RESOURCE = "key_header_string_resource"
-        const val KEY_BODY_STRING_RESOURCE = "key_body_string_resource"
+        const val KEY_PERMISSION_PAGE = "key_permission_page"
 
-        fun newInstance(iconIdentifier: Int, headerStringIdentifier: Int, bodyStringIdentifier: Int): PermissionPageFragment {
+        fun newInstance(permissionPageType: PermissionPageType): PermissionPageFragment {
             return PermissionPageFragment().apply {
                 arguments = Bundle(1).apply {
-                    putInt(KEY_ICON_RESOURCE, iconIdentifier)
-                    putInt(KEY_HEADER_STRING_RESOURCE, headerStringIdentifier)
-                    putInt(KEY_BODY_STRING_RESOURCE, bodyStringIdentifier)
+                    putString(KEY_PERMISSION_PAGE, permissionPageType.name)
                 }
             }
         }
@@ -162,12 +152,11 @@ class PermissionPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPermissionPageBinding.inflate(inflater, container, false)
-        val iconIdentifier = arguments?.getInt(KEY_ICON_RESOURCE) ?: throw IllegalArgumentException()
-        val headerStringIdentifier = arguments?.getInt(KEY_HEADER_STRING_RESOURCE) ?: throw IllegalArgumentException()
-        val bodyStringIdentifier = arguments?.getInt(KEY_BODY_STRING_RESOURCE) ?: throw IllegalArgumentException()
-        binding.logo.setImageResource(iconIdentifier)
-        binding.header.text = getString(headerStringIdentifier)
-        binding.body.text = getString(bodyStringIdentifier)
+        val permissionPageString = arguments?.getString(KEY_PERMISSION_PAGE) ?: throw IllegalArgumentException()
+        val permissionPage = PermissionPageType.valueOf(permissionPageString)
+        binding.details.logo.setImageResource(permissionPage.iconResource)
+        binding.details.header.text = getString(permissionPage.headerStringIdentifier)
+        binding.details.body.text = getString(permissionPage.bodyStringIdentifier)
         return binding.root
     }
 
