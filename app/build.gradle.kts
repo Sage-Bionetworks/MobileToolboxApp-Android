@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    kotlin("plugin.serialization")
     id("kotlin-android")
 }
 
@@ -116,10 +117,7 @@ dependencies {
             strictly("1.5.1-native-mt")
         }
     }
-
-    // Image loading
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
     // Android
     implementation("androidx.appcompat:appcompat:1.3.0")

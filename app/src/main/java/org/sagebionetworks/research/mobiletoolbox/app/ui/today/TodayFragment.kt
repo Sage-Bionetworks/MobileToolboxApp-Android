@@ -23,31 +23,17 @@ import org.sagebionetworks.bridge.kmm.shared.models.PerformanceOrder
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledAssessmentReference
+import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionTimelineSlice
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
 import org.sagebionetworks.research.mobiletoolbox.app.MtbAssessmentActivity
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentTodayListBinding
+import org.sagebionetworks.research.mobiletoolbox.app.recorder.RecorderConfigViewModel
+import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderConfigJsonCoder
 
 class TodayFragment : Fragment() {
 
     companion object {
-
-
-        /**
-         * Mapping from assessment ID defined in Bridge to value defined in local JSON files.
-         * Ideally we should update the shared assessment identifiers to match what is in JSON.
-         */
-        val assessmentIdentifierMap = mapOf(
-            "vocabulary" to "Vocabulary Form 1",
-            "spelling" to "MTB Spelling Form 1",
-            "psm" to "Picture Sequence MemoryV1",
-            "number-match" to "Number Match",
-            "flanker" to "Flanker Inhibitory Control",
-            "dccs" to "Dimensional Change Card Sort",
-            "memory-for-sequences" to "MFS pilot 2",
-            "fnamea" to "FNAME Learning Form 1",
-            "fnameb" to "FNAME Test Form 1"
-        )
 
         /**
          * Mapping from the assessment ID defined in Bridge to the Drawable to use.
@@ -67,6 +53,7 @@ class TodayFragment : Fragment() {
     }
 
     private val viewModel: TodayViewModel by viewModel()
+    private val recorderConfigViewModel: RecorderConfigViewModel by viewModel()
     lateinit var binding: FragmentTodayListBinding
     lateinit var listAdapter: TodayRecyclerViewAdapter
     lateinit var headerAdapter: HeaderAdapter
@@ -77,9 +64,9 @@ class TodayFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.sessionLiveData.observe(this, Observer {
-            when(it) {
+            when (it.second) {
                 is ResourceResult.Success -> {
-                    sessionsLoaded(it.data.scheduledSessionWindows)
+                    sessionsLoaded((it.second as ResourceResult.Success<ScheduledSessionTimelineSlice>).data.scheduledSessionWindows)
                 }
                 is ResourceResult.InProgress -> {
 
@@ -96,13 +83,18 @@ class TodayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTodayListBinding.inflate(inflater)
-        listAdapter = TodayRecyclerViewAdapter{assessment, session -> launchAssessment(assessment, session)}
+        listAdapter = TodayRecyclerViewAdapter { assessment, session ->
+            launchAssessment(
+                assessment,
+                session
+            )
+        }
         headerAdapter = HeaderAdapter()
         headerAdapter.loading = true
 
         // Set the adapter
         with(binding.list) {
-            layoutManager =  LinearLayoutManager(context)
+            layoutManager = LinearLayoutManager(context)
             adapter = ConcatAdapter(headerAdapter, listAdapter)
         }
 
@@ -117,7 +109,7 @@ class TodayFragment : Fragment() {
     private fun sessionsLoaded(sessions: List<ScheduledSessionWindow>) {
         val dataList = mutableListOf<DataItem>()
         var availableAssessmentAdded = false
-        sessions.forEach{
+        sessions.forEach {
             availableAssessmentAdded = addSession(it, dataList) || availableAssessmentAdded
         }
         listAdapter.submitList(dataList)
@@ -144,7 +136,10 @@ class TodayFragment : Fragment() {
 //        }
     }
 
-    private fun addSession(session: ScheduledSessionWindow, dataList: MutableList<DataItem>) : Boolean {
+    private fun addSession(
+        session: ScheduledSessionWindow,
+        dataList: MutableList<DataItem>
+    ): Boolean {
         if (session.isCompleted || session.assessments.isEmpty()) return false //Don't add session if it is completed
         //TODO: Mark first future header so we can add "Up next" title
         //Add HeaderItem
@@ -157,27 +152,45 @@ class TodayFragment : Fragment() {
             if (!assessmentRef.isCompleted) {
                 // Add AssessmentItem
                 dataList.add(AssessmentItem(assessmentRef, locked, session))
-                if (!locked) availableAssessmentAdded = true //Track if an active assessment was added
+                if (!locked) availableAssessmentAdded =
+                    true //Track if an active assessment was added
             }
         }
         return availableAssessmentAdded
     }
 
-    private fun launchAssessment(assessmentRef: ScheduledAssessmentReference, session: ScheduledSessionWindow) {
+    private fun launchAssessment(
+        assessmentRef: ScheduledAssessmentReference,
+        session: ScheduledSessionWindow
+    ) {
         val adherenceRecord = AdherenceRecord(
             instanceGuid = assessmentRef.instanceGuid,
             startedOn = Clock.System.now(),
             eventTimestamp = session.eventTimeStamp.toString(),
-            )
-        val assessmentId = assessmentIdentifierMap.get(assessmentRef.assessmentInfo.identifier) ?: assessmentRef.assessmentInfo.identifier
+        )
+        val assessmentId = viewModel
+            .assessmentIdentifierMapLiveData.value!![assessmentRef.assessmentInfo.identifier]
+            ?: assessmentRef.assessmentInfo.identifier
         val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
         intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
-        intent.putExtra(MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY, Json.encodeToString(adherenceRecord))
+        intent.putExtra(
+            MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY,
+            Json.encodeToString(adherenceRecord)
+        )
         intent.putExtra(
             MtbAssessmentActivity.ARG_SESSION_EXPIRATION_KEY, session.endDateTime.toInstant(
-            TimeZone.currentSystemDefault()).toEpochMilliseconds())
+                TimeZone.currentSystemDefault()
+            ).toEpochMilliseconds()
+        )
+        intent.putExtra(
+            MtbAssessmentActivity.ARG_RECORDER_CONFIG_KEY,
+            recorderConfigJsonCoder.encodeToString(recorderConfigViewModel.recorderScheduledAssessmentConfig.value)
+        )
         //Fix for June so that MTB assessments are full screen
-        intent.putExtra(AssessmentActivity.ARG_THEME, edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen)
+        intent.putExtra(
+            AssessmentActivity.ARG_THEME,
+            edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen
+        )
         startActivity(intent)
     }
 

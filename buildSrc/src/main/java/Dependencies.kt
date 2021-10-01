@@ -2,7 +2,7 @@ object Versions {
     val kotlin = "1.5.30"
     val dagger = "2.21"
     const val koin = "3.1.1"
-    const val glide = "4.11.0"
+    const val glide = "4.12.0"
 }
 
 

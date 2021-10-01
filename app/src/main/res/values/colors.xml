@@ -10,4 +10,5 @@
     <color name="backgroundGrey">#F6F6F6</color>
     <color name="backgroundPurple">#DAD7FF</color>
     <color name="textColor">#2A2A2A</color>
+    <color name="lightGreen">#AEDCC9</color>
 </resources>

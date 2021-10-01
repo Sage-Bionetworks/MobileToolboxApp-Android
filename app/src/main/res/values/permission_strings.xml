@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permission_settings">Permission Settings</string>
+
+    <string name="notifications_header">Notifications</string>
+    <string name="notifications_body">We will send you a daily reminder or notification on your phone to complete your activities.\n\nYou can choose to make it an alert, a sound, or an icon badge.\n\nYou can say no and still be in the study. This is on by default, to turn this off go to your system settings.</string>
+
+    <string name="intro_header">Environmental Factors</string>
+    <string name="intro_body">The environment around you, such as weather pollution in your area or how close you are to a grocery store or park, can affect your health and well-being.\n\nOn the next screens we will ask for your permission to collect a variety of data. This is optional, you can say no and still be in the study.</string>
+
+    <string name="location_header">Weather and Air Quality</string>
+    <string name="location_body">We\'d like to know the weather and air quality around you.\n\nWe will only collect this data when you are using the app.</string>
+
+    <string name="microphone_header">Microphone</string>
+    <string name="microphone_body">Noise can be distracting. We\'d like to use the phone microphone to record the noise level around you.\n\nWe only measure noise when you are doing the activities. We do not keep the recordings.</string>
+
+    <string name="motion_sensor_header">Motion &amp; Fitness Activity</string>
+    <string name="motion_sensor_body">We’d like to measure your movements while you use the app.\n\nThis will give us an idea of your physical activity that may distract you while you are using the app.\n\nThis is on by default, to turn this off go to your system settings.
+</string>
+
+</resources>

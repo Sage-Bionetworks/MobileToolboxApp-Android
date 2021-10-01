@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 .java-version
+
+study_public_key.pem
