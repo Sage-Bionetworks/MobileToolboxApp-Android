@@ -1,5 +1,11 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.study
 
+import android.content.ContentProvider
+import android.content.ContentValues
+import android.content.Intent
+import android.content.res.AssetFileDescriptor
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +17,9 @@ import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyNoticeBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyPageBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.PrivacyNoticeRowBinding
+import java.io.FileNotFoundException
+import java.io.IOException
+
 
 class PrivacyNoticeFragment : Fragment() {
 
@@ -142,7 +151,26 @@ class PrivacyPageFragment : Fragment() {
             rowBinding.text.text = getString(it.stringIdentifier)
             binding.content.addView(rowBinding.root)
         }
+        binding.fullNoticeButton.setOnClickListener {
+            shareAssetFile("privacy_policy.pdf")
+        }
         return binding.root
+    }
+
+    fun shareAssetFile(fileName: String?) {
+        val uriFile: Uri = Uri.parse("content://" + requireContext().packageName)
+            .buildUpon()
+            .appendPath(fileName)
+            .build()
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            type = "application/pdf"
+            data = uriFile
+            putExtra(Intent.EXTRA_SUBJECT, "Privacy Policy")
+            putExtra(Intent.EXTRA_STREAM, uriFile)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(intent, "Privacy Policy"))
     }
 
     data class PrivacyNotice(
@@ -150,5 +178,57 @@ class PrivacyPageFragment : Fragment() {
         val stringIdentifier: Int
     )
 
+}
+
+class AssetContentProvider(): ContentProvider() {
+    override fun onCreate(): Boolean {
+        return true
+    }
+
+    override fun query(
+        uri: Uri,
+        projection: Array<out String>?,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+        sortOrder: String?
+    ): Cursor? {
+        return null
+    }
+
+    override fun getType(uri: Uri): String? {
+        return "application/pdf"
+    }
+
+    override fun insert(uri: Uri, values: ContentValues?): Uri? {
+        return null
+    }
+
+    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
+        return 0
+    }
+
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<out String>?
+    ): Int {
+        return 0
+    }
+
+    override fun openAssetFile(uri: Uri, mode: String): AssetFileDescriptor? {
+        val am = context!!.assets
+        val fileName = uri.lastPathSegment ?: throw FileNotFoundException()
+        if (fileName != "privacy_policy.pdf") {
+            throw FileNotFoundException()
+        }
+        var fileDescriptor: AssetFileDescriptor? = null
+        try {
+            fileDescriptor = am.openFd(fileName)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return fileDescriptor
+    }
 }
 

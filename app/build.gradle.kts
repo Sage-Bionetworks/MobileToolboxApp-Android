@@ -46,6 +46,10 @@ android {
         }
     }
 
+    aaptOptions {
+        noCompress("pdf")
+    }
+
     packagingOptions {
         pickFirst("**/*.so")
     }
