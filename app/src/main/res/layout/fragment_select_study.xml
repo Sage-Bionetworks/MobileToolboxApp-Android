@@ -1,73 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/select_study"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="32dp"
-    tools:context=".ui.login.SelectStudyFragment">
-
+    android:layout_height="match_parent">
     <include layout="@layout/progress_overlay"
         android:id="@+id/progress_overlay" />
-
-    <ImageView
-        android:id="@+id/appIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_app_launcher_foreground"
-        app:layout_constraintBottom_toTopOf="@id/message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/message"
-        android:textAppearance="@style/TextAppearance.Sage.H2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:gravity="center_horizontal"
-        android:text="@string/welcome_please_enter_study"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/select_study"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4"/>
+        android:layout_height="match_parent"
+        android:padding="32dp"
+        tools:context=".ui.login.SelectStudyFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/studyIdInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/message"
-        app:errorEnabled="true"
-        app:endIconMode="clear_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <ImageView
+            android:id="@+id/appIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_app_launcher_foreground"
+            app:layout_constraintBottom_toTopOf="@id/message"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/studyIdInput"
+        <TextView
+            android:id="@+id/message"
+            android:textAppearance="@style/TextAppearance.Sage.H2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:gravity="center_horizontal"
+            android:text="@string/welcome_please_enter_study"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textVisiblePassword"
-            android:hint="@string/study_id_hint" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4"/>
 
-    <ImageButton
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/next_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/studyIdInputLayout" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/studyIdInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/message"
+            app:errorEnabled="true"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/studyIdInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textVisiblePassword"
+                android:hint="@string/study_id_hint" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:src="@drawable/next_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/studyIdInputLayout" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
