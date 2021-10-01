@@ -21,7 +21,6 @@ import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
 import org.sagebionetworks.bridge.mpp.network.generated.models.AppConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.BackgroundRecordersConfigurationElement
-import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.StudyClientData
 
 class RecorderConfigViewModel(
     private val authRepo: AuthenticationRepository,
@@ -117,12 +116,12 @@ class RecorderConfigViewModel(
     }
 }
 
-val Study.backgroundRecorders: Map<String, Boolean?>?
+val Study.backgroundRecorders: Map<String, Boolean>?
     get() = clientData?.let { jsonElement ->
 
         try {
             jsonElement.jsonObject["backgroundRecorders"]?.let {
-                Json.decodeFromJsonElement<Map<String, Boolean?>>(it)
+                Json.decodeFromJsonElement<Map<String, Boolean>>(it)
             }
         } catch (e: Exception) {
             Log.w("Study", "Failed to decode Study background recorders", e)

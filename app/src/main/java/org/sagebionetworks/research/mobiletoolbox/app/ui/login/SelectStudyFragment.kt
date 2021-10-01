@@ -29,13 +29,13 @@ class SelectStudyFragment : Fragment() {
         binding.nextButton.setOnClickListener {
             binding.progressOverlay.progressOverlay.visibility = View.VISIBLE
             val studyId = binding.studyIdInput.text.toString()
-            viewModel.findStudy(studyId)
+            viewModel.findStudyInfo(studyId)
         }
         if (viewModel.studyInfo != null) {
             //Coming back from next screen
             val studyId = viewModel.studyInfo?.identifier
             binding.studyIdInput.setText(studyId)
-            viewModel.clearStudy()
+            viewModel.clearStudyInfo()
         }
         viewModel.studyInfoLiveData.observe(viewLifecycleOwner, Observer {
             when(it) {

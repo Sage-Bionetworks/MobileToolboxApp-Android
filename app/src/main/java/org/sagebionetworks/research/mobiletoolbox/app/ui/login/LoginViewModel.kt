@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
+import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.models.StudyInfo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
@@ -20,7 +22,14 @@ class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: Stud
     val studyInfoLiveData: LiveData<ResourceResult<StudyInfo>> = _studyInfoLiveData
     var studyInfo: StudyInfo? = null
 
-    fun findStudy(studyId: String) {
+    private val _studyLiveData = MutableLiveData<ResourceResult<Study>>()
+    val studyLiveData: LiveData<ResourceResult<Study>> = _studyLiveData
+    var study: Study? = null
+
+    /**
+     * Find the StudyInfo for the specified studyID. This is a public api call.
+     */
+    fun findStudyInfo(studyId: String) {
         viewModelScope.launch {
             val studyInfoResult = studyRepo.getStudyInfo(studyId)
             _studyInfoLiveData.postValue(studyInfoResult)
@@ -30,9 +39,27 @@ class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: Stud
         }
     }
 
-    fun clearStudy() {
+    fun clearStudyInfo() {
         _studyInfoLiveData.value = ResourceResult.InProgress
         studyInfo = null
+    }
+
+    /**
+     * Load the current study. This is an authenticated call and must be called after successfully
+     * signing in.
+     */
+    fun loadStudy() {
+        viewModelScope.launch {
+            val studyId = authRepo.currentStudyId()
+            studyId?.let {
+                studyRepo.getStudy(studyId).collect {
+                    if (it is ResourceResult.Success) {
+                        study = it.data
+                    }
+                    _studyLiveData.postValue(it)
+                }
+            }
+        }
     }
 
 

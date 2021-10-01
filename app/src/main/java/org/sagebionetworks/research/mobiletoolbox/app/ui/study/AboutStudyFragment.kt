@@ -21,7 +21,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentAboutS
 
 class AboutStudyFragment : Fragment() {
 
-    private val viewModel: StudyInfoViewModel by viewModel()
+    private val viewModel: StudyViewModel by viewModel()
     lateinit var binding: FragmentAboutStudyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
