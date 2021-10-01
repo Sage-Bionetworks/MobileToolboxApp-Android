@@ -31,7 +31,7 @@ class PrivacyNoticeOnboardingFragment : Fragment() {
     }
 
     private fun onNextClicked() {
-        val privacyNoticeFragment = childFragmentManager.findFragmentByTag("privacy_notice") as PrivacyNoticeFragment
+        val privacyNoticeFragment = childFragmentManager.findFragmentById(R.id.fragment_container_view) as PrivacyNoticeFragment
         if (!privacyNoticeFragment.goNext()) {
             binding.nextButton.setOnClickListener {
                 parentFragmentManager.beginTransaction()
@@ -43,7 +43,7 @@ class PrivacyNoticeOnboardingFragment : Fragment() {
     }
 
     private fun onPrevClicked() {
-        val privacyNoticeFragment = childFragmentManager.findFragmentByTag("privacy_notice") as PrivacyNoticeFragment
+        val privacyNoticeFragment = childFragmentManager.findFragmentById(R.id.fragment_container_view) as PrivacyNoticeFragment
         if (!privacyNoticeFragment.goPrev()) {
             parentFragmentManager.popBackStack()
         }
