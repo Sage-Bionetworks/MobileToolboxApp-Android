@@ -1,10 +1,6 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.study
 
-import android.content.ContentProvider
-import android.content.ContentValues
 import android.content.Intent
-import android.content.res.AssetFileDescriptor
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,8 +13,6 @@ import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyNoticeBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyPageBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.PrivacyNoticeRowBinding
-import java.io.FileNotFoundException
-import java.io.IOException
 
 
 class PrivacyNoticeFragment : Fragment() {
