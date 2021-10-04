@@ -12,14 +12,17 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermissionPageBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermissionsBinding
+import org.sagebionetworks.research.mobiletoolbox.app.recorder.backgroundRecorders
 
 class PermissionsFragment : Fragment() {
 
     private lateinit var binding: FragmentPermissionsBinding
     private lateinit var pageTypeMap: Map<Int, PermissionPageType>
+    private val viewModel: LoginViewModel by sharedViewModel()
 
     val requestPermissionLauncher =
         registerForActivityResult(
@@ -38,14 +41,32 @@ class PermissionsFragment : Fragment() {
         binding = FragmentPermissionsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //TODO: Determine which pages to show based on appConfig -nbrown 9/28/2021
-        pageTypeMap = mapOf(
-            0 to PermissionPageType.NOTIFICATION_PAGE,
-            1 to PermissionPageType.INTRO_PAGE,
-            2 to PermissionPageType.LOCATION_PAGE,
-            3 to PermissionPageType.MICROPHONE_PAGE,
-            4 to PermissionPageType.MOTION_PAGE
-        )
+
+        val mutablePageMap = mutableMapOf<Int, PermissionPageType>()
+        mutablePageMap[0] = PermissionPageType.NOTIFICATION_PAGE
+        viewModel.study?.backgroundRecorders?.let { recorderMap ->
+            val showWeather = recorderMap.getOrDefault("weather", false)
+            val showMicrophone = recorderMap.getOrDefault("microphone", false)
+            val showMotion = recorderMap.getOrDefault("motion", false)
+            var index = 1
+            if (showWeather || showMicrophone || showMotion) {
+                mutablePageMap[index] = PermissionPageType.INTRO_PAGE
+                index++
+            }
+            if (showWeather) {
+                mutablePageMap[index] = PermissionPageType.LOCATION_PAGE
+                index++
+            }
+            if (showMicrophone) {
+                mutablePageMap[index] = PermissionPageType.MICROPHONE_PAGE
+                index++
+            }
+            if (showMotion) {
+                mutablePageMap[index] = PermissionPageType.MOTION_PAGE
+            }
+        }
+        pageTypeMap = mutablePageMap
+
         binding.viewPager.adapter = PermissionsPagerAdapter(pageTypeMap,this)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
 

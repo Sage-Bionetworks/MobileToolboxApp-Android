@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentStudyInfoBinding
 
-class StudyInfoFragment : Fragment() {
+class StudyFragment : Fragment() {
 
     private var _binding: FragmentStudyInfoBinding? = null
 

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentParticipantIdSignInBinding
 import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
@@ -40,13 +41,7 @@ class ParticipantIdSignInFragment : Fragment() {
             when(it) {
                 is LoginViewModel.SignInResult.Success -> {
                     binding.participantIdInputLayout.error = null
-                    binding.progressOverlay.progressOverlay.visibility = View.GONE
-                    //TODO: Show welcome screen next -nbrown 8/26/2021
-                    // Showing Privacy Notice for now
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.container, WelcomeScreenFragment.newInstance())
-                        .addToBackStack(null)
-                        .commit()
+                    loadStudy()
                     ScheduleNotificationsWorker.runScheduleNotificationWorker(requireContext())
                 }
                 is LoginViewModel.SignInResult.Failed -> {
@@ -58,6 +53,35 @@ class ParticipantIdSignInFragment : Fragment() {
         binding.participantIdInput.doAfterTextChanged { binding.participantIdInputLayout.error = null }
 
         return binding.root
+    }
+
+    private fun loadStudy() {
+        //Since we are already showing user a loading spinner, go ahead and load study so
+        //it is ready for welcome screen and privacy screens.
+        viewModel.studyLiveData.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is ResourceResult.Success -> {
+                    goToNextScreen()
+                }
+                is ResourceResult.InProgress -> {
+                    // Wait for a success or failure
+                }
+                is ResourceResult.Failed -> {
+                    //Failed to load Study, go to next screen anyways. We will show default values.
+                    goToNextScreen()
+                }
+            }
+
+        })
+        viewModel.loadStudy()
+    }
+
+    private fun goToNextScreen() {
+        binding.progressOverlay.progressOverlay.visibility = View.GONE
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, WelcomeScreenFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

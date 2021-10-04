@@ -12,7 +12,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.recorder.RecorderConfigVie
 import org.sagebionetworks.research.mobiletoolbox.app.ui.account.AccountViewModel
 import org.sagebionetworks.research.mobiletoolbox.app.ui.history.HistoryViewModel
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.LoginViewModel
-import org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyInfoViewModel
+import org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyViewModel
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayViewModel
 
 val appModule = module {
@@ -27,7 +27,7 @@ val appModule = module {
     viewModel { TodayViewModel(get(), get(), get(), get()) }
     viewModel { HistoryViewModel(get(), get(), get()) }
     viewModel { RecorderConfigViewModel(get(), get(), get()) }
-    viewModel { StudyInfoViewModel(get(), get()) }
+    viewModel { StudyViewModel(get(), get()) }
     viewModel { AccountViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
 

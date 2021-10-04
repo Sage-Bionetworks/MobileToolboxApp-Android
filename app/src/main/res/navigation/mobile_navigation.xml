@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_study_info"
-        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyInfoFragment"
+        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyFragment"
         android:label="@string/title_study_info"
         tools:layout="@layout/fragment_study_info" />
 
