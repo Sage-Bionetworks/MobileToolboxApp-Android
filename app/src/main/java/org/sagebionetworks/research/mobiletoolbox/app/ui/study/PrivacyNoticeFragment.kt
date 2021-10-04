@@ -140,7 +140,7 @@ class PrivacyPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPrivacyPageBinding.inflate(inflater, container, false)
         binding.content.removeAllViews()
         val pageIndex = arguments?.getInt(KEY_PAGE_INDEX) ?: throw IllegalArgumentException()
@@ -152,25 +152,17 @@ class PrivacyPageFragment : Fragment() {
             binding.content.addView(rowBinding.root)
         }
         binding.fullNoticeButton.setOnClickListener {
-            shareAssetFile("privacy_policy.pdf")
+            //TODO: Update url when we have production domain -nbrown 10/4/2021
+            val uriFile: Uri = Uri.parse("https://staging.mobiletoolbox.org/MTBPrivacyPolicy.pdf")
+
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                type = "application/pdf"
+                data = uriFile
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.privacy_policy))
+            }
+            startActivity(Intent.createChooser(intent, getString(R.string.privacy_policy)))
         }
         return binding.root
-    }
-
-    fun shareAssetFile(fileName: String?) {
-        val uriFile: Uri = Uri.parse("content://" + requireContext().packageName)
-            .buildUpon()
-            .appendPath(fileName)
-            .build()
-
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            type = "application/pdf"
-            data = uriFile
-            putExtra(Intent.EXTRA_SUBJECT, "Privacy Policy")
-            putExtra(Intent.EXTRA_STREAM, uriFile)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-        startActivity(Intent.createChooser(intent, "Privacy Policy"))
     }
 
     data class PrivacyNotice(
@@ -178,57 +170,5 @@ class PrivacyPageFragment : Fragment() {
         val stringIdentifier: Int
     )
 
-}
-
-class AssetContentProvider(): ContentProvider() {
-    override fun onCreate(): Boolean {
-        return true
-    }
-
-    override fun query(
-        uri: Uri,
-        projection: Array<out String>?,
-        selection: String?,
-        selectionArgs: Array<out String>?,
-        sortOrder: String?
-    ): Cursor? {
-        return null
-    }
-
-    override fun getType(uri: Uri): String? {
-        return "application/pdf"
-    }
-
-    override fun insert(uri: Uri, values: ContentValues?): Uri? {
-        return null
-    }
-
-    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        return 0
-    }
-
-    override fun update(
-        uri: Uri,
-        values: ContentValues?,
-        selection: String?,
-        selectionArgs: Array<out String>?
-    ): Int {
-        return 0
-    }
-
-    override fun openAssetFile(uri: Uri, mode: String): AssetFileDescriptor? {
-        val am = context!!.assets
-        val fileName = uri.lastPathSegment ?: throw FileNotFoundException()
-        if (fileName != "privacy_policy.pdf") {
-            throw FileNotFoundException()
-        }
-        var fileDescriptor: AssetFileDescriptor? = null
-        try {
-            fileDescriptor = am.openFd(fileName)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return fileDescriptor
-    }
 }
 

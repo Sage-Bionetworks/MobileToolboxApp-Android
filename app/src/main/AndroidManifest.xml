@@ -40,11 +40,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
-        <provider
-            android:name=".ui.study.AssetContentProvider"
-            android:authorities="org.sagebionetworks.research.mobiletoolbox.app"
-            android:grantUriPermissions="true"
-            android:exported="true" />
     </application>
 
 </manifest>
