@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.fragment.app.FragmentContainerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_container_view"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeFragment"
-    tools:context=".ui.study.PrivacyNoticeActivity"/>
+    android:background="@color/backgroundGrey"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp"
+        android:drawablePadding="4dp"
+        android:textAppearance="@style/TextAppearance.Sage.P2"
+        android:text="@string/back"
+        app:drawableStartCompat="@drawable/ic_baseline_arrow_back_24" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeFragment"
+        tools:context=".ui.study.PrivacyNoticeActivity"/>
+</LinearLayout>
