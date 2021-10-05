@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
+import org.sagebionetworks.research.mobiletoolbox.app.MtbBaseFragment
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentStudyInfoBinding
 
-class StudyFragment : Fragment() {
+class StudyFragment : MtbBaseFragment() {
 
     companion object {
 

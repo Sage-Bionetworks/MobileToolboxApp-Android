@@ -14,9 +14,10 @@ import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
+import org.sagebionetworks.research.mobiletoolbox.app.MtbBaseFragment
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentTodayListBinding
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : MtbBaseFragment() {
 
     private val viewModel: HistoryViewModel by viewModel()
     lateinit var binding: FragmentTodayListBinding

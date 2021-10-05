@@ -26,12 +26,13 @@ import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledAssessmentReference
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionTimelineSlice
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
 import org.sagebionetworks.research.mobiletoolbox.app.MtbAssessmentActivity
+import org.sagebionetworks.research.mobiletoolbox.app.MtbBaseFragment
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentTodayListBinding
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.RecorderConfigViewModel
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderConfigJsonCoder
 
-class TodayFragment : Fragment() {
+class TodayFragment : MtbBaseFragment() {
 
     companion object {
 

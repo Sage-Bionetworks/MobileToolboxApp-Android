@@ -92,9 +92,8 @@ class ConfirmLogOutDialogFragment(val authRepo: AuthenticationRepository) : Dial
                     DialogInterface.OnClickListener { dialog, id ->
                         MainScope().launch {
                             authRepo.signOut()
-                            //TODO: Need better app wide handling of user no longer being authenticated.
-                            // For now finishing the activity will close the app - nbrown 8/25/2021
-                            requireActivity().finish()
+                            val navController = Navigation.findNavController(it, R.id.nav_host_fragment_activity_mtb_main)
+                            navController.navigate(R.id.navigation_home)
                         }
                     })
                 .setNegativeButton(R.string.cancel,
