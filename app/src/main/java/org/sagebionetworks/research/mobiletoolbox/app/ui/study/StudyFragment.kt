@@ -12,6 +12,13 @@ import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentStudyI
 
 class StudyFragment : Fragment() {
 
+    companion object {
+
+        const val KEY_PAGE_INDEX = "key_page_index"
+        const val ABOUT_STUDY_PAGE_INDEX = 0
+        const val CONTACT_PAGE_INDEX = 1
+    }
+
     private var _binding: FragmentStudyInfoBinding? = null
 
     // This property is only valid between onCreateView and
@@ -39,6 +46,15 @@ class StudyFragment : Fragment() {
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        arguments?.getInt(KEY_PAGE_INDEX, -1)?.let {
+            if (it >= 0) {
+                binding.viewPager.setCurrentItem(it, false)
+            }
+        }
+    }
+
     private fun getTabIcon(position: Int): Int {
         return when (position) {
             ABOUT_STUDY_PAGE_INDEX -> R.drawable.about_study
@@ -62,8 +78,6 @@ class StudyFragment : Fragment() {
 
 }
 
-const val ABOUT_STUDY_PAGE_INDEX = 0
-const val CONTACT_PAGE_INDEX = 1
 
 class StudyPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
@@ -71,8 +85,8 @@ class StudyPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
      * Mapping of the ViewPager page indexes to their respective Fragments
      */
     private val tabFragmentsCreators: Map<Int, () -> Fragment> = mapOf(
-        ABOUT_STUDY_PAGE_INDEX to { AboutStudyFragment() },
-        CONTACT_PAGE_INDEX to { SupportFragment() }
+        StudyFragment.ABOUT_STUDY_PAGE_INDEX to { AboutStudyFragment() },
+        StudyFragment.CONTACT_PAGE_INDEX to { SupportFragment() }
     )
 
     override fun getItemCount() = tabFragmentsCreators.size

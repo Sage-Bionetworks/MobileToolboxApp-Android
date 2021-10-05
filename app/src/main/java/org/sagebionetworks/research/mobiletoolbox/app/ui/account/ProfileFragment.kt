@@ -18,6 +18,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.BuildConfig
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentProfileBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.PropertyRowBinding
+import org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyFragment
 
 
 class ProfileFragment : Fragment() {
@@ -63,7 +64,9 @@ class ProfileFragment : Fragment() {
 
         binding.withdrawInfo.setOnClickListener {
             val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_mtb_main)
-            navController.navigate(R.id.navigation_study_info)
+            val bundle = Bundle()
+            bundle.putInt(StudyFragment.KEY_PAGE_INDEX, StudyFragment.CONTACT_PAGE_INDEX)
+            navController.navigate(R.id.navigation_study_info, bundle)
         }
 
         binding.logoutButton.setOnClickListener {
