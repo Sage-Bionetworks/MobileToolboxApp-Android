@@ -1,5 +1,7 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.study
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyNoticeBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyPageBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.PrivacyNoticeRowBinding
+
 
 class PrivacyNoticeFragment : Fragment() {
 
@@ -131,7 +134,7 @@ class PrivacyPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPrivacyPageBinding.inflate(inflater, container, false)
         binding.content.removeAllViews()
         val pageIndex = arguments?.getInt(KEY_PAGE_INDEX) ?: throw IllegalArgumentException()
@@ -141,6 +144,17 @@ class PrivacyPageFragment : Fragment() {
             rowBinding.icon.setImageResource(it.iconIdentifier)
             rowBinding.text.text = getString(it.stringIdentifier)
             binding.content.addView(rowBinding.root)
+        }
+        binding.fullNoticeButton.setOnClickListener {
+            //TODO: Update url when we have production domain -nbrown 10/4/2021
+            val uriFile: Uri = Uri.parse("https://staging.mobiletoolbox.org/MTBPrivacyPolicy.pdf")
+
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                type = "application/pdf"
+                data = uriFile
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.privacy_policy))
+            }
+            startActivity(Intent.createChooser(intent, getString(R.string.privacy_policy)))
         }
         return binding.root
     }

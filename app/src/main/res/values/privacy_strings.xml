@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_notice">Privacy Notice</string>
     <string name="review_privacy_notice">Review Privacy Notice</string>
     <string name="we_will">We will</string>
