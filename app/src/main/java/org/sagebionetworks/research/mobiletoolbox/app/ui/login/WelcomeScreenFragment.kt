@@ -67,11 +67,10 @@ class WelcomeScreenFragment : Fragment() {
                 binding.body.text = welcomeScreenData.welcomeScreenBody
                 binding.from.text = welcomeScreenData.welcomeScreenFromText
                 binding.salutation.text = welcomeScreenData.welcomeScreenSalutation
+                if (!welcomeScreenData.useOptionalDisclaimer) {
+                    binding.disclaimer.visibility = View.GONE
+                }
             }
-            if (!welcomeScreenData.useOptionalDisclaimer) {
-                binding.disclaimer.visibility = View.GONE
-            }
-
         }
 
     }
