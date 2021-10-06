@@ -33,12 +33,10 @@ class PrivacyNoticeOnboardingFragment : Fragment() {
     private fun onNextClicked() {
         val privacyNoticeFragment = childFragmentManager.findFragmentById(R.id.fragment_container_view) as PrivacyNoticeFragment
         if (!privacyNoticeFragment.goNext()) {
-            binding.nextButton.setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.container, PermissionsFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
-            }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.container, PermissionsFragment.newInstance())
+                .addToBackStack(null)
+                .commit()
         }
     }
 
