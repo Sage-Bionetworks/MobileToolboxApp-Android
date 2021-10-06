@@ -18,6 +18,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.BuildConfig
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentProfileBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.PropertyRowBinding
+import org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyFragment
 
 
 class ProfileFragment : Fragment() {
@@ -63,7 +64,9 @@ class ProfileFragment : Fragment() {
 
         binding.withdrawInfo.setOnClickListener {
             val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_activity_mtb_main)
-            navController.navigate(R.id.navigation_study_info)
+            val bundle = Bundle()
+            bundle.putInt(StudyFragment.KEY_PAGE_INDEX, StudyFragment.CONTACT_PAGE_INDEX)
+            navController.navigate(R.id.navigation_study_info, bundle)
         }
 
         binding.logoutButton.setOnClickListener {
@@ -89,9 +92,8 @@ class ConfirmLogOutDialogFragment(val authRepo: AuthenticationRepository) : Dial
                     DialogInterface.OnClickListener { dialog, id ->
                         MainScope().launch {
                             authRepo.signOut()
-                            //TODO: Need better app wide handling of user no longer being authenticated.
-                            // For now finishing the activity will close the app - nbrown 8/25/2021
-                            requireActivity().finish()
+                            val navController = Navigation.findNavController(it, R.id.nav_host_fragment_activity_mtb_main)
+                            navController.navigate(R.id.navigation_home)
                         }
                     })
                 .setNegativeButton(R.string.cancel,

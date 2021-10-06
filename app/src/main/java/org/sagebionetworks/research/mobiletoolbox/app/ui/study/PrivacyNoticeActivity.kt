@@ -1,12 +1,21 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.study
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import org.sagebionetworks.research.mobiletoolbox.app.R
+import androidx.appcompat.app.AppCompatActivity
+import org.sagebionetworks.research.mobiletoolbox.app.databinding.ActivityPrivacyNoticeBinding
 
 class PrivacyNoticeActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityPrivacyNoticeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_privacy_notice)
+        binding = ActivityPrivacyNoticeBinding.inflate(layoutInflater)
+        binding.back.setOnClickListener {
+            finish()
+        }
+
+        val view = binding.root
+        setContentView(view)
     }
 }

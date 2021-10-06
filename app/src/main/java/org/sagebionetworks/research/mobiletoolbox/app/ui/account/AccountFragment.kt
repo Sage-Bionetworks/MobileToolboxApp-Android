@@ -11,13 +11,14 @@ import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.Study
+import org.sagebionetworks.research.mobiletoolbox.app.MtbBaseFragment
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentAccountBinding
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.backgroundRecorders
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 import org.sagebionetworks.research.mobiletoolbox.app.ui.study.StudyViewModel
 
-class AccountFragment : Fragment() {
+class AccountFragment : MtbBaseFragment() {
 
     private val accountViewModel: AccountViewModel by viewModel()
     private val studyViewModel: StudyViewModel by viewModel()
