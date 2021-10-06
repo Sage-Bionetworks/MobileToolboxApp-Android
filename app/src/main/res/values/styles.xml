@@ -19,7 +19,7 @@
         <item name="textAllCaps">false</item>
         <item name="android:minHeight">60dp</item>
     </style>
-    <style name="TextAppearance.Sage.TabLayout" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.Sage.PrivacyTabLayout" parent="TextAppearance.MaterialComponents.Button">
         <item name="textAllCaps">false</item>
     </style>
     <style name="ShapeAppearance.Sage.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
@@ -28,6 +28,10 @@
     </style>
     <style name="Widget.Sage.TabLayout" parent="Widget.MaterialComponents.TabLayout">s
         <item name="tabTextColor">@color/textColor</item>
+        <item name="tabTextAppearance">@style/TextAppearance.Sage.TabLayout</item>
+    </style>
+    <style name="TextAppearance.Sage.TabLayout" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">

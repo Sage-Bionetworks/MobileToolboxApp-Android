@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:tabBackground="@drawable/tab_background"
-        app:tabTextAppearance="@style/TextAppearance.Sage.TabLayout">
+        app:tabTextAppearance="@style/TextAppearance.Sage.PrivacyTabLayout">
     </com.google.android.material.tabs.TabLayout>
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
