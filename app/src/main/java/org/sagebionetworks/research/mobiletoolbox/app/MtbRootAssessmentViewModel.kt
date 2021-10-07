@@ -57,8 +57,8 @@ class MtbRootAssessmentViewModel(
                 finishedOn = finishedTimeStamp, declined = reason.declined
             ), studyId
         )
-if(true){
-//        if (reason.saveResult == SaveResults.Now || reason.saveResult == SaveResults.WhenSessionExpires) {
+
+        if (reason.saveResult == SaveResults.Now || reason.saveResult == SaveResults.WhenSessionExpires) {
             val moduleInfo =
                 registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
             val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
