@@ -10,7 +10,8 @@ import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.Backgr
 data class RecorderScheduledAssessmentConfig(
     val recorder: BackgroundRecordersConfigurationElement.Recorder,
     val enabledByStudyClientData: Boolean?,
-    val disabledByAppForTaskIdentifiers: Set<String>
+    val disabledByAppForTaskIdentifiers: Set<String>,
+    val services: List<BackgroundRecordersConfigurationElement.RecorderService>
 ) {
     fun isRecorderDisabled(taskId: String): Boolean {
         return disabledByAppForTaskIdentifiers.contains(taskId)

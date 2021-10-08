@@ -3,6 +3,8 @@ package org.sagebionetworks.research.mobiletoolbox.app
 import androidx.multidex.MultiDexApplication
 import edu.northwestern.mobiletoolbox.assessments_provider.mtbModules
 import edu.northwestern.mobiletoolbox.bridge.MTBKitCore
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import net.danlew.android.joda.JodaTimeAndroid
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -22,6 +24,8 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
         JodaTimeAndroid.init(this)
 
         super.onCreate()
+
+        Napier.base(DebugAntilog())
 
         initKoin (enableNetworkLogs = BuildConfig.DEBUG){
             androidLogger(Level.ERROR)

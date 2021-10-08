@@ -8,7 +8,6 @@ plugins {
 
 android {
     compileSdkVersion(30)
-    buildToolsVersion("29.0.3")
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
@@ -84,10 +83,13 @@ dependencies {
     implementation("net.danlew:android.joda:2.9.9.4")
     implementation("androidx.recyclerview:recyclerview:1.2.0")
 
-    val bridgeClientKmmVersion = "0.2.27"
-    implementation("org.sagebionetworks.bridge.kmm:bridge-client:$bridgeClientKmmVersion")
-    implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:$bridgeClientKmmVersion")
-    implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:$bridgeClientKmmVersion")
+    implementation("org.sagebionetworks.bridge.kmm:bridge-client:${Versions.bridgeClient}")
+    implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:${Versions.bridgeClient}")
+    implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:${Versions.bridgeClient}")
+
+    val passiveDataVersion = "0.1.0"
+    implementation("org.sagebionetworks.research.kmm:passiveData:$passiveDataVersion")
+    implementation(Deps.Napier.napier)
 
     // MTB dependencies
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
@@ -116,12 +118,12 @@ dependencies {
     implementation(kotlin("reflect", Versions.kotlin))
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1-native-mt") {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") {
         version {
-            strictly("1.5.1-native-mt")
+            strictly(Versions.kotlinCoroutines)
         }
     }
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}")
 
     // Android
     implementation("androidx.appcompat:appcompat:1.3.0")

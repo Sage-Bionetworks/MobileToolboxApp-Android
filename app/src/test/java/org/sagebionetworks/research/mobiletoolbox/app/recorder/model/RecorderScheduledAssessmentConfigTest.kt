@@ -18,7 +18,8 @@ class RecorderScheduledAssessmentConfigTest : TestCase() {
             RecorderScheduledAssessmentConfig(
                 recorder,
                 enabledByStudyClientData = true,
-                setOf()
+                emptySet(),
+                emptyList()
             )
 
         assertFalse(recorderConfig.isRecorderDisabled(taskId))
@@ -27,7 +28,8 @@ class RecorderScheduledAssessmentConfigTest : TestCase() {
             RecorderScheduledAssessmentConfig(
                 recorder,
                 enabledByStudyClientData = null,
-                setOf()
+                emptySet(),
+                emptyList()
             )
 
         assertFalse(recorderConfig.isRecorderDisabled(taskId))
@@ -36,7 +38,8 @@ class RecorderScheduledAssessmentConfigTest : TestCase() {
             RecorderScheduledAssessmentConfig(
                 recorder,
                 enabledByStudyClientData = false,
-                setOf()
+                emptySet(),
+                emptyList()
             )
 
         assertTrue(recorderConfig.isRecorderDisabled(taskId))
@@ -47,7 +50,8 @@ class RecorderScheduledAssessmentConfigTest : TestCase() {
             RecorderScheduledAssessmentConfig(
                 recorder,
                 enabledByStudyClientData = true,
-                setOf(taskId)
+                setOf(taskId),
+                emptyList()
             )
 
         assertTrue(recorderConfig.isRecorderDisabled(taskId))
