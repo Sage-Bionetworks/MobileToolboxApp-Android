@@ -38,10 +38,9 @@ class MtbRootAssessmentViewModel(
     val recorderRunner: RecorderRunner
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
-    init {
+    fun startRecorderRunner() {
         recorderRunner.start()
     }
-
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
         Napier.d("FinishedReason: ${reason.javaClass.simpleName}")
         val finishedTimeStamp = if (reason.markFinished) {

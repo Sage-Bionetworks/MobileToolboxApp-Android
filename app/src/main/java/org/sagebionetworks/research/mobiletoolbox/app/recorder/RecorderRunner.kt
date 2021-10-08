@@ -16,7 +16,6 @@ import org.sagebionetworks.assessmentmodel.passivedata.recorder.Recorder
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.AndroidWeatherRecorder
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherServiceConfiguration
-import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherServiceProviderName
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.BackgroundRecordersConfigurationElement
 
@@ -41,7 +40,6 @@ class RecorderRunner(
     init {
         this.recorders = configs
             .mapNotNull { recorderFactory(it) }
-
 
         deferredRecorderResult =
             scope.async {

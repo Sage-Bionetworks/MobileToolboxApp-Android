@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
+import io.github.aakira.napier.Napier
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.decodeFromString
@@ -59,7 +60,10 @@ class MtbAssessmentActivity : AssessmentActivity() {
         // TODO: add permission screens - liujoshua 2021-10-01
         val requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
-        ) {}
+        ) {
+            Napier.i("RequestMultiplePermissions returned")
+            (viewModel as MtbRootAssessmentViewModel).startRecorderRunner()
+        }
         requestPermissionLauncher.launch(
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
