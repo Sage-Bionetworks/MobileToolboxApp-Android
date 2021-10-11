@@ -12,6 +12,7 @@
         <item name="materialButtonStyle">@style/Widget.Sage.Button</item>
         <item name="tabStyle">@style/Widget.Sage.TabLayout</item>
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:textColorLink">@color/textColor</item>
     </style>
     <style name="Widget.Sage.Button" parent="Widget.MaterialComponents.Button">
         <item name="shapeAppearance">@style/ShapeAppearance.Sage.SmallComponent</item>
