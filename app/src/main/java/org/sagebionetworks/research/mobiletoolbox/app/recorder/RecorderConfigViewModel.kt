@@ -7,7 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -45,16 +48,15 @@ class RecorderConfigViewModel(
     internal fun loadRecorderConfigs() {
         viewModelScope.launch {
             getAppRecorderConfig().combine(getStudyRecorderConfig()) { appRecorderConfig, studyRecorderConfig ->
-                if (appRecorderConfig == null || studyRecorderConfig == null) {
+                return@combine if (appRecorderConfig == null || studyRecorderConfig == null) {
                     // when we don't have both parts of the recorder config, return no config
                     Log.w(
                         tag, "Returning empty recorder configs: " +
                                 "${appRecorderConfig ?: "Missing app config "}" +
                                 "${studyRecorderConfig ?: "Missing study config"}"
                     )
-                    _recorderScheduledAssessmentConfigLiveData.postValue(
-                        listOf()
-                    )
+                    listOf()
+
                 } else {
                     val recorderScheduledAssessmentConfig =
                         appRecorderConfig.recorders.map { recorderConfig ->
@@ -66,14 +68,17 @@ class RecorderConfigViewModel(
                                     recorderConfigEntry.value,
                                     studyRecorderConfig[recorderConfigEntry.key],
                                     appRecorderConfig.excludeMapping[recorderConfigEntry.key]?.toSet()
-                                        ?: setOf()
+                                        ?: setOf(),
+                                    recorderConfigEntry.value.services ?: emptyList()
                                 )
                             }
 
-                    _recorderScheduledAssessmentConfigLiveData.postValue(
-                        recorderScheduledAssessmentConfig.values.toList()
-                    )
+                    recorderScheduledAssessmentConfig.values.toList()
                 }
+            }.collectLatest {
+                _recorderScheduledAssessmentConfigLiveData.postValue(
+                    it
+                )
             }
         }
     }
