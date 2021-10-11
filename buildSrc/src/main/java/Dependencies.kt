@@ -4,7 +4,8 @@ object Versions {
     const val koin = "3.1.1"
     const val glide = "4.12.0"
     const val napier = "2.1.0"
-    const val bridgeClient = "0.2.27-SNAPSHOT"
+    const val bridgeClient = "0.3.0"
+    const val passiveData = "0.2.0"
     const val kotlinCoroutines = "1.5.1-native-mt"
     const val kotlinxSerializationJson = "1.3.0"
 }
