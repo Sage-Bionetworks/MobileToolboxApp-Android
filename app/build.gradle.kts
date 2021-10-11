@@ -87,8 +87,7 @@ dependencies {
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:${Versions.bridgeClient}")
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:${Versions.bridgeClient}")
 
-    val passiveDataVersion = "0.1.0"
-    implementation("org.sagebionetworks.research.kmm:passiveData:$passiveDataVersion")
+    implementation("org.sagebionetworks.research.kmm:passiveData:${Versions.passiveData}")
     implementation(Deps.Napier.napier)
 
     // MTB dependencies
