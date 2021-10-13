@@ -14,6 +14,7 @@ import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentSettingsBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.PermissionDetailsBinding
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.configureView
 
 
 class SettingsFragment : Fragment() {
@@ -44,9 +45,7 @@ class SettingsFragment : Fragment() {
         val permissionPageTypes = permissionPages.map { PermissionPageType.valueOf(it) }
         for (permissionPage in permissionPageTypes) {
             val permissionBinding = PermissionDetailsBinding.inflate(inflater, binding.content, false)
-            permissionBinding.logo.setImageResource(permissionPage.iconResource)
-            permissionBinding.header.text = getString(permissionPage.headerStringIdentifier)
-            permissionBinding.body.text = getString(permissionPage.bodyStringIdentifier)
+            permissionBinding.configureView(requireContext(), permissionPage)
             configureChangeButton(permissionBinding.changeButton, permissionPage)
             binding.content.addView(permissionBinding.root)
 
