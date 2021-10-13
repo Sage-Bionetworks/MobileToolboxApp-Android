@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.HistoryHeaderBinding
 
 
@@ -16,6 +17,13 @@ class HistoryHeaderAdapter: RecyclerView.Adapter<HistoryHeaderAdapter.HeaderView
 
         fun bind(minutes: Int, loading: Boolean) {
             binding.time.text = minutes.toString()
+            if (minutes == 0) {
+                binding.timeContainer.visibility = View.GONE
+                binding.title.setText(R.string.your_completed_activities)
+            } else {
+                binding.timeContainer.visibility = View.VISIBLE
+                binding.title.setText(R.string.thank_you_for_your_contributions)
+            }
             if (loading) {
                 binding.loading.visibility = View.VISIBLE
             } else {
