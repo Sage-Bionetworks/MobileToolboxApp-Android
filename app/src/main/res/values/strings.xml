@@ -60,5 +60,7 @@
     <string name="welcome_screen_disclaimer">This is a research Study. It does not provide medical advice, diagnosis, or treatment.</string>
     <string name="edit_permission">Edit Permission</string>
     <string name="notifications">Notifications</string>
+    <string name="allow">Allow</string>
+    <string name="dont_allow">Don\'t Allow</string>
 
 </resources>

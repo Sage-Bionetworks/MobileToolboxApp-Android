@@ -15,7 +15,6 @@
     <string name="microphone_body">Noise can be distracting. We\'d like to use the phone microphone to record the noise level around you.\n\nWe only measure noise when you are doing the activities. We do not keep the recordings.</string>
 
     <string name="motion_sensor_header">Motion &amp; Fitness Activity</string>
-    <string name="motion_sensor_body">We’d like to measure your movements while you use the app.\n\nThis will give us an idea of your physical activity that may distract you while you are using the app.\n\nThis is on by default, to turn this off go to your system settings.
-</string>
+    <string name="motion_sensor_body">We’d like to measure your movements while you use the app.\n\nThis will give us an idea of your physical activity that may distract you while you are using the app.\n\n<b>Allow this study to capture your Motion &amp; Sensor Data?</b></string>
 
 </resources>
