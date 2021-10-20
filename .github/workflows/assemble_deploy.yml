@@ -39,7 +39,13 @@ jobs:
           key: ${{ runner.os }}-gradlebuildcache-${{ hashFiles('checksum.txt') }}
           restore-keys: |
             ${{ runner.os }}-gradlebuildcache-
-      
+      - uses: actions/cache@v1
+        with:
+          path: ~/.konan/cache
+          key: ${{ runner.os }}-konancache-${{ hashFiles('checksum.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-konancache-
+
       - name: Generate Release Bundle
         run: ./gradlew bundleRelease
       

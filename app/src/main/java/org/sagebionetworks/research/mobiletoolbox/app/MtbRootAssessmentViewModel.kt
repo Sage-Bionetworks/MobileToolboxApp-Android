@@ -41,6 +41,7 @@ class MtbRootAssessmentViewModel(
     fun startRecorderRunner() {
         recorderRunner.start()
     }
+
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
         Napier.d("FinishedReason: ${reason.javaClass.simpleName}")
         val finishedTimeStamp = if (reason.markFinished) {
@@ -83,7 +84,7 @@ class MtbRootAssessmentViewModel(
                         val recorderResults = recorderResultsDeferred.await()
 
                         Napier.i(
-                            "Recorder results: ${recorderResults.map { "it.identifier," }}"
+                            "Recorder results: ${recorderResults.map { "${it.identifier}, " }}"
                         )
                         (archiveUploader as MtbAssessmentResultArchiveUploader)
                             .asyncResults.addAll(

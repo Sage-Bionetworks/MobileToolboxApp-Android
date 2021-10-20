@@ -16,15 +16,6 @@ import org.sagebionetworks.assessmentmodel.AssessmentResult
 import org.sagebionetworks.assessmentmodel.passivedata.ResultData
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.FileResult
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherResult
-import org.sagebionetworks.assessmentmodel.serialization.CheckboxInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.DateInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.DecimalTextInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.IntegerTextInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.SkipCheckboxInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.StringTextInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.TimeInputItemObject
-import org.sagebionetworks.assessmentmodel.serialization.YearTextInputItemObject
-import org.sagebionetworks.assessmentmodel.survey.InputItem
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.data.Archive
 import org.sagebionetworks.bridge.data.ArchiveFile
@@ -130,6 +121,11 @@ class MtbAssessmentResultArchiveUploader(
         val jodaEndTime = kotlinEndTimeInstant.toJodaDateTime()
 
         return setOf(
+            JsonArchiveFile(
+                "taskData.json",
+                jodaEndTime,
+                resultString
+            ),
             JsonArchiveFile(
                 "taskData.json",
                 jodaEndTime,
