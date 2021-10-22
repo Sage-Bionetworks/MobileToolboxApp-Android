@@ -4,20 +4,31 @@ import android.content.Context
 import android.util.Log
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.job
+import kotlinx.coroutines.supervisorScope
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.plus
 import org.sagebionetworks.assessmentmodel.passivedata.ResultData
 import org.sagebionetworks.assessmentmodel.passivedata.asyncaction.AsyncActionConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.Recorder
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.motion.DeviceMotionJsonFileResultRecorder
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.motion.MotionRecorderConfiguration
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.motion.createMotionRecorder
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.sensor.SensorEventComposite
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.AndroidWeatherRecorder
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherServiceConfiguration
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.BackgroundRecordersConfigurationElement
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.sensor.sensorRecordModule
 
 /**
  * Recorder controller for Mobile Toolbox. Recorders starts with task launch and ends when the task
@@ -32,53 +43,65 @@ class RecorderRunner(
 ) {
     private val tag = "RecorderRunner"
 
-    private val scope = CoroutineScope(SupervisorJob())
-    private lateinit var deferredRecorderResult: Deferred<List<ResultData>>
-
-    private lateinit var recorders: List<Recorder<ResultData>>
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private val deferredRecorderResult: Deferred<List<ResultData>>
+    private val recorders: List<Recorder<out ResultData>>
 
     init {
         this.recorders = configs
             .mapNotNull { recorderFactory(it) }
 
+
         deferredRecorderResult =
             scope.async {
                 Napier.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
-                Napier.i("Setting up all Recorder Deferreds")
+                supervisorScope {
 
-                val results =
-                    recorders
-                        .mapNotNull { recorder ->
-                            Log.i(
-                                tag,
-                                "Awaiting result for recorder: ${recorder.configuration.identifier}"
-                            )
-                            val deferredResult = recorder.result
+                    val results =
+                        recorders
+                            .mapNotNull { recorder ->
+                                Napier.i(
+                                    "Awaiting result for recorder: ${recorder.configuration.identifier}"
+                                )
+                                val deferredResult = recorder.result
 
-                            deferredResult.invokeOnCompletion { throwable ->
-                                if (throwable == null) {
-                                    Log.i(
-                                        tag,
-                                        "Deferred completed for recorder: ${recorder.configuration.identifier}"
+                                deferredResult.invokeOnCompletion { throwable ->
+                                    if (throwable == null) {
+                                        Napier.d(
+                                            "Deferred completed for recorder: ${recorder.configuration.identifier}"
+                                        )
+                                    } else if (throwable is CancellationException) {
+                                        Napier.d(
+                                            "Deferred cancelled for recorder: ${recorder.configuration.identifier}",
+                                            throwable
+                                        )
+                                    } else {
+                                        Napier.w(
+                                            "Deferred threw unhandled exception for recorder: ${recorder.configuration.identifier}",
+                                            throwable
+                                        )
+                                    }
+                                }
+                                return@mapNotNull try {
+                                    val result = deferredResult.await()
+                                    Napier.i(
+                                        "Finished awaiting result for recorder: ${recorder.configuration.identifier}"
                                     )
-                                } else {
-                                    Log.e(
-                                        tag,
-                                        "Deferred threw exception for recorder: ${recorder.configuration.identifier}",
-                                        throwable
+
+                                    result
+                                } catch (e: Throwable) {
+                                    Napier.w(
+                                        "Error waiting for deferred recorder result for recorder: ${recorder.configuration.identifier}",
+                                        e
                                     )
+                                    null
                                 }
                             }
-                            val result = deferredResult.await()
-                            Log.i(
-                                tag,
-                                "Finished awaiting result for recorder: ${recorder.configuration.identifier}"
-                            )
-                            return@mapNotNull result
-                        }
-                Napier.d("Awaited results: $results")
-                return@async results
 
+
+                    Napier.d("Awaited results: $results")
+                    return@supervisorScope results
+                }
             }
     }
 
@@ -125,23 +148,45 @@ class RecorderRunner(
         }
     }
 
-    internal fun recorderFactory(recorderScheduledAssessmentConfig: RecorderScheduledAssessmentConfig): Recorder<ResultData>? {
+    internal fun recorderFactory(recorderScheduledAssessmentConfig: RecorderScheduledAssessmentConfig): Recorder<out ResultData>? {
         val recorderConfig = recorderConfigFactory(recorderScheduledAssessmentConfig.recorder)
             ?: return null
 
-        return when (recorderConfig.identifier) {
+        return when (recorderConfig) {
 
-            "weather" -> {
-                val weatherConfig = recorderConfig as WeatherConfiguration
+            is WeatherConfiguration -> {
                 AndroidWeatherRecorder(
                     WeatherConfiguration(
-                        "weather",
-                        "weather",
-                        weatherConfig.services
+                        recorderConfig.identifier,
+                        null,
+                        recorderConfig.services
                     ),
                     httpClient,
                     context
                 )
+            }
+            is MotionRecorderConfiguration -> {
+                with(recorderConfig) {
+                    //TODO joliu real values
+                    DeviceMotionJsonFileResultRecorder(
+                        identifier,
+                        recorderConfig,
+                        CoroutineScope(Dispatchers.IO),
+                        createMotionRecorder(context).getSensorData()
+                            .mapNotNull {
+                                return@mapNotNull if (it is SensorEventComposite.SensorChanged) {
+                                    it.sensorEvent
+                                } else {
+                                    null
+                                }
+                            },
+                        context,
+                        Json {
+                            serializersModule += sensorRecordModule
+                        }
+                    )
+                }
+
             }
             else -> {
                 Napier.w("Unable to construct recorder ${recorderConfig.identifier}")
@@ -164,16 +209,25 @@ class RecorderRunner(
                     }
                 }
 
-                if (services != null && services.isNotEmpty()) {
+                if (services?.isNotEmpty() == true) {
                     with(recorderConfig) {
                         WeatherConfiguration(
                             identifier,
-                            type,
+                            null,
                             services
                         )
                     }
                 } else {
                     return null
+                }
+            }
+            MotionRecorderConfiguration.TYPE -> {
+                with(recorderConfig) {
+                    MotionRecorderConfiguration(
+                        identifier = identifier,
+                        requiresBackgroundAudio = false,
+                        shouldDeletePrevious = false
+                    )
                 }
             }
             else -> {

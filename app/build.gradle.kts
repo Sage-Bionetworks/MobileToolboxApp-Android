@@ -13,7 +13,7 @@ android {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 5
+        versionCode = 6
         versionName = "0.11.$versionCode"
 
         multiDexEnabled = true
@@ -123,6 +123,8 @@ dependencies {
         }
     }
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationJson}")
 
     // Android
     implementation("androidx.appcompat:appcompat:1.3.0")
