@@ -68,7 +68,7 @@ class MtbAssessmentResultArchiveUploader(
     }
 
     internal fun getAsyncRecordArchiveFiles(): Set<ArchiveFile> {
-        Napier.i("Archiving asyncResults ${asyncResults.map { "${it.identifier}, " }}")
+        Napier.i("Archiving asyncResults ${asyncResults.map { it.identifier }}")
         return asyncResults.flatMap { asyncResult ->
             convertAsyncResultToArchiveFile(asyncResult)
         }.toSet()
@@ -121,11 +121,6 @@ class MtbAssessmentResultArchiveUploader(
         val jodaEndTime = kotlinEndTimeInstant.toJodaDateTime()
 
         return setOf(
-            JsonArchiveFile(
-                "taskData.json",
-                jodaEndTime,
-                resultString
-            ),
             JsonArchiveFile(
                 "taskData.json",
                 jodaEndTime,

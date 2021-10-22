@@ -84,7 +84,7 @@ class MtbRootAssessmentViewModel(
                         val recorderResults = recorderResultsDeferred.await()
 
                         Napier.i(
-                            "Recorder results: ${recorderResults.map { "${it.identifier}, " }}"
+                            "Recorder results: ${recorderResults.map { it.identifier }}"
                         )
                         (archiveUploader as MtbAssessmentResultArchiveUploader)
                             .asyncResults.addAll(
