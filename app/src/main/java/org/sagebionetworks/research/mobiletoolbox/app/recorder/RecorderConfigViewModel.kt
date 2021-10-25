@@ -52,8 +52,8 @@ class RecorderConfigViewModel(
                     // when we don't have both parts of the recorder config, return no config
                     Log.w(
                         tag, "Returning empty recorder configs: " +
-                                "${appRecorderConfig ?: "Missing app config "}" +
-                                "${studyRecorderConfig ?: "Missing study config"}"
+                                "${appRecorderConfig ?: "\n\tMissing app config "}" +
+                                "${studyRecorderConfig ?: "\n\tMissing study config"}"
                     )
                     listOf()
 

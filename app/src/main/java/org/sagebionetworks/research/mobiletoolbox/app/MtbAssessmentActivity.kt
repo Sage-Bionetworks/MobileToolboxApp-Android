@@ -27,7 +27,6 @@ class MtbAssessmentActivity : AssessmentActivity() {
     val archiveUploader: AssessmentResultArchiveUploader by inject()
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory by inject()
-    lateinit var recorderRunner: RecorderRunner
     lateinit var adherenceRecord: AdherenceRecord
     lateinit var sessionExpiration: Instant
     lateinit var recorderScheduledAssessmentConfigs: List<RecorderScheduledAssessmentConfig>
@@ -54,7 +53,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
             intent.getStringExtra(ARG_RECORDER_CONFIG_KEY)
                 ?.let { recorderConfigJsonCoder.decodeFromString(it) } ?: listOf()
 
-        recorderRunner = recorderRunnerFactory.create(recorderScheduledAssessmentConfigs)
+        recorderRunnerFactory.withConfig(recorderScheduledAssessmentConfigs)
 
         // TODO: add permission screens - liujoshua 2021-10-01
         val requestPermissionLauncher = registerForActivityResult(
@@ -88,7 +87,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
                     adherenceRecordRepo,
                     adherenceRecord,
                     sessionExpiration,
-                    recorderRunner
+                    recorderRunnerFactory
                 )
         ).get(MtbRootAssessmentViewModel::class.java)
 
