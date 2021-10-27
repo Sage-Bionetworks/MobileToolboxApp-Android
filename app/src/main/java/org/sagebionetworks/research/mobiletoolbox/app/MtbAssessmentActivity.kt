@@ -41,6 +41,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Napier.d("onCreate called")
         val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!
         adherenceRecord = recorderConfigJsonCoder.decodeFromString(adherenceRecordString)
         sessionExpiration = Instant.fromEpochMilliseconds(
@@ -54,7 +55,19 @@ class MtbAssessmentActivity : AssessmentActivity() {
             intent.getStringExtra(ARG_RECORDER_CONFIG_KEY)
                 ?.let { recorderConfigJsonCoder.decodeFromString(it) } ?: listOf()
 
-        recorderRunner = recorderRunnerFactory.create(recorderScheduledAssessmentConfigs)
+        // in TodayFragment#launchAssessment, we replaced assessmentId with the taskIdentifier
+        val taskIdentifier = intent.getStringExtra(ARG_ASSESSMENT_ID_KEY)!!
+
+        recorderRunner = recorderRunnerFactory.create(
+            recorderScheduledAssessmentConfigs
+                .filterNot { config ->
+                    val isDisabled = config.isRecorderDisabled(taskIdentifier)
+                    if (isDisabled) {
+                        Napier.i("Recorder ${config.recorder.identifier} disabled for task $taskIdentifier")
+                    }
+                    return@filterNot isDisabled
+                }
+        )
 
         // TODO: add permission screens - liujoshua 2021-10-01
         val requestPermissionLauncher = registerForActivityResult(
@@ -66,7 +79,8 @@ class MtbAssessmentActivity : AssessmentActivity() {
         requestPermissionLauncher.launch(
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.RECORD_AUDIO
             )
         )
 

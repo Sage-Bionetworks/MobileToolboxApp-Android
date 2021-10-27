@@ -50,10 +50,10 @@ class RecorderConfigViewModel(
             getAppRecorderConfig().combine(getStudyRecorderConfig()) { appRecorderConfig, studyRecorderConfig ->
                 return@combine if (appRecorderConfig == null || studyRecorderConfig == null) {
                     // when we don't have both parts of the recorder config, return no config
-                    Log.w(
+                    Log.d(
                         tag, "Returning empty recorder configs: " +
-                                "${appRecorderConfig ?: "Missing app config "}" +
-                                "${studyRecorderConfig ?: "Missing study config"}"
+                                "${appRecorderConfig ?: "\n\tMissing app config "}" +
+                                "${studyRecorderConfig ?: "\n\tMissing study config"}"
                     )
                     listOf()
 
