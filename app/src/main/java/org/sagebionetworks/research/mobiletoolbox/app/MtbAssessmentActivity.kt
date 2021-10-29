@@ -14,6 +14,7 @@ import org.koin.android.ext.android.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherConfiguration
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
@@ -55,21 +56,29 @@ class MtbAssessmentActivity : AssessmentActivity() {
 
         recorderRunnerFactory.withConfig(recorderScheduledAssessmentConfigs)
 
-        // TODO: add permission screens - liujoshua 2021-10-01
-        val requestPermissionLauncher = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) {
-            Napier.i("RequestMultiplePermissions returned")
+        super.onCreate(savedInstanceState)
+
+        //super.onCreate needs to be called before here so that viewModel is initialized
+        val permissionList = mutableListOf<String>()
+        if (recorderScheduledAssessmentConfigs.any { it.recorder.type == WeatherConfiguration.TYPE && !it.isRecorderDisabled(viewModel.assessmentPlaceholder.identifier) }) {
+            permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+        if (permissionList.isNotEmpty()) {
+            val requestPermissionLauncher = registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions()
+            ) {
+                Napier.i("RequestMultiplePermissions returned")
+                (viewModel as MtbRootAssessmentViewModel).startRecorderRunner()
+            }
+            requestPermissionLauncher.launch(
+                permissionList.toTypedArray()
+            )
+        } else {
             (viewModel as MtbRootAssessmentViewModel).startRecorderRunner()
         }
-        requestPermissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        )
 
-        super.onCreate(savedInstanceState)
     }
 
     override fun initViewModel(
