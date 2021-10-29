@@ -35,10 +35,15 @@ class MtbRootAssessmentViewModel(
     val adherenceRecordRepo: AdherenceRecordRepo,
     val adherenceRecord: AdherenceRecord,
     val sessionExpiration: Instant,
-    val recorderRunner: RecorderRunner
+    val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
+    lateinit var recorderRunner: RecorderRunner
+
     fun startRecorderRunner() {
+        // in TodayFragment#launchAssessment, we replaced assessmentId with taskId
+        val taskIdentifier = assessmentPlaceholder.identifier
+        recorderRunner = recorderRunnerFactory.create(taskIdentifier)
         recorderRunner.start()
     }
 
@@ -118,7 +123,7 @@ open class MtbRootAssessmentViewModelFactory() {
         adherenceRecordRepo: AdherenceRecordRepo,
         adherenceRecord: AdherenceRecord,
         sessionExpiration: Instant,
-        recorderRunner: RecorderRunner
+        recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -133,7 +138,7 @@ open class MtbRootAssessmentViewModelFactory() {
                         adherenceRecordRepo,
                         adherenceRecord,
                         sessionExpiration,
-                        recorderRunner
+                        recorderRunnerFactory
                     ) as T
                 }
 

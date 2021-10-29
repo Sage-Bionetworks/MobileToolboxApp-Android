@@ -39,7 +39,8 @@ import org.sagebionetworks.assessmentmodel.passivedata.recorder.sensor.sensorRec
 class RecorderRunner(
     val context: Context,
     val httpClient: HttpClient,
-    configs: List<RecorderScheduledAssessmentConfig>
+    configs: List<RecorderScheduledAssessmentConfig>,
+    val taskIdentifier: String
 ) {
     private val tag = "RecorderRunner"
 
@@ -49,6 +50,14 @@ class RecorderRunner(
 
     init {
         this.recorders = configs
+            .filterNot { recorderScheduledAssessmentConfig ->
+                val isDisabled =
+                    recorderScheduledAssessmentConfig.isRecorderDisabled(taskIdentifier)
+                if (isDisabled) {
+                    Napier.i("Skipping ${recorderScheduledAssessmentConfig.recorder.identifier} disabled for this task")
+                }
+                isDisabled
+            }
             .mapNotNull { recorderFactory(it) }
 
 
@@ -241,8 +250,15 @@ class RecorderRunner(
         val context: Context,
         val httpClient: HttpClient
     ) {
-        fun create(configs: List<RecorderScheduledAssessmentConfig>): RecorderRunner {
-            return RecorderRunner(context, httpClient, configs)
+        lateinit var configs: List<RecorderScheduledAssessmentConfig>
+        fun withConfig(configs: List<RecorderScheduledAssessmentConfig>) {
+            this.configs = configs
+        }
+
+        fun create(
+            taskIdentifier: String
+        ): RecorderRunner {
+            return RecorderRunner(context, httpClient, configs, taskIdentifier)
         }
     }
 }
