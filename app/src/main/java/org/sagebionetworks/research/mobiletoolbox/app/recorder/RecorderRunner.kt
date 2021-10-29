@@ -29,6 +29,7 @@ import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherS
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.BackgroundRecordersConfigurationElement
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.sensor.sensorRecordModule
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 
 /**
  * Recorder controller for Mobile Toolbox. Recorders starts with task launch and ends when the task
@@ -231,12 +232,17 @@ class RecorderRunner(
                 }
             }
             MotionRecorderConfiguration.TYPE -> {
-                with(recorderConfig) {
-                    MotionRecorderConfiguration(
-                        identifier = identifier,
-                        requiresBackgroundAudio = false,
-                        shouldDeletePrevious = false
-                    )
+                // Check if user has given permission to use motion sensor
+                if (PermissionPageType.MOTION_PAGE.getAllowToggle(context) == true) {
+                    with(recorderConfig) {
+                        MotionRecorderConfiguration(
+                            identifier = identifier,
+                            requiresBackgroundAudio = false,
+                            shouldDeletePrevious = false
+                        )
+                    }
+                } else {
+                    return null
                 }
             }
             else -> {
