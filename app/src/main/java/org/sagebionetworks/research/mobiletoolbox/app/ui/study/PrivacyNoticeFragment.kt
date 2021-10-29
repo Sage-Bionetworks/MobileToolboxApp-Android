@@ -146,8 +146,7 @@ class PrivacyPageFragment : Fragment() {
             binding.content.addView(rowBinding.root)
         }
         binding.fullNoticeButton.setOnClickListener {
-            //TODO: Update url when we have production domain -nbrown 10/4/2021
-            val uriFile: Uri = Uri.parse("https://staging.mobiletoolbox.org/MTBPrivacyPolicy.pdf")
+            val uriFile: Uri = Uri.parse("https://studies.mobiletoolbox.org/MTBPrivacyPolicy.pdf")
 
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 type = "application/pdf"
