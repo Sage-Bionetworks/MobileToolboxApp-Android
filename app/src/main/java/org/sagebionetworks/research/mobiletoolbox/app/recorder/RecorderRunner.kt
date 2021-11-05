@@ -19,6 +19,9 @@ import kotlinx.serialization.modules.plus
 import org.sagebionetworks.assessmentmodel.passivedata.ResultData
 import org.sagebionetworks.assessmentmodel.passivedata.asyncaction.AsyncActionConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.Recorder
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.audio.AudioRecorder
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.audio.AudioRecorderConfiguration
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.audio.createAudioLevelFlow
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.motion.DeviceMotionJsonFileResultRecorder
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.motion.MotionRecorderConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.motion.createMotionRecorder
@@ -198,6 +201,17 @@ class RecorderRunner(
                 }
 
             }
+            is AudioRecorderConfiguration -> {
+                with(recorderConfig) {
+                    AudioRecorder(
+                        identifier = identifier,
+                        configuration = recorderConfig,
+                        scope = CoroutineScope(Dispatchers.IO),
+                        flow = recorderConfig.createAudioLevelFlow(context),
+                        context = context
+                    )
+                }
+            }
             else -> {
                 Napier.w("Unable to construct recorder ${recorderConfig.identifier}")
                 null
@@ -243,6 +257,13 @@ class RecorderRunner(
                     }
                 } else {
                     return null
+                }
+            }
+            AudioRecorderConfiguration.TYPE -> {
+                with(recorderConfig) {
+                    AudioRecorderConfiguration(
+                        identifier = identifier
+                    )
                 }
             }
             else -> {
