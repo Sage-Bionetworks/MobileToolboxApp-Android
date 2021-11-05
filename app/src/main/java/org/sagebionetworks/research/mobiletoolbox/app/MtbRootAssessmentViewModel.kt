@@ -38,13 +38,19 @@ class MtbRootAssessmentViewModel(
     val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
+    var isAlreadyStarted = false
     lateinit var recorderRunner: RecorderRunner
 
     fun startRecorderRunner() {
         // in TodayFragment#launchAssessment, we replaced assessmentId with taskId
+        if (isAlreadyStarted) {
+            Napier.i("Recorder already started, do nothing")
+            return
+        }
         val taskIdentifier = assessmentPlaceholder.identifier
         recorderRunner = recorderRunnerFactory.create(taskIdentifier)
         recorderRunner.start()
+        isAlreadyStarted = true
     }
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
@@ -111,6 +117,12 @@ class MtbRootAssessmentViewModel(
             recorderRunner.cancel()
         }
     }
+
+    override fun onCleared() {
+        recorderRunner.cancel()
+        super.onCleared()
+    }
+
 }
 
 open class MtbRootAssessmentViewModelFactory() {
