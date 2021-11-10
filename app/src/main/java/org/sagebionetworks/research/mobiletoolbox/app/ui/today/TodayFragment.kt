@@ -58,8 +58,8 @@ class TodayFragment : MtbBaseFragment() {
     private val viewModel: TodayViewModel by viewModel()
     private val recorderConfigViewModel: RecorderConfigViewModel by viewModel()
     lateinit var binding: FragmentTodayListBinding
-    lateinit var listAdapter: TodayRecyclerViewAdapter
-    lateinit var headerAdapter: HeaderAdapter
+    private lateinit var listAdapter: TodayRecyclerViewAdapter
+    private lateinit var headerAdapter: HeaderAdapter
 
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     val authRepo: AuthenticationRepository by inject()

@@ -5,13 +5,13 @@ import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.Backgr
 
 class RecorderScheduledAssessmentConfigTest : TestCase() {
 
-    val recorderId = "recorderId"
-    val recorder = BackgroundRecordersConfigurationElement.Recorder(
+    private val recorderId = "recorderId"
+    private val recorder = BackgroundRecordersConfigurationElement.Recorder(
         recorderId, "recorderType", listOf()
     )
 
-    val taskId = "taskId"
-    val otherTaskId = "taskIdOther"
+    private val taskId = "taskId"
+    private val otherTaskId = "taskIdOther"
 
     fun testIsRecorderDisabled_studyClientData() {
         var recorderConfig =
@@ -46,7 +46,7 @@ class RecorderScheduledAssessmentConfigTest : TestCase() {
     }
 
     fun testIsRecorderDisabled_appConfigElement() {
-        var recorderConfig =
+        val recorderConfig =
             RecorderScheduledAssessmentConfig(
                 recorder,
                 enabledByStudyClientData = true,

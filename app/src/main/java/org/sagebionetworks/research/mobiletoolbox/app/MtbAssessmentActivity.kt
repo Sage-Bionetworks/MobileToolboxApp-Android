@@ -25,11 +25,11 @@ import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderCon
 
 class MtbAssessmentActivity : AssessmentActivity() {
 
-    val archiveUploader: AssessmentResultArchiveUploader by inject()
-    val adherenceRecordRepo: AdherenceRecordRepo by inject()
-    val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory by inject()
-    lateinit var adherenceRecord: AdherenceRecord
-    lateinit var sessionExpiration: Instant
+    private val archiveUploader: AssessmentResultArchiveUploader by inject()
+    private val adherenceRecordRepo: AdherenceRecordRepo by inject()
+    private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory by inject()
+    private lateinit var adherenceRecord: AdherenceRecord
+    private lateinit var sessionExpiration: Instant
     lateinit var recorderScheduledAssessmentConfigs: List<RecorderScheduledAssessmentConfig>
 
     lateinit var permissionResultCallback: ActivityResultCallback<Nothing>

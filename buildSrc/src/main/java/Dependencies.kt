@@ -13,19 +13,19 @@ object Versions {
 
 object Deps {
     object Koin {
-        val core = "io.insert-koin:koin-core:${Versions.koin}"
-        val test = "io.insert-koin:koin-test:${Versions.koin}"
-        val android = "io.insert-koin:koin-android:${Versions.koin}"
-        val androidViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin}"
-        val androidWorkManager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
+        const val core = "io.insert-koin:koin-core:${Versions.koin}"
+        const val test = "io.insert-koin:koin-test:${Versions.koin}"
+        const val android = "io.insert-koin:koin-android:${Versions.koin}"
+        const val androidViewModel = "io.insert-koin:koin-androidx-viewmodel:${Versions.koin}"
+        const val androidWorkManager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
     }
 
     object MTB {
-        val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
-        val glide_kapt = "com.github.bumptech.glide:compiler:${Versions.glide}"
+        const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+        const val glide_kapt = "com.github.bumptech.glide:compiler:${Versions.glide}"
     }
 
     object Napier {
-        val napier = "io.github.aakira:napier:${Versions.napier}"
+        const val napier = "io.github.aakira:napier:${Versions.napier}"
     }
 }

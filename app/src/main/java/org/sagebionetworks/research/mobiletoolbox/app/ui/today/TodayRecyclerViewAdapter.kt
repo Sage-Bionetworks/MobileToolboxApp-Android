@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import kotlinx.datetime.toJavaLocalDateTime
@@ -105,7 +106,7 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
             setupCard(assessmentItem.assessmentRef, assessmentItem.locked)
         }
 
-        fun setupCard(assessmentRef: ScheduledAssessmentReference, locked: Boolean) {
+        private fun setupCard(assessmentRef: ScheduledAssessmentReference, locked: Boolean) {
             val context = binding.root.context
             if (locked) {
                 binding.root.foreground = ColorDrawable(Color.parseColor("#B3FFFFFF"))
@@ -125,7 +126,7 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
             val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground ?: "#000000")
             binding.imageBackground.background = ColorDrawable(foregroundColor)
             TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
-                binding.assessmentImage.setImageDrawable(context.resources.getDrawable(it))
+                binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, it, null))
             }
         }
 

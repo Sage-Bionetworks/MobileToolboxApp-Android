@@ -84,7 +84,7 @@ class MtbAssessmentResultArchiveUploader(
         Napier.i("Converting and archiving ${resultData.identifier} result")
         if (resultData is FileResult) {
 
-            val file: File = File(resultData.relativePath)
+            val file = File(resultData.relativePath)
             if (!file.isFile) {
                 Napier.w("No file found at relative path, skipping file result: $resultData")
                 return emptySet()

@@ -19,8 +19,8 @@ class HistoryFragment : MtbBaseFragment() {
 
     private val viewModel: HistoryViewModel by viewModel()
     lateinit var binding: FragmentTodayListBinding
-    lateinit var listAdapter: HistoryRecyclerViewAdapter
-    lateinit var headerAdapter: HistoryHeaderAdapter
+    private lateinit var listAdapter: HistoryRecyclerViewAdapter
+    private lateinit var headerAdapter: HistoryHeaderAdapter
 
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     val authRepo: AuthenticationRepository by inject()
@@ -70,7 +70,7 @@ class HistoryFragment : MtbBaseFragment() {
             it.assessments.flatMap { assessment -> assessment.history() }
         }.sortedBy { it.finishedOn }
 
-        var minutes = records.sumOf { it.minutes }
+        val minutes = records.sumOf { it.minutes }
 
         listAdapter.submitList(records)
 

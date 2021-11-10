@@ -31,15 +31,15 @@ class MtbRootAssessmentViewModel(
     assessmentPlaceholder: AssessmentPlaceholder,
     registryProvider: AssessmentRegistryProvider,
     nodeStateProvider: CustomNodeStateProvider?,
-    val archiveUploader: AssessmentResultArchiveUploader,
-    val adherenceRecordRepo: AdherenceRecordRepo,
-    val adherenceRecord: AdherenceRecord,
-    val sessionExpiration: Instant,
-    val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
+    private val archiveUploader: AssessmentResultArchiveUploader,
+    private val adherenceRecordRepo: AdherenceRecordRepo,
+    private val adherenceRecord: AdherenceRecord,
+    private val sessionExpiration: Instant,
+    private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
-    var isAlreadyStarted = false
-    lateinit var recorderRunner: RecorderRunner
+    private var isAlreadyStarted = false
+    private lateinit var recorderRunner: RecorderRunner
 
     fun startRecorderRunner() {
         // in TodayFragment#launchAssessment, we replaced assessmentId with taskId
