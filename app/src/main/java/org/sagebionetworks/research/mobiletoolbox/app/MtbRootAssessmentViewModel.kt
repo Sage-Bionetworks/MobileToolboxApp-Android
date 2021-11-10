@@ -125,7 +125,7 @@ class MtbRootAssessmentViewModel(
 
 }
 
-open class MtbRootAssessmentViewModelFactory() {
+open class MtbRootAssessmentViewModelFactory {
 
     open fun create(
         assessmentInfo: AssessmentPlaceholder,

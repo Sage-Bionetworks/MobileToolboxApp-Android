@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
@@ -29,7 +27,7 @@ class HistoryFragment : MtbBaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.sessionLiveData.observe(this, Observer {
+        viewModel.sessionLiveData.observe(this, {
             when(it) {
                 is ResourceResult.Success -> {
                     sessionsLoaded(it.data.scheduledSessionWindows)

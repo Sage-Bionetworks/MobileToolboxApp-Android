@@ -30,8 +30,8 @@ class SupportFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        viewModel.studyLiveData.observe(viewLifecycleOwner, Observer {
+    ): View {
+        viewModel.studyLiveData.observe(viewLifecycleOwner, {
             when(it) {
                 is ResourceResult.Success -> {
                     studyLoaded(it.data)

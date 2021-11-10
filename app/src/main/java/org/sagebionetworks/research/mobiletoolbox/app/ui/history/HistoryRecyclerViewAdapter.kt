@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, HistoryRecyclerViewAdapter.AssessmentHistoryViewHolder>(ItemDiffCallback()) {
+class HistoryRecyclerViewAdapter : ListAdapter<AssessmentHistoryRecord, HistoryRecyclerViewAdapter.AssessmentHistoryViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssessmentHistoryViewHolder {
         return AssessmentHistoryViewHolder.from(parent)
@@ -46,7 +46,9 @@ class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, Histor
             val context = binding.root.context
             val assessmentInfo = historyItem.assessmentInfo
             binding.title.text = assessmentInfo.label
-            val localDateTime = historyItem.finishedOn.toLocalDateTime(TimeZone.currentSystemDefault())?.toJavaLocalDateTime()
+            val localDateTime =
+                historyItem.finishedOn.toLocalDateTime(TimeZone.currentSystemDefault())
+                    .toJavaLocalDateTime()
             val text = localDateTime.format(
                 DateTimeFormatter.ofLocalizedDate(
                     FormatStyle.LONG))

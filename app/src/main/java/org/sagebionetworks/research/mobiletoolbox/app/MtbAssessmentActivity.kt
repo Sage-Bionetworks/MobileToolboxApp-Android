@@ -101,9 +101,9 @@ class MtbAssessmentActivity : AssessmentActivity() {
         ).get(MtbRootAssessmentViewModel::class.java)
 
     companion object {
-        const final val ARG_ADHERENCE_RECORD_KEY = "adherence_record_key"
-        const final val ARG_SESSION_EXPIRATION_KEY = "session_expiration_key"
-        const final val ARG_RECORDER_CONFIG_KEY = "recorder_config_key"
+        const val ARG_ADHERENCE_RECORD_KEY = "adherence_record_key"
+        const val ARG_SESSION_EXPIRATION_KEY = "session_expiration_key"
+        const val ARG_RECORDER_CONFIG_KEY = "recorder_config_key"
     }
 
 }

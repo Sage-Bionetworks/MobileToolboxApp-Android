@@ -27,7 +27,7 @@ class ParticipantIdSignInFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentParticipantIdSignInBinding.inflate(inflater, container, false)
         binding.prevButton.setOnClickListener {
@@ -37,7 +37,7 @@ class ParticipantIdSignInFragment : Fragment() {
             binding.progressOverlay.progressOverlay.visibility = View.VISIBLE
             viewModel.login(binding.participantIdInput.text.toString())
         }
-        viewModel.signInResult.observe(viewLifecycleOwner, Observer {
+        viewModel.signInResult.observe(viewLifecycleOwner, {
             when(it) {
                 is LoginViewModel.SignInResult.Success -> {
                     binding.participantIdInputLayout.error = null
@@ -58,7 +58,7 @@ class ParticipantIdSignInFragment : Fragment() {
     private fun loadStudy() {
         //Since we are already showing user a loading spinner, go ahead and load study so
         //it is ready for welcome screen and privacy screens.
-        viewModel.studyLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.studyLiveData.observe(viewLifecycleOwner, {
             when(it) {
                 is ResourceResult.Success -> {
                     goToNextScreen()
@@ -93,7 +93,7 @@ class ParticipantIdSignInFragment : Fragment() {
         } else {
             binding.logoBackground.setBackgroundColor(Color.parseColor(studyInfo.colorScheme?.background ?: "#FFFFFF"))
             studyInfo.studyLogoUrl?.let {
-                Glide.with(this).load(it).into(binding.logo);
+                Glide.with(this).load(it).into(binding.logo)
             }
             binding.studyName.text = getString(R.string.welcome_to_study, studyInfo.name)
             binding.studyId.text = getString(R.string.study_id, studyInfo.identifier)

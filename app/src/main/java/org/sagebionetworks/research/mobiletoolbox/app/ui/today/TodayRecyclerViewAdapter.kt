@@ -32,7 +32,7 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
         return when (viewType) {
             VIEW_TYPE_SESSION_HEADER -> SessionHeaderViewHolder.from(parent)
             VIEW_TYPE_ASSESSMENT -> AssessmentViewHolder.from(parent, onClick)
-            else -> throw ClassCastException("Unknown viewType ${viewType}")
+            else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
 

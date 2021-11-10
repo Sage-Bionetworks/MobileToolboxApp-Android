@@ -30,7 +30,7 @@ class StudyFragment : MtbBaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentStudyInfoBinding.inflate(inflater, container, false)
         val root: View = binding.root

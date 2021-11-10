@@ -33,8 +33,8 @@ class AboutStudyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        viewModel.studyLiveData.observe(viewLifecycleOwner, Observer {
+    ): View {
+        viewModel.studyLiveData.observe(viewLifecycleOwner, {
             when(it) {
                 is ResourceResult.Success -> {
                     studyLoaded(it.data)
@@ -59,7 +59,7 @@ class AboutStudyFragment : Fragment() {
     private fun studyLoaded(study: Study) {
         binding.logoBackground.setBackgroundColor(Color.parseColor(study.colorScheme?.background ?: "#FFFFFF"))
         study.studyLogoUrl?.let {
-            Glide.with(this).load(it).into(binding.logo);
+            Glide.with(this).load(it).into(binding.logo)
         }
 
         binding.title.text = study.name

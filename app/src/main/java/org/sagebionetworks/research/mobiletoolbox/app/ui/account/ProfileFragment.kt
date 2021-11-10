@@ -26,14 +26,10 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: AccountViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater)
         viewModel.authRepo.currentStudyId()?.let{
@@ -89,7 +85,7 @@ class ConfirmLogOutDialogFragment(val authRepo: AuthenticationRepository) : Dial
             builder.setTitle(R.string.confirm_log_out_title)
                 .setMessage(R.string.confirm_log_out_message)
                 .setPositiveButton(R.string.yes_log_out,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    { dialog, id ->
                         MainScope().launch {
                             authRepo.signOut()
                             val navController = Navigation.findNavController(it, R.id.nav_host_fragment_activity_mtb_main)
@@ -97,7 +93,7 @@ class ConfirmLogOutDialogFragment(val authRepo: AuthenticationRepository) : Dial
                         }
                     })
                 .setNegativeButton(R.string.cancel,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    { dialog, id ->
                         // User cancelled the dialog
                     })
             // Create the AlertDialog object and return it

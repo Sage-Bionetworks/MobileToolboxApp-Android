@@ -70,7 +70,7 @@ class TodayFragment : MtbBaseFragment() {
         recorderConfigViewModel.recorderScheduledAssessmentConfig.observe(this, {
             Napier.d("Received RecorderScheduleAssessmentConfig: $it")
         })
-        viewModel.sessionLiveData.observe(this, Observer {
+        viewModel.sessionLiveData.observe(this, {
             when (it.second) {
                 is ResourceResult.Success -> {
                     sessionsLoaded((it.second as ResourceResult.Success<ScheduledSessionTimelineSlice>).data.scheduledSessionWindows)
