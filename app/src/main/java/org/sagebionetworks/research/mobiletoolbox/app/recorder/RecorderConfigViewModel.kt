@@ -21,7 +21,7 @@ import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.repo.AppConfigRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
-import org.sagebionetworks.bridge.mpp.network.generated.models.AppConfig
+import org.sagebionetworks.bridge.kmm.shared.models.AppConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.BackgroundRecordersConfigurationElement
 
