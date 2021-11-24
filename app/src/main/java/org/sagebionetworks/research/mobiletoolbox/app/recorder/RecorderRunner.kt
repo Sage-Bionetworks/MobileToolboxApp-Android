@@ -1,7 +1,10 @@
 package org.sagebionetworks.research.mobiletoolbox.app.recorder
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
@@ -260,10 +263,18 @@ class RecorderRunner(
                 }
             }
             AudioRecorderConfiguration.TYPE -> {
-                with(recorderConfig) {
-                    AudioRecorderConfiguration(
-                        identifier = identifier
-                    )
+                //Check if we have permission to record audio
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.RECORD_AUDIO
+                    ) == PackageManager.PERMISSION_GRANTED) {
+                    with(recorderConfig) {
+                        AudioRecorderConfiguration(
+                            identifier = identifier
+                        )
+                    }
+                } else {
+                    return null
                 }
             }
             else -> {

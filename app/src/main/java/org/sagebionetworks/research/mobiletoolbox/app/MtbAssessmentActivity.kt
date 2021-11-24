@@ -14,6 +14,7 @@ import org.koin.android.ext.android.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
+import org.sagebionetworks.assessmentmodel.passivedata.recorder.audio.AudioRecorderConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherConfiguration
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
@@ -63,6 +64,9 @@ class MtbAssessmentActivity : AssessmentActivity() {
         if (recorderScheduledAssessmentConfigs.any { it.recorder.type == WeatherConfiguration.TYPE && !it.isRecorderDisabled(viewModel.assessmentPlaceholder.identifier) }) {
             permissionList.add(Manifest.permission.ACCESS_COARSE_LOCATION)
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+        if (recorderScheduledAssessmentConfigs.any { it.recorder.type == AudioRecorderConfiguration.TYPE && !it.isRecorderDisabled(viewModel.assessmentPlaceholder.identifier) }) {
+            permissionList.add(Manifest.permission.RECORD_AUDIO)
         }
 
         if (permissionList.isNotEmpty()) {
