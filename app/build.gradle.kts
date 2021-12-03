@@ -13,8 +13,8 @@ android {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdkVersion(23)
         targetSdkVersion(30)
-        versionCode = 10
-        versionName = "0.16.$versionCode"
+        versionCode = 11
+        versionName = "0.17.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
