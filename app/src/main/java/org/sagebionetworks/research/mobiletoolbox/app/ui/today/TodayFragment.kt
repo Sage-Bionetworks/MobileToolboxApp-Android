@@ -70,19 +70,6 @@ class TodayFragment : MtbBaseFragment() {
         recorderConfigViewModel.recorderScheduledAssessmentConfig.observe(this, {
             Napier.d("Received RecorderScheduleAssessmentConfig: $it")
         })
-        viewModel.sessionLiveData.observe(this, Observer {
-            when (it.second) {
-                is ResourceResult.Success -> {
-                    sessionsLoaded((it.second as ResourceResult.Success<ScheduledSessionTimelineSlice>).data.scheduledSessionWindows)
-                }
-                is ResourceResult.InProgress -> {
-
-                }
-                is ResourceResult.Failed -> {
-
-                }
-            }
-        })
     }
 
     override fun onCreateView(
@@ -104,6 +91,20 @@ class TodayFragment : MtbBaseFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = ConcatAdapter(headerAdapter, listAdapter)
         }
+
+        viewModel.sessionLiveData.observe(viewLifecycleOwner, Observer {
+            when (it.second) {
+                is ResourceResult.Success -> {
+                    sessionsLoaded((it.second as ResourceResult.Success<ScheduledSessionTimelineSlice>).data.scheduledSessionWindows)
+                }
+                is ResourceResult.InProgress -> {
+
+                }
+                is ResourceResult.Failed -> {
+
+                }
+            }
+        })
 
         return binding.root
     }
