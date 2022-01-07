@@ -156,7 +156,8 @@ class TodayFragment : MtbBaseFragment() {
 
             val locked = session.isInFuture() ||
                     (availableAssessmentAdded && session.sessionInfo.performanceOrder == PerformanceOrder.SEQUENTIAL)
-            if (!assessmentRef.isCompleted && !assessmentRef.isDeclined) {
+            val hide = assessmentRef.isCompleted || assessmentRef.isDeclined
+            if (!hide) {
                 // Add AssessmentItem
                 dataList.add(AssessmentItem(assessmentRef, locked, session))
                 if (!locked) availableAssessmentAdded =
