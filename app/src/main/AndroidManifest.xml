@@ -24,7 +24,8 @@
         https://github.com/readdle/swift-android-toolchain/issues/18
                 android:allowNativeHeapPointerTagging="false"
         -->
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbMainActivity">
+        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbMainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

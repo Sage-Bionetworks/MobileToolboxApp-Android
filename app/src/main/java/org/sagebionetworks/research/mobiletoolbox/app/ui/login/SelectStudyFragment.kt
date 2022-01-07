@@ -37,7 +37,7 @@ class SelectStudyFragment : Fragment() {
             binding.studyIdInput.setText(studyId)
             viewModel.clearStudyInfo()
         }
-        viewModel.studyInfoLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.studyInfoLiveData.observe(viewLifecycleOwner, {
             when(it) {
                 is ResourceResult.Success -> {
                     binding.studyIdInputLayout.error = null

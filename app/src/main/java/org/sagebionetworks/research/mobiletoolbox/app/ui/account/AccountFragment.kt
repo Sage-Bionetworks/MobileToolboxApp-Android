@@ -39,7 +39,7 @@ class AccountFragment : MtbBaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        studyViewModel.studyLiveData.observe(viewLifecycleOwner, Observer {
+        studyViewModel.studyLiveData.observe(viewLifecycleOwner, {
             when(it) {
                 is ResourceResult.Success -> {
                     studyLoaded(it.data)

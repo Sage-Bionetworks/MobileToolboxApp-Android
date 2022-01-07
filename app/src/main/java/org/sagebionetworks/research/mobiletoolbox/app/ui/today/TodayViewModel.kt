@@ -84,7 +84,7 @@ class TodayViewModel(
         ignoreUnknownKeys = true
     }
 
-    internal fun loadAssessmentIdentifierMap() {
+    private fun loadAssessmentIdentifierMap() {
         viewModelScope.launch {
             appConfigRepo.getAppConfig().collect {
                 when (it) {

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
@@ -33,8 +32,8 @@ class AboutStudyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        viewModel.studyLiveData.observe(viewLifecycleOwner, Observer {
+    ): View {
+        viewModel.studyLiveData.observe(viewLifecycleOwner, {
             when(it) {
                 is ResourceResult.Success -> {
                     studyLoaded(it.data)
@@ -59,7 +58,7 @@ class AboutStudyFragment : Fragment() {
     private fun studyLoaded(study: Study) {
         binding.logoBackground.setBackgroundColor(Color.parseColor(study.colorScheme?.background ?: "#FFFFFF"))
         study.studyLogoUrl?.let {
-            Glide.with(this).load(it).into(binding.logo);
+            Glide.with(this).load(it).into(binding.logo)
         }
 
         binding.title.text = study.name

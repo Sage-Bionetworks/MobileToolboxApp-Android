@@ -51,9 +51,7 @@ class AppConfigClientDataTest : TestCase() {
 
         val result = recorderConfigJsonCoder.decodeFromString<AppConfigClientData>(json)
         assertNotNull(result)
-        with(result) {
-            assertTrue(result.taskToSchemaIdentifierMap.isEmpty())
-            assertTrue(result.assessmentToTaskIdentifierMap.isEmpty())
-        }
+        assertTrue(result.taskToSchemaIdentifierMap.isEmpty())
+        assertTrue(result.assessmentToTaskIdentifierMap.isEmpty())
     }
 }

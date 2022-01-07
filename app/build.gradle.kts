@@ -81,7 +81,7 @@ dependencies {
     // marked api due to propagation of CMSException
     implementation("com.madgag.spongycastle:bcpkix-jdk15on:1.58.0.0")
     implementation("net.danlew:android.joda:2.9.9.4")
-    implementation("androidx.recyclerview:recyclerview:1.2.0")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 
     implementation("org.sagebionetworks.bridge.kmm:bridge-client:${Versions.bridgeClient}")
     implementation("org.sagebionetworks.bridge.kmm:bridge-client-presentation:${Versions.bridgeClient}")
@@ -95,27 +95,21 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.2.12")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.2.17")
 
-    val assessment_version = "0.4.6"
-    implementation("org.sagebionetworks.assessmentmodel:presentation:$assessment_version")
-    implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessment_version")
+    val assessmentVersion = "0.4.6"
+    implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
+    implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 
     // Koin
     implementation(Deps.Koin.core)
     implementation(Deps.Koin.android)
     implementation(Deps.Koin.androidWorkManager)
 
-    //I think this can be removed once we remove bridge-client and dagger -nbrown 03/09/21
-    configurations {
-        all { exclude(group = "com.google.guava", module = "listenablefuture") }
-    }
-
-
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") {
         version {
@@ -127,7 +121,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationJson}")
 
     // Android
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.android.support:multidex:1.0.3")
 
     implementation("com.google.android.material:material:1.4.0")
@@ -150,6 +144,6 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }

@@ -30,7 +30,7 @@ class WelcomeScreenFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentWelcomeScreenBinding.inflate(inflater, container, false)
 
@@ -54,7 +54,7 @@ class WelcomeScreenFragment : Fragment() {
                 )
             )
             studyInfo.studyLogoUrl?.let {
-                Glide.with(this).load(it).into(binding.logo);
+                Glide.with(this).load(it).into(binding.logo)
             }
             binding.header.text = getString(R.string.welcome_to_study, studyInfo.name)
             binding.from.text = getString(R.string.welcome_screen_default_from, studyInfo.name)

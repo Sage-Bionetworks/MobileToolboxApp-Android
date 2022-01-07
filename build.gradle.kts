@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.2.1")
+        classpath("com.android.tools.build:gradle:7.0.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
 
@@ -21,7 +21,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        maven(url = "http://repo-maven.sagebridge.org/")
+        maven {
+            url = uri("http://repo-maven.sagebridge.org/")
+            isAllowInsecureProtocol = true
+        }
         maven(url = "https://sagebionetworks.jfrog.io/artifactory/mobile-sdks/")
         mavenLocal()
 
@@ -63,7 +66,7 @@ allprojects {
 
     configurations.all {
 
-        resolutionStrategy.eachDependency(Action {
+        resolutionStrategy.eachDependency({
             with (requested) {
                 // remove after our transitive dependencies migrate
                 if (group == "org.koin") {

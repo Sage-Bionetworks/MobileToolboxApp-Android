@@ -21,7 +21,7 @@ import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.repo.AppConfigRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
-import org.sagebionetworks.bridge.mpp.network.generated.models.AppConfig
+import org.sagebionetworks.bridge.kmm.shared.models.AppConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.BackgroundRecordersConfigurationElement
 
@@ -30,7 +30,7 @@ class RecorderConfigViewModel(
     private val studyRepo: StudyRepo,
     private val appConfigRepo: AppConfigRepo
 ) : ViewModel() {
-    val tag = this.javaClass.canonicalName
+    private val tag = this.javaClass.canonicalName
     val json = Json {
         ignoreUnknownKeys = true
         prettyPrint = true
@@ -45,7 +45,7 @@ class RecorderConfigViewModel(
     val recorderScheduledAssessmentConfig: LiveData<List<RecorderScheduledAssessmentConfig>> =
         _recorderScheduledAssessmentConfigLiveData
 
-    internal fun loadRecorderConfigs() {
+    private fun loadRecorderConfigs() {
         viewModelScope.launch {
             getAppRecorderConfig().combine(getStudyRecorderConfig()) { appRecorderConfig, studyRecorderConfig ->
                 return@combine if (appRecorderConfig == null || studyRecorderConfig == null) {
@@ -86,7 +86,7 @@ class RecorderConfigViewModel(
     /**
      * @return successfully retrieved configuration or null
      */
-    fun getAppRecorderConfig(): Flow<BackgroundRecordersConfigurationElement?> {
+    private fun getAppRecorderConfig(): Flow<BackgroundRecordersConfigurationElement?> {
         return appConfigRepo.getAppConfig().map { appConfig ->
             return@map when (appConfig) {
                 is ResourceResult.Success<AppConfig> ->
@@ -102,7 +102,7 @@ class RecorderConfigViewModel(
     /**
      * @return successfully retrieved configuration or null
      */
-    fun getStudyRecorderConfig(): Flow<Map<String, Boolean?>?> {
+    private fun getStudyRecorderConfig(): Flow<Map<String, Boolean?>?> {
 
         return authRepo.currentStudyId().let { studyId ->
             if (studyId == null) {
