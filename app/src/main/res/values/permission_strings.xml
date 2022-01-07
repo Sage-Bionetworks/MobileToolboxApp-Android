@@ -3,7 +3,7 @@
     <string name="permission_settings">Permission Settings</string>
 
     <string name="notifications_header">Notifications</string>
-    <string name="notifications_body">We will send you a daily reminder or notification on your phone to complete your activities.\n\nYou can choose how your notifications look and sound.\n\nYou can turn off your notifications at any time and still be in the study.\n\nGo to your system settings to make changes to your notifications.</string>
+    <string name="notifications_body">We may send you periodic reminders or notifications on your phone to complete your activities.\n\nYou can choose how your notifications look and sound.\n\nYou can turn off your notifications at any time and still be in the study.\n\nGo to your system settings to make changes to your notifications.</string>
 
     <string name="intro_header">Environmental Factors</string>
     <string name="intro_body">The environment around you, such as weather pollution in your area or how close you are to a grocery store or park, can affect your health and well-being.\n\nOn the next screens we will ask for your permission to collect a variety of data. This is optional, you can say no and still be in the study.</string>
