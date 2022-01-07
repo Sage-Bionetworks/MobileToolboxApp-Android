@@ -98,10 +98,10 @@ class TodayFragment : MtbBaseFragment() {
                     sessionsLoaded((it.second as ResourceResult.Success<ScheduledSessionTimelineSlice>).data.scheduledSessionWindows)
                 }
                 is ResourceResult.InProgress -> {
-
+                    //Do nothing
                 }
                 is ResourceResult.Failed -> {
-
+                    //Do nothing
                 }
             }
         })
