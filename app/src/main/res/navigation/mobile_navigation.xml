@@ -9,7 +9,7 @@
         android:id="@+id/navigation_home"
         android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_today" />
+        tools:layout="@layout/fragment_today_list" />
 
     <fragment
         android:id="@+id/navigation_history"

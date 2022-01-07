@@ -13,7 +13,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.logger.Level
 import org.sagebionetworks.bridge.kmm.presentation.di.presentationModule
 import org.sagebionetworks.bridge.kmm.shared.di.*
-import org.sagebionetworks.research.mobiletoolbox.app.notif.AlarmReceiver
 import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 
 

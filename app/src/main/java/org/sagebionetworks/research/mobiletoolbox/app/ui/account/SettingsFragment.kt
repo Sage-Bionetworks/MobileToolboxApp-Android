@@ -61,8 +61,8 @@ class SettingsFragment : Fragment() {
             if (permissionPage == PermissionPageType.NOTIFICATION_PAGE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //On new versions of Android we can take user straight to notification settings
                 val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName);
-                startActivity(intent);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                startActivity(intent)
             } else {
                 //Take user to application settings
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)

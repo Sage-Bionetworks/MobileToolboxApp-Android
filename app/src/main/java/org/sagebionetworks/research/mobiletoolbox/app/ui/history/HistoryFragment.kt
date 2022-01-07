@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
@@ -21,15 +19,15 @@ class HistoryFragment : MtbBaseFragment() {
 
     private val viewModel: HistoryViewModel by viewModel()
     lateinit var binding: FragmentTodayListBinding
-    lateinit var listAdapter: HistoryRecyclerViewAdapter
-    lateinit var headerAdapter: HistoryHeaderAdapter
+    private lateinit var listAdapter: HistoryRecyclerViewAdapter
+    private lateinit var headerAdapter: HistoryHeaderAdapter
 
     val adherenceRecordRepo: AdherenceRecordRepo by inject()
     val authRepo: AuthenticationRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.sessionLiveData.observe(this, Observer {
+        viewModel.sessionLiveData.observe(this, {
             when(it) {
                 is ResourceResult.Success -> {
                     sessionsLoaded(it.data.scheduledSessionWindows)
@@ -72,7 +70,7 @@ class HistoryFragment : MtbBaseFragment() {
             it.assessments.flatMap { assessment -> assessment.history() }
         }.sortedBy { it.finishedOn }
 
-        var minutes = records.sumOf { it.minutes }
+        val minutes = records.sumOf { it.minutes }
 
         listAdapter.submitList(records)
 

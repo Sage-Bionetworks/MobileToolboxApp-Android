@@ -63,13 +63,13 @@ class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: Stud
     }
 
 
-    fun login(externalId: String) {
+    fun login(participantId: String) {
 
         viewModelScope.launch {
             val studyId = studyInfo?.identifier ?: ""
-            val externalId = "$externalId:${studyId.lowercase(Locale.US)}"
+            val externalId = "$participantId:${studyId.lowercase(Locale.US)}"
             val userSessionResult = authRepo.signInExternalId(externalId, externalId)
-            if (userSessionResult is ResourceResult.Success && userSessionResult.data.authenticated == true) {
+            if (userSessionResult is ResourceResult.Success && userSessionResult.data.authenticated) {
                 _signInResult.value = SignInResult.Success
             } else {
                 _signInResult.value = SignInResult.Failed

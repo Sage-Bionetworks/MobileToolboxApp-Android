@@ -7,6 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, HistoryRecyclerViewAdapter.AssessmentHistoryViewHolder>(ItemDiffCallback()) {
+class HistoryRecyclerViewAdapter : ListAdapter<AssessmentHistoryRecord, HistoryRecyclerViewAdapter.AssessmentHistoryViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssessmentHistoryViewHolder {
         return AssessmentHistoryViewHolder.from(parent)
@@ -42,11 +43,13 @@ class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, Histor
             setupCard(historyItem)
         }
 
-        fun setupCard(historyItem: AssessmentHistoryRecord) {
+        private fun setupCard(historyItem: AssessmentHistoryRecord) {
             val context = binding.root.context
             val assessmentInfo = historyItem.assessmentInfo
             binding.title.text = assessmentInfo.label
-            val localDateTime = historyItem.finishedOn.toLocalDateTime(TimeZone.currentSystemDefault())?.toJavaLocalDateTime()
+            val localDateTime =
+                historyItem.finishedOn.toLocalDateTime(TimeZone.currentSystemDefault())
+                    .toJavaLocalDateTime()
             val text = localDateTime.format(
                 DateTimeFormatter.ofLocalizedDate(
                     FormatStyle.LONG))
@@ -59,7 +62,7 @@ class HistoryRecyclerViewAdapter() : ListAdapter<AssessmentHistoryRecord, Histor
             binding.check.imageTintList = ColorStateList.valueOf(foregroundColor)
             binding.check.imageTintMode = PorterDuff.Mode.MULTIPLY
             TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
-                binding.assessmentImage.setImageDrawable(context.resources.getDrawable(it))
+                binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, it, null))
             }
         }
 

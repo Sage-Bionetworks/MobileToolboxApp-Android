@@ -97,7 +97,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
         const val KEY_REQUEST_CODE = "RequestCode"
 
         fun clearNotification(context: Context, alarmManager: AlarmManager, requestCode: Int) {
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
                 intent.putExtra(KEY_REQUEST_CODE, requestCode)
                 PendingIntent.getBroadcast(context, requestCode, intent, 0)

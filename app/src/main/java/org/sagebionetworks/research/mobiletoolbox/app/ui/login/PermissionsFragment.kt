@@ -29,7 +29,7 @@ class PermissionsFragment : Fragment() {
     private lateinit var pageTypeMap: Map<Int, PermissionPageType>
     private val viewModel: LoginViewModel by sharedViewModel()
 
-    val requestPermissionLauncher =
+    private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -155,10 +155,10 @@ enum class PermissionPageType(
 
         override fun getAllowToggle(context: Context): Boolean? {
             val sharedPref = context.getSharedPreferences(PERMISSION_PREFERENCES_FILE, MODE_PRIVATE)
-            if (sharedPref.contains(ALLOW_MOTION_KEY)) {
-                return sharedPref.getBoolean(ALLOW_MOTION_KEY, false)
+            return if (sharedPref.contains(ALLOW_MOTION_KEY)) {
+                sharedPref.getBoolean(ALLOW_MOTION_KEY, false)
             } else {
-                return null
+                null
             }
         }
     };
