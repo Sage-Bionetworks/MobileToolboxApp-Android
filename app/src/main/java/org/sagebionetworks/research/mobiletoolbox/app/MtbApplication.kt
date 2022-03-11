@@ -10,9 +10,11 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.logger.Level
 import org.sagebionetworks.bridge.kmm.presentation.di.presentationModule
 import org.sagebionetworks.bridge.kmm.shared.di.*
+import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
 import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 
 
@@ -37,5 +39,8 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
 
         MTBKitCore.boot(this)
         ScheduleNotificationsWorker.enqueueDailyScheduleNotificationWorker(this)
+        //Trigger an upload worker to process any failed uploads
+        val uploadRequester: UploadRequester = get()
+        uploadRequester.queueUploadWorker()
     }
 }
