@@ -119,7 +119,9 @@ class MtbRootAssessmentViewModel(
     }
 
     override fun onCleared() {
-        recorderRunner.cancel()
+        if (this::recorderRunner.isInitialized) {
+            recorderRunner.cancel()
+        }
         super.onCleared()
     }
 
