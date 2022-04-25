@@ -9,11 +9,12 @@ import kotlinx.coroutines.launch
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.models.StudyInfo
+import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.StudyRepo
 import java.util.Locale
 
-class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: StudyRepo) : ViewModel() {
+class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: StudyRepo, val adherenceRecordRepo: AdherenceRecordRepo) : ViewModel() {
 
     private val _signInResult = MutableLiveData<SignInResult>()
     val signInResult: LiveData<SignInResult> = _signInResult
@@ -45,13 +46,15 @@ class LoginViewModel(val authRepo: AuthenticationRepository, val studyRepo: Stud
     }
 
     /**
-     * Load the current study. This is an authenticated call and must be called after successfully
+     * Load any required Bridge resources before going to the next screen.
+     * This triggers authenticated calls and must be called after successfully
      * signing in.
      */
-    fun loadStudy() {
+    fun loadRequiredBridgeResources() {
         viewModelScope.launch {
             val studyId = authRepo.currentStudyId()
             studyId?.let {
+                adherenceRecordRepo.loadRemoteAdherenceRecords(studyId)
                 studyRepo.getStudy(studyId).collect {
                     if (it is ResourceResult.Success) {
                         study = it.data

@@ -73,7 +73,7 @@ class ParticipantIdSignInFragment : Fragment() {
             }
 
         })
-        viewModel.loadStudy()
+        viewModel.loadRequiredBridgeResources()
     }
 
     private fun goToNextScreen() {
