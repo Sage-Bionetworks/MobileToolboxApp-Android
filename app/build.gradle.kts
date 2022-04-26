@@ -45,13 +45,10 @@ android {
             )
         }
     }
-
-    aaptOptions {
-        noCompress("pdf")
-    }
-
     packagingOptions {
-        pickFirst("**/*.so")
+        jniLibs {
+            pickFirsts += setOf("**/*.so")
+        }
     }
 
     compileOptions {
@@ -65,6 +62,9 @@ android {
 
     buildFeatures.viewBinding = true
     ndkVersion = "22.1.7171670"
+    androidResources {
+        noCompress += listOf("pdf")
+    }
 }
 
 dependencies {
