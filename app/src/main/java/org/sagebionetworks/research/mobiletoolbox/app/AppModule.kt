@@ -48,7 +48,7 @@ val appModule = module {
     viewModel { RecorderConfigViewModel(get(), get(), get()) }
     viewModel { StudyViewModel(get(), get()) }
     viewModel { AccountViewModel(get()) }
-    viewModel { LoginViewModel(get(), get()) }
+    viewModel { LoginViewModel(get(), get(), get()) }
 
     worker { ScheduleNotificationsWorker(get(), get(), get(), get()) }
 }
