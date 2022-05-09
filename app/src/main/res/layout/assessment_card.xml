@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="@id/image_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_as_shape_color_sorting" />
+            app:srcCompat="@drawable/ic_survey_today" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
