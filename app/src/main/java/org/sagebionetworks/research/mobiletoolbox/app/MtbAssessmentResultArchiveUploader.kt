@@ -1,8 +1,8 @@
 package org.sagebionetworks.research.mobiletoolbox.app
 
 import android.content.Context
+import co.touchlab.kermit.Logger
 import com.google.common.io.Files
-import io.github.aakira.napier.Napier
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
@@ -68,7 +68,7 @@ class MtbAssessmentResultArchiveUploader(
     }
 
     internal fun getAsyncRecordArchiveFiles(): Set<ArchiveFile> {
-        Napier.i("Archiving asyncResults ${asyncResults.map { it.identifier }}")
+        Logger.i("Archiving asyncResults ${asyncResults.map { it.identifier }}")
         return asyncResults.flatMap { asyncResult ->
             convertAsyncResultToArchiveFile(asyncResult)
         }.toSet()
@@ -81,12 +81,12 @@ class MtbAssessmentResultArchiveUploader(
     }
 
     fun convertAsyncResultToArchiveFile(resultData: ResultData): Set<ArchiveFile> {
-        Napier.i("Converting and archiving ${resultData.identifier} result")
+        Logger.i("Converting and archiving ${resultData.identifier} result")
         if (resultData is FileResult) {
 
             val file = File(resultData.relativePath)
             if (!file.isFile) {
-                Napier.w("No file found at relative path, skipping file result: $resultData")
+                Logger.w("No file found at relative path, skipping file result: $resultData")
                 return emptySet()
             }
 
@@ -114,7 +114,7 @@ class MtbAssessmentResultArchiveUploader(
         assessmentResult: AssessmentResult,
         jsonCoder: Json
     ): Set<ArchiveFile> {
-        Napier.d("Writing result for assessment ${assessmentResult.identifier}")
+        Logger.d("Writing result for assessment ${assessmentResult.identifier}")
         val resultString = jsonCoder.encodeToString(assessmentResult)
 
         val kotlinEndTimeInstant = assessmentResult.endDateTime!!

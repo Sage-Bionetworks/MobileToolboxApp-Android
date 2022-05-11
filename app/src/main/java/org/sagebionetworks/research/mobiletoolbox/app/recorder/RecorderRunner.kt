@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -61,7 +61,7 @@ class RecorderRunner(
                 val isDisabled =
                     recorderScheduledAssessmentConfig.isRecorderDisabled(taskIdentifier)
                 if (isDisabled) {
-                    Napier.i("Skipping ${recorderScheduledAssessmentConfig.recorder.identifier} disabled for this task")
+                    Logger.i("Skipping ${recorderScheduledAssessmentConfig.recorder.identifier} disabled for this task")
                 }
                 isDisabled
             }
@@ -70,29 +70,29 @@ class RecorderRunner(
 
         deferredRecorderResult =
             scope.async {
-                Napier.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
+                Logger.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
                 supervisorScope {
 
                     val results =
                         recorders
                             .mapNotNull { recorder ->
-                                Napier.i(
+                                Logger.i(
                                     "Awaiting result for recorder: ${recorder.configuration.identifier}"
                                 )
                                 val deferredResult = recorder.result
 
                                 deferredResult.invokeOnCompletion { throwable ->
                                     if (throwable == null) {
-                                        Napier.d(
+                                        Logger.d(
                                             "Deferred completed for recorder: ${recorder.configuration.identifier}"
                                         )
                                     } else if (throwable is CancellationException) {
-                                        Napier.d(
+                                        Logger.d(
                                             "Deferred cancelled for recorder: ${recorder.configuration.identifier}",
                                             throwable
                                         )
                                     } else {
-                                        Napier.w(
+                                        Logger.w(
                                             "Deferred threw unhandled exception for recorder: ${recorder.configuration.identifier}",
                                             throwable
                                         )
@@ -100,13 +100,13 @@ class RecorderRunner(
                                 }
                                 return@mapNotNull try {
                                     val result = deferredResult.await()
-                                    Napier.i(
+                                    Logger.i(
                                         "Finished awaiting result for recorder: ${recorder.configuration.identifier}"
                                     )
 
                                     result
                                 } catch (e: Throwable) {
-                                    Napier.w(
+                                    Logger.w(
                                         "Error waiting for deferred recorder result for recorder: ${recorder.configuration.identifier}",
                                         e
                                     )
@@ -115,37 +115,37 @@ class RecorderRunner(
                             }
 
 
-                    Napier.d("Awaited results: $results")
+                    Logger.d("Awaited results: $results")
                     return@supervisorScope results
                 }
             }
     }
 
     fun start() {
-        Napier.i("Start called")
+        Logger.i("Start called")
         scope.coroutineContext.job.start()
         recorders.forEach {
             val recorderId = it.configuration.identifier
-            Napier.i("Starting recorder: $recorderId")
+            Logger.i("Starting recorder: $recorderId")
             try {
                 it.start()
             } catch (e: Exception) {
-                Napier.w("Error starting recorder: $recorderId", e)
+                Logger.w("Error starting recorder: $recorderId", e)
             }
         }
-        Napier.i("Start finished")
+        Logger.i("Start finished")
     }
 
     fun stop(): Deferred<List<ResultData>> {
-        Napier.i("Stop called")
+        Logger.i("Stop called")
 
         recorders.forEach {
             val recorderId = it.configuration.identifier
-            Napier.i("Stopping recorder: $recorderId")
+            Logger.i("Stopping recorder: $recorderId")
             try {
                 it.stop()
             } catch (e: Exception) {
-                Napier.w("Error stopping recorder: $recorderId", e)
+                Logger.w("Error stopping recorder: $recorderId", e)
             }
         }
 
@@ -155,11 +155,11 @@ class RecorderRunner(
     fun cancel() {
         recorders.forEach {
             val recorderId = it.configuration.identifier
-            Napier.i("Cancelling recorder: $recorderId")
+            Logger.i("Cancelling recorder: $recorderId")
             try {
                 it.cancel()
             } catch (e: Exception) {
-                Napier.w("Error cancelling recorder: $recorderId", e)
+                Logger.w("Error cancelling recorder: $recorderId", e)
             }
         }
     }
@@ -216,7 +216,7 @@ class RecorderRunner(
                 }
             }
             else -> {
-                Napier.w("Unable to construct recorder ${recorderConfig.identifier}")
+                Logger.w("Unable to construct recorder ${recorderConfig.identifier}")
                 null
             }
         }
@@ -278,7 +278,7 @@ class RecorderRunner(
                 }
             }
             else -> {
-                Napier.w("Unable to construct recorder config ${recorderConfig.identifier}")
+                Logger.w("Unable to construct recorder config ${recorderConfig.identifier}")
                 null
             }
         }
