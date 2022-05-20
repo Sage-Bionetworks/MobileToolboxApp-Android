@@ -109,7 +109,7 @@ class MtbRootAssessmentViewModel(
                             sessionExpire
                         )
                     } catch (e: CancellationException) {
-                        Logger.w("Cancelled archiving", e)
+                        Logger.e("Cancelled archiving", e)
                     }
                 }
 
