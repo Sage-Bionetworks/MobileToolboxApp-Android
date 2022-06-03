@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -68,7 +68,7 @@ class TodayFragment : MtbBaseFragment() {
         super.onCreate(savedInstanceState)
 
         recorderConfigViewModel.recorderScheduledAssessmentConfig.observe(this, {
-            Napier.d("Received RecorderScheduleAssessmentConfig: $it")
+            Logger.d("Received RecorderScheduleAssessmentConfig: $it")
         })
     }
 

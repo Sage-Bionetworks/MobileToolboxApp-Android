@@ -1,9 +1,8 @@
 object Versions {
     const val kotlin = "1.5.30"
-    const val dagger = "2.21"
     const val koin = "3.1.1"
     const val glide = "4.12.0"
-    const val napier = "2.1.0"
+    const val kermit = "1.0.0"
     const val bridgeClient = "0.4.3"
     const val passiveData = "0.4.0"
     const val kotlinCoroutines = "1.5.1-native-mt"
@@ -25,7 +24,4 @@ object Deps {
         const val glide_kapt = "com.github.bumptech.glide:compiler:${Versions.glide}"
     }
 
-    object Napier {
-        const val napier = "io.github.aakira:napier:${Versions.napier}"
-    }
 }

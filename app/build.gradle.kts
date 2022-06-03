@@ -4,6 +4,8 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.serialization")
     id("kotlin-android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -88,7 +90,6 @@ dependencies {
     implementation("org.sagebionetworks.bridge.kmm:assessmentmodel-sdk:${Versions.bridgeClient}")
 
     implementation("org.sagebionetworks.research.kmm:passiveData:${Versions.passiveData}")
-    implementation(Deps.Napier.napier)
 
     // MTB dependencies
     implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
@@ -100,6 +101,10 @@ dependencies {
     val assessmentVersion = "0.4.6"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
+
+    // Kermit
+    implementation("co.touchlab:kermit:${Versions.kermit}")
+    implementation("co.touchlab:kermit-crashlytics:${Versions.kermit}")
 
     // Koin
     implementation(Deps.Koin.core)
@@ -119,6 +124,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationJson}")
+
+
+    // Firebase crashlytics
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.10")
 
     // Android
     implementation("androidx.appcompat:appcompat:1.3.1")
