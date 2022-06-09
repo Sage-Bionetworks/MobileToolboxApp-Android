@@ -13,6 +13,7 @@ import kotlinx.serialization.decodeFromString
 import org.koin.android.ext.android.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
+import org.sagebionetworks.assessmentmodel.AssessmentResultCache
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.audio.AudioRecorderConfiguration
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherConfiguration
@@ -29,6 +30,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
     private val archiveUploader: AssessmentResultArchiveUploader by inject()
     private val adherenceRecordRepo: AdherenceRecordRepo by inject()
     private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory by inject()
+    private val assessmentResultCache: AssessmentResultCache by inject()
     private lateinit var adherenceRecord: AdherenceRecord
     private lateinit var sessionExpiration: Instant
     lateinit var recorderScheduledAssessmentConfigs: List<RecorderScheduledAssessmentConfig>
@@ -96,6 +98,8 @@ class MtbAssessmentActivity : AssessmentActivity() {
                     assessmentInfo,
                     assessmentProvider,
                     customNodeStateProvider,
+                    assessmentResultCache,
+                    adherenceRecord.instanceGuid,
                     archiveUploader,
                     adherenceRecordRepo,
                     adherenceRecord,

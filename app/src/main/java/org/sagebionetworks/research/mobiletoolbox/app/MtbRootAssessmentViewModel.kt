@@ -13,6 +13,7 @@ import kotlinx.datetime.Instant
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.AssessmentResult
+import org.sagebionetworks.assessmentmodel.AssessmentResultCache
 import org.sagebionetworks.assessmentmodel.JsonModuleInfo
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
@@ -31,12 +32,14 @@ class MtbRootAssessmentViewModel(
     assessmentPlaceholder: AssessmentPlaceholder,
     registryProvider: AssessmentRegistryProvider,
     nodeStateProvider: CustomNodeStateProvider?,
+    assessmentResultCache: AssessmentResultCache?,
+    assessmentInstanceId: String?,
+    sessionExpiration: Instant?,
     private val archiveUploader: AssessmentResultArchiveUploader,
     private val adherenceRecordRepo: AdherenceRecordRepo,
     private val adherenceRecord: AdherenceRecord,
-    private val sessionExpiration: Instant,
     private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
-) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
+) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider, assessmentResultCache, assessmentInstanceId, sessionExpiration) {
 
     private var isAlreadyStarted = false
     private lateinit var recorderRunner: RecorderRunner
@@ -133,6 +136,8 @@ open class MtbRootAssessmentViewModelFactory {
         assessmentInfo: AssessmentPlaceholder,
         assessmentProvider: AssessmentRegistryProvider,
         nodeStateProvider: CustomNodeStateProvider?,
+        assessmentResultCache: AssessmentResultCache?,
+        assessmentInstanceId: String?,
         archiveUploader: AssessmentResultArchiveUploader,
         adherenceRecordRepo: AdherenceRecordRepo,
         adherenceRecord: AdherenceRecord,
@@ -145,14 +150,16 @@ open class MtbRootAssessmentViewModelFactory {
 
                     @Suppress("UNCHECKED_CAST")
                     return MtbRootAssessmentViewModel(
-                        assessmentInfo,
-                        assessmentProvider,
-                        nodeStateProvider,
-                        archiveUploader,
-                        adherenceRecordRepo,
-                        adherenceRecord,
-                        sessionExpiration,
-                        recorderRunnerFactory
+                        assessmentPlaceholder = assessmentInfo,
+                        registryProvider = assessmentProvider,
+                        nodeStateProvider = nodeStateProvider,
+                        assessmentResultCache = assessmentResultCache,
+                        assessmentInstanceId = assessmentInstanceId,
+                        sessionExpiration = sessionExpiration,
+                        archiveUploader = archiveUploader,
+                        adherenceRecordRepo = adherenceRecordRepo,
+                        adherenceRecord = adherenceRecord,
+                        recorderRunnerFactory = recorderRunnerFactory
                     ) as T
                 }
 
