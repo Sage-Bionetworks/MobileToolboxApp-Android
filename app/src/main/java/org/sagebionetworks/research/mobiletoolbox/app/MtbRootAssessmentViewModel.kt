@@ -34,7 +34,6 @@ class MtbRootAssessmentViewModel(
     private val archiveUploader: AssessmentResultArchiveUploader,
     private val adherenceRecordRepo: AdherenceRecordRepo,
     private val adherenceRecord: AdherenceRecord,
-    private val sessionExpiration: Instant,
     private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider) {
 
@@ -151,7 +150,6 @@ open class MtbRootAssessmentViewModelFactory {
                         archiveUploader,
                         adherenceRecordRepo,
                         adherenceRecord,
-                        sessionExpiration,
                         recorderRunnerFactory
                     ) as T
                 }

@@ -9,12 +9,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(31)
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdkVersion(23)
-        targetSdk = 30
+        targetSdk = 31
         versionCode = 18
         versionName = "0.22.$versionCode"
 
@@ -96,7 +96,8 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.3.3")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.12")
+
 
     val assessmentVersion = "0.4.6"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
