@@ -127,7 +127,7 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
             binding.imageBackground.background = ColorDrawable(foregroundColor)
             TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
                 binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, it, null))
-            }
+            } ?: binding.assessmentImage.setImageDrawable(null)
         }
 
         init {

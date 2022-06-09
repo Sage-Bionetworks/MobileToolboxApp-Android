@@ -2,7 +2,7 @@ package org.sagebionetworks.research.mobiletoolbox.app
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import io.github.aakira.napier.Napier
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,7 @@ class MtbRootAssessmentViewModel(
     fun startRecorderRunner() {
         // in TodayFragment#launchAssessment, we replaced assessmentId with taskId
         if (isAlreadyStarted) {
-            Napier.i("Recorder already started, do nothing")
+            Logger.i("Recorder already started, do nothing")
             return
         }
         val taskIdentifier = assessmentPlaceholder.identifier
@@ -57,7 +57,7 @@ class MtbRootAssessmentViewModel(
     }
 
     override fun handleReadyToSave(reason: FinishedReason, nodeState: NodeState) {
-        Napier.d("FinishedReason: ${reason.javaClass.simpleName}")
+        Logger.d("FinishedReason: ${reason.javaClass.simpleName}")
         val finishedTimeStamp = if (reason.markFinished) {
             nodeState.currentResult.endDateTime ?: Clock.System.now()
         } else {
@@ -86,18 +86,18 @@ class MtbRootAssessmentViewModel(
 
             CoroutineScope(Dispatchers.IO)
                 .launch(coroutineExceptionLogger) {
-                    Napier.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
+                    Logger.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
 
                     try {
 
-                        Napier.i("Recorders stop and await")
+                        Logger.i("Recorders stop and await")
                         val recorderResultsDeferred = recorderRunner.stop()
 
-                        Napier.i("Recorders stop done")
+                        Logger.i("Recorders stop done")
 
                         val recorderResults = recorderResultsDeferred.await()
 
-                        Napier.i(
+                        Logger.i(
                             "Recorder results: ${recorderResults.map { it.identifier }}"
                         )
                         (archiveUploader as MtbAssessmentResultArchiveUploader)
@@ -112,7 +112,7 @@ class MtbRootAssessmentViewModel(
                             sessionExpire
                         )
                     } catch (e: CancellationException) {
-                        Napier.w("Cancelled archiving", e)
+                        Logger.e("Cancelled archiving", e)
                     }
                 }
 
