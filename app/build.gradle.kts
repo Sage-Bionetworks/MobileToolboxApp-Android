@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(31)
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
@@ -96,9 +96,9 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.3.3")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.12")
 
-    val assessmentVersion = "0.4.6"
+    val assessmentVersion = "0.7.2"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 
@@ -147,6 +147,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
+    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 
     //For support Instant now() for API <26
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")

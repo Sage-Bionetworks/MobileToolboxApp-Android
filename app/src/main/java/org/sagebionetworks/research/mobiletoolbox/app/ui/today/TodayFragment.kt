@@ -19,6 +19,7 @@ import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
+import org.sagebionetworks.assessmentmodel.serialization.AssessmentInfoObject
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.models.PerformanceOrder
@@ -175,13 +176,21 @@ class TodayFragment : MtbBaseFragment() {
         val adherenceRecord = AdherenceRecord(
             instanceGuid = assessmentRef.instanceGuid,
             startedOn = Clock.System.now(),
-            eventTimestamp = session.eventTimeStamp.toString(),
+            eventTimestamp = session.eventTimestamp.toString(),
         )
         val assessmentId = viewModel
             .assessmentIdentifierMapLiveData.value!![assessmentRef.assessmentInfo.identifier]
             ?: assessmentRef.assessmentInfo.identifier
         val intent = Intent(requireActivity(), MtbAssessmentActivity::class.java)
         intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_ID_KEY, assessmentId)
+
+        val assessmentInfoObject = AssessmentInfoObject(
+            identifier = assessmentId,
+            guid = assessmentRef.assessmentInfo.guid
+        )
+
+        intent.putExtra(AssessmentActivity.ARG_ASSESSMENT_INFO_KEY, Json.encodeToString(assessmentInfoObject))
+
         intent.putExtra(
             MtbAssessmentActivity.ARG_ADHERENCE_RECORD_KEY,
             Json.encodeToString(adherenceRecord)
