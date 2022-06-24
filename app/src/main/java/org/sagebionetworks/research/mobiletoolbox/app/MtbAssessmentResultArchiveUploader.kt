@@ -3,6 +3,7 @@ package org.sagebionetworks.research.mobiletoolbox.app
 import android.content.Context
 import co.touchlab.kermit.Logger
 import com.google.common.io.Files
+import edu.northwestern.mobiletoolbox.common.data.MtbAssessmentResult
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
@@ -76,8 +77,14 @@ class MtbAssessmentResultArchiveUploader(
 
     // maybe we can pull from AppConfig? -liujoshua 04/02/2021
     override fun getArchiveBuilderForActivity(assessmentResult: AssessmentResult): Archive.Builder {
-        val schema = assessmentResult.schemaIdentifier
-        return Archive.Builder.forActivity(schema, schemaVersionMap[schema] ?: 1)
+        val item = assessmentResult.schemaIdentifier ?: assessmentResult.identifier
+        val schemaVersion = schemaVersionMap[item]
+        val builder = if (schemaVersion != null) {
+            Archive.Builder.forActivity(item, schemaVersion)
+        } else {
+            Archive.Builder.forActivity(item)
+        }
+        return builder
     }
 
     fun convertAsyncResultToArchiveFile(resultData: ResultData): Set<ArchiveFile> {
@@ -120,9 +127,16 @@ class MtbAssessmentResultArchiveUploader(
         val kotlinEndTimeInstant = assessmentResult.endDateTime!!
         val jodaEndTime = kotlinEndTimeInstant.toJodaDateTime()
 
+        // For historical reasons, results from Northwestern built assessments are written to taskData.json
+        val fileName = if (assessmentResult is MtbAssessmentResult) {
+            "taskData.json"
+        } else {
+            "assessmentResult.json"
+        }
+
         return setOf(
             JsonArchiveFile(
-                "taskData.json",
+                fileName,
                 jodaEndTime,
                 resultString
             )
