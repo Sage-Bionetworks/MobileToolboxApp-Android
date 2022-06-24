@@ -127,10 +127,13 @@ class MtbAssessmentResultArchiveUploader(
         val kotlinEndTimeInstant = assessmentResult.endDateTime!!
         val jodaEndTime = kotlinEndTimeInstant.toJodaDateTime()
 
-        // For historical reasons, results from Northwestern built assessments are written to taskData.json
+        // TODO: Figure out generalized solution that gets filename from the result and can handle multiple files -nbrown 6/24/22
+        // Right now the only assessments supported are surveys and those from NU -nbrown 6/24/22
         val fileName = if (assessmentResult is MtbAssessmentResult) {
+            // Results from Northwestern built assessments are written to taskData.json
             "taskData.json"
         } else {
+            // Survey results are written to assessmentResult.json
             "assessmentResult.json"
         }
 
