@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,12 +15,10 @@ import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
 import org.sagebionetworks.assessmentmodel.AssessmentResult
 import org.sagebionetworks.assessmentmodel.AssessmentResultCache
-import org.sagebionetworks.assessmentmodel.JsonModuleInfo
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
 import org.sagebionetworks.assessmentmodel.navigation.NodeState
 import org.sagebionetworks.assessmentmodel.navigation.SaveResults
-import org.sagebionetworks.assessmentmodel.passivedata.recorder.coroutineExceptionLogger
 import org.sagebionetworks.assessmentmodel.presentation.RootAssessmentViewModel
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
@@ -73,15 +72,17 @@ class MtbRootAssessmentViewModel(
         )
 
         if (reason.saveResult == SaveResults.Now || reason.saveResult == SaveResults.WhenSessionExpires) {
-            val moduleInfo =
-                registryProvider.modules.first { it.hasAssessment(assessmentPlaceholder) }
-            val jsonCoder = (moduleInfo as JsonModuleInfo).jsonCoder
+            val jsonCoder = registryProvider.getJsonCoder(assessmentPlaceholder)
             val assessmentResult = nodeState.currentResult as AssessmentResult
 
             val sessionExpire: Instant? = if (reason.saveResult == SaveResults.WhenSessionExpires) {
                 sessionExpiration
             } else {
                 null
+            }
+
+            val coroutineExceptionLogger = CoroutineExceptionHandler { coroutineContext, throwable ->
+                Logger.w("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
             }
 
             CoroutineScope(Dispatchers.IO)
