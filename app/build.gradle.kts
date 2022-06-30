@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
-        minSdkVersion(23)
+        minSdk = 23
         targetSdk = 30
         versionCode = 18
         versionName = "0.22.$versionCode"
@@ -98,7 +98,7 @@ dependencies {
 
     implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.12")
 
-    val assessmentVersion = "0.7.2"
+    val assessmentVersion = "0.8.0"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 
@@ -114,7 +114,7 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") {
         version {

@@ -1,5 +1,5 @@
 object Versions {
-    const val kotlin = "1.5.30"
+    const val kotlin = "1.7.0"
     const val koin = "3.1.5"
     const val glide = "4.12.0"
     const val kermit = "1.0.0"
