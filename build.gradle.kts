@@ -1,4 +1,5 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+val compose_version by extra("1.2.0-rc02")
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {

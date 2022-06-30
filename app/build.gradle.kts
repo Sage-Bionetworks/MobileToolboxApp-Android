@@ -61,6 +61,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0"
+    }
 
     buildFeatures.viewBinding = true
     ndkVersion = "22.1.7171670"
@@ -147,6 +153,11 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
+    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
+
 
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 

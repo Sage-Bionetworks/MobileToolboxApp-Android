@@ -18,32 +18,20 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:background="@color/backgroundGrey"
-        app:layout_constraintBottom_toTopOf="@+id/prev_button"
+        app:layout_constraintBottom_toTopOf="@+id/compose_view"
         app:tabBackground="@drawable/tab_dot_selector"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp"/>
 
-
-
-    <ImageButton
-        android:id="@+id/prev_button"
-        android:layout_width="wrap_content"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="32dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/previous_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-    <ImageButton
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="32dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/next_button_black"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@color/backgroundGrey"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

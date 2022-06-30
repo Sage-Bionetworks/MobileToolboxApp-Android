@@ -5,18 +5,20 @@ import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.sagebionetworks.assessmentmodel.presentation.compose.BottomNavigation
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermissionPageBinding
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPermissionsBinding
@@ -28,6 +30,8 @@ class PermissionsFragment : Fragment() {
     lateinit var binding: FragmentPermissionsBinding
     private lateinit var pageTypeMap: Map<Int, PermissionPageType>
     private val viewModel: LoginViewModel by sharedViewModel()
+
+    var nextEnabled = mutableStateOf(true)
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -77,11 +81,15 @@ class PermissionsFragment : Fragment() {
 
         }.attach()
 
-        binding.nextButton.setOnClickListener {
-            onNextClicked()
-        }
-        binding.prevButton.setOnClickListener {
-            onPrevClicked()
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                BottomNavigation(
+                    { onPrevClicked() },
+                    { onNextClicked() },
+                    nextEnabled = nextEnabled.value
+                )
+            }
         }
 
         return root
@@ -211,8 +219,7 @@ class PermissionPageFragment : Fragment() {
         val permissionPageString = arguments?.getString(KEY_PERMISSION_PAGE) ?: throw IllegalArgumentException()
         permissionPage = PermissionPageType.valueOf(permissionPageString)
         binding.details.configureView(requireContext(), permissionPage) { group, checkedId ->
-            (requireParentFragment() as PermissionsFragment).binding.nextButton.isEnabled =
-                checkedId != -1
+            (requireParentFragment() as PermissionsFragment).nextEnabled.value = checkedId != -1
         }
         return binding.root
     }
@@ -220,7 +227,7 @@ class PermissionPageFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val nextButtonEnabled = !permissionPage.showToggle || binding.details.changeToggle.checkedRadioButtonId != -1
-        (requireParentFragment() as PermissionsFragment).binding.nextButton.isEnabled = nextButtonEnabled
+        (requireParentFragment() as PermissionsFragment).nextEnabled.value = nextButtonEnabled
     }
 
 
