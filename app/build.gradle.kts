@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion(31)
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
-        minSdkVersion(23)
+        minSdk = 23
         targetSdk = 30
         versionCode = 18
         versionName = "0.22.$versionCode"
@@ -61,6 +61,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0"
+    }
 
     buildFeatures.viewBinding = true
     ndkVersion = "22.1.7171670"
@@ -98,7 +104,7 @@ dependencies {
 
     implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.12")
 
-    val assessmentVersion = "0.7.2"
+    val assessmentVersion = "0.8.0"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 
@@ -114,7 +120,7 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") {
         version {
@@ -147,6 +153,11 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
+    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
+
 
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 

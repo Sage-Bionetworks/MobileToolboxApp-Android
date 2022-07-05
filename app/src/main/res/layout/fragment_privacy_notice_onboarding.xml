@@ -12,39 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_background"
+        app:layout_constraintBottom_toTopOf="@id/compose_view"
         android:tag="privacy_notice"
         android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeFragment"
         tools:context=".ui.login.PrivacyNoticeOnboardingFragment"/>
 
-    <FrameLayout
-        android:id="@+id/button_background"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/compose_view"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="@color/backgroundGrey"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@id/next_button"
-        tools:layout_editor_absoluteX="-1dp" />
-
-    <ImageButton
-        android:id="@+id/prev_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="32dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/previous_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-    <ImageButton
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="32dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/next_button_black"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

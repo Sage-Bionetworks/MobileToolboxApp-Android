@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.sagebionetworks.assessmentmodel.presentation.compose.BottomNavigation
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentParticipantIdSignInBinding
@@ -30,13 +33,20 @@ class ParticipantIdSignInFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentParticipantIdSignInBinding.inflate(inflater, container, false)
-        binding.prevButton.setOnClickListener {
-            goBack()
+
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                BottomNavigation(
+                    { goBack() },
+                    { binding.progressOverlay.progressOverlay.visibility = View.VISIBLE
+                        viewModel.login(binding.participantIdInput.text.toString()) },
+                    nextText = stringResource(id = R.string.login),
+                    nextEnabled = true
+                )
+            }
         }
-        binding.nextButton.setOnClickListener {
-            binding.progressOverlay.progressOverlay.visibility = View.VISIBLE
-            viewModel.login(binding.participantIdInput.text.toString())
-        }
+
         viewModel.signInResult.observe(viewLifecycleOwner, {
             when(it) {
                 is LoginViewModel.SignInResult.Success -> {
