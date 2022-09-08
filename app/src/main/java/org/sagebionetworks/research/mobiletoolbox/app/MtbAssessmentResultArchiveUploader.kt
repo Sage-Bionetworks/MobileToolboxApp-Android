@@ -96,6 +96,10 @@ class MtbAssessmentResultArchiveUploader(
                 Logger.w("No file found at relative path, skipping file result: $resultData")
                 return emptySet()
             }
+            if (file.length() > 100000000) {
+                Logger.w("File larger than 100mb, skipping file result: $resultData")
+                return emptySet()
+            }
 
             return setOf(
                 ByteSourceArchiveFile(
