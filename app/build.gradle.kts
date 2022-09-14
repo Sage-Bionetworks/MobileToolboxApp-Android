@@ -102,9 +102,9 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.12")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.13")
 
-    val assessmentVersion = "0.8.0"
+    val assessmentVersion = "0.8.5"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 
