@@ -3,7 +3,7 @@ object Versions {
     const val koin = "3.1.5"
     const val glide = "4.12.0"
     const val kermit = "1.0.0"
-    const val bridgeClient = "0.7.3"
+    const val bridgeClient = "0.9.0"
     const val passiveData = "0.4.0"
     const val kotlinCoroutines = "1.5.1-native-mt"
     const val kotlinxSerializationJson = "1.3.0"
