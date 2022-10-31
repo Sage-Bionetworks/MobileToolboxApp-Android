@@ -14,6 +14,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.datetime.Clock
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
@@ -30,18 +31,8 @@ class ScheduleNotificationsWorker(appContext: Context, workerParams: WorkerParam
         // If we don't have a study id the user is no longer logged in, so we don't have a session
         val studyId = authRepo.session()?.studyIds?.get(0) ?: return result
 
-        //Get sessions for today
-        val sessionsListResource =
-            timelineRepo.getSessionsForToday(studyId, includeAllNotifications = true)
-                .firstOrNull {
-                    it is ResourceResult.Success
-                }
-        if (sessionsListResource == null) {
-            result = Result.retry()
-        }
-        val notificationsList =
-            (sessionsListResource as? ResourceResult.Success)?.data?.notifications
-
+        timelineRepo.updateScheduleIfNeeded(studyId)
+        val notificationsList = timelineRepo.getCachedPendingNotifications(studyId, Clock.System.now())
 
         //Schedule notifications - Each app can have a max of 500 alarms scheduled
         // Worker should run everyday, so 100 is more than plenty -nbrown 9/9/2001
