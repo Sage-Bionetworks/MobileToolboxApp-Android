@@ -1,5 +1,6 @@
 package org.sagebionetworks.research.mobiletoolbox.app.notif
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -57,7 +58,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
         val activityIntent = Intent(context, MtbMainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_IMMUTABLE)
 
         val notificationId = notification.instanceGuid.hashCode()
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -69,8 +70,10 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(context)) {
-            // notificationId is a unique int for each notification that you must define
-            notify(notificationId, builder.build())
+            if (areNotificationsEnabled()) {
+                // notificationId is a unique int for each notification that you must define
+                notify(notificationId, builder.build())
+            }
         }
     }
 
@@ -99,7 +102,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
         fun clearNotification(context: Context, alarmManager: AlarmManager, requestCode: Int) {
             val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
                 intent.putExtra(KEY_REQUEST_CODE, requestCode)
-                PendingIntent.getBroadcast(context, requestCode, intent, 0)
+                PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
             }
             alarmManager.cancel(alarmIntent)
         }
@@ -111,9 +114,21 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
                 val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
                     intent.putExtra(KEY_NOTIFICATION_JSON, Json.encodeToString(notification))
                     intent.putExtra(KEY_REQUEST_CODE, requestCode)
-                    PendingIntent.getBroadcast(context, requestCode, intent, 0)
+                    PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
                 }
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTimeInstant.toEpochMilli(), alarmIntent)
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        alarmTimeInstant.toEpochMilli(),
+                        alarmIntent
+                    )
+                } else {
+                    alarmManager.setAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        alarmTimeInstant.toEpochMilli(),
+                        alarmIntent
+                    )
+                }
             }
         }
     }
