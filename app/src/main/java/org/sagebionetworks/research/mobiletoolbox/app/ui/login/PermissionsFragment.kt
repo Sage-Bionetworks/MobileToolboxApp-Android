@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -147,7 +148,12 @@ enum class PermissionPageType(
     val bodyStringIdentifier: Int,
     val showToggle: Boolean = false,
 ) {
-    NOTIFICATION_PAGE(null, R.drawable.ic_perm_notifications, R.string.notifications_header, R.string.notifications_body),
+    NOTIFICATION_PAGE(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {Manifest.permission.POST_NOTIFICATIONS} else {null},
+        R.drawable.ic_perm_notifications,
+        R.string.notifications_header,
+        R.string.notifications_body
+    ),
     INTRO_PAGE(null, R.drawable.ic_perm_environmental_factors, R.string.intro_header, R.string.intro_body),
     LOCATION_PAGE(Manifest.permission.ACCESS_COARSE_LOCATION, R.drawable.ic_perm_weather_air, R.string.location_header, R.string.location_body),
     MICROPHONE_PAGE(Manifest.permission.RECORD_AUDIO, R.drawable.ic_perm_microphone, R.string.microphone_header, R.string.microphone_body),
