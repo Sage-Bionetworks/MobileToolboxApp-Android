@@ -104,7 +104,7 @@ dependencies {
 
     implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.17")
 
-    val assessmentVersion = "0.8.7"
+    val assessmentVersion = "0.10.0-SNAPSHOT"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 

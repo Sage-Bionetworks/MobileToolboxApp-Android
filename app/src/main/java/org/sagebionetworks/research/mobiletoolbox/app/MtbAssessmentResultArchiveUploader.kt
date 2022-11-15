@@ -14,8 +14,8 @@ import kotlinx.serialization.modules.subclass
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.sagebionetworks.assessmentmodel.AssessmentResult
-import org.sagebionetworks.assessmentmodel.passivedata.ResultData
-import org.sagebionetworks.assessmentmodel.passivedata.recorder.FileResult
+import org.sagebionetworks.assessmentmodel.Result
+import org.sagebionetworks.assessmentmodel.FileResult
 import org.sagebionetworks.assessmentmodel.passivedata.recorder.weather.WeatherResult
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.data.Archive
@@ -58,10 +58,10 @@ class MtbAssessmentResultArchiveUploader(
     )
 
     // TODO: do not rely on consumer class setting our state - liujoshua 2021-10-04
-    val asyncResults: MutableSet<ResultData> = mutableSetOf()
+    val asyncResults: MutableSet<Result> = mutableSetOf()
     private val asyncResultJsonCoder = Json {
         serializersModule = SerializersModule {
-            polymorphic(ResultData::class) {
+            polymorphic(Result::class) {
                 subclass(WeatherResult::class)
             }
         }
@@ -87,7 +87,7 @@ class MtbAssessmentResultArchiveUploader(
         return builder
     }
 
-    fun convertAsyncResultToArchiveFile(resultData: ResultData): Set<ArchiveFile> {
+    fun convertAsyncResultToArchiveFile(resultData: Result): Set<ArchiveFile> {
         Logger.i("Converting and archiving ${resultData.identifier} result")
         if (resultData is FileResult) {
 
@@ -103,7 +103,7 @@ class MtbAssessmentResultArchiveUploader(
 
             return setOf(
                 ByteSourceArchiveFile(
-                    file.name, resultData.endDate.toJodaDateTime(),
+                    file.name, resultData.endDateTime?.toJodaDateTime(),
                     Files.asByteSource(file)
                 )
             )
@@ -113,7 +113,7 @@ class MtbAssessmentResultArchiveUploader(
                 return setOf(
                     JsonArchiveFile(
                         "$identifier.json",
-                        endDate.toJodaDateTime(),
+                        endDateTime?.toJodaDateTime(),
                         asyncResultJsonCoder.encodeToString(this)
                     )
                 )
