@@ -51,7 +51,17 @@ class TodayFragment : MtbBaseFragment() {
             "dccs" to R.drawable.ic_as_shape_color_sorting,
             "memory-for-sequences" to R.drawable.ic_as_sequences,
             "fnamea" to R.drawable.ic_as_faces_names_a,
-            "fnameb" to R.drawable.ic_as_faces_names_b
+            "fnameb" to R.drawable.ic_as_faces_names_b,
+            "JOVIV1" to R.drawable.ic_as_eggs,
+            "ChangeLocalizationV1" to R.drawable.ic_as_color_change,
+            "VerbalReasoningV1" to R.drawable.ic_as_word_problems,
+            "LetterNumberSeriesV1" to R.drawable.ic_as_letters_and_numbers,
+            "3DRotationV1" to R.drawable.ic_as_block_rotation,
+            "ProgressiveMatricesV1" to R.drawable.ic_as_puzzle_completion,
+            "FaceEmotionV1" to R.drawable.ic_as_faces_and_feelings,
+            "GradualOnset" to R.drawable.ic_as_cities_and_mountains, //TODO: Check with next build if identifier needs updating -nbrown 11/15/22
+            "ProbabilisticRewardV1" to R.drawable.ic_as_number_guessing,
+            "ProbabilisticRewardV2" to R.drawable.ic_as_number_guessing,
         )
 
     }
