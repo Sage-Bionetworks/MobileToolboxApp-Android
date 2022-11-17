@@ -90,8 +90,11 @@ class MtbAssessmentResultArchiveUploader(
     fun convertAsyncResultToArchiveFile(resultData: Result): Set<ArchiveFile> {
         Logger.i("Converting and archiving ${resultData.identifier} result")
         if (resultData is FileResult) {
-
-            val file = File(resultData.relativePath)
+            if (resultData.path == null) {
+                Logger.w("Path is null , skipping file result: $resultData")
+                return emptySet()
+            }
+            val file = File(resultData.path!!)
             if (!file.isFile) {
                 Logger.w("No file found at relative path, skipping file result: $resultData")
                 return emptySet()
@@ -103,7 +106,7 @@ class MtbAssessmentResultArchiveUploader(
 
             return setOf(
                 ByteSourceArchiveFile(
-                    file.name, resultData.endDateTime?.toJodaDateTime(),
+                    resultData.filename, resultData.endDateTime?.toJodaDateTime(),
                     Files.asByteSource(file)
                 )
             )
