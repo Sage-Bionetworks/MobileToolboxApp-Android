@@ -51,7 +51,17 @@ class TodayFragment : MtbBaseFragment() {
             "dccs" to R.drawable.ic_as_shape_color_sorting,
             "memory-for-sequences" to R.drawable.ic_as_sequences,
             "fnamea" to R.drawable.ic_as_faces_names_a,
-            "fnameb" to R.drawable.ic_as_faces_names_b
+            "fnameb" to R.drawable.ic_as_faces_names_b,
+            "JOVIV1" to R.drawable.ic_as_eggs,
+            "ChangeLocalizationV1" to R.drawable.ic_as_color_change,
+            "VerbalReasoningV1" to R.drawable.ic_as_word_problems,
+            "LetterNumberSeriesV1" to R.drawable.ic_as_letters_and_numbers,
+            "3DRotationV1" to R.drawable.ic_as_block_rotation,
+            "ProgressiveMatricesV1" to R.drawable.ic_as_puzzle_completion,
+            "FaceEmotionV1" to R.drawable.ic_as_faces_and_feelings,
+            "GradualOnsetV1" to R.drawable.ic_as_cities_and_mountains,
+            "ProbabilisticRewardForm1V1" to R.drawable.ic_as_number_guessing,
+            "ProbabilisticRewardForm2V1" to R.drawable.ic_as_number_guessing,
         )
 
     }
@@ -158,7 +168,7 @@ class TodayFragment : MtbBaseFragment() {
 
             val locked = session.isInFuture() ||
                     (availableAssessmentAdded && session.sessionInfo.performanceOrder == PerformanceOrder.SEQUENTIAL)
-            val hide = assessmentRef.isCompleted || assessmentRef.isDeclined
+            val hide = !session.persistent && (assessmentRef.isCompleted || assessmentRef.isDeclined)
             if (!hide) {
                 // Add AssessmentItem
                 dataList.add(AssessmentItem(assessmentRef, locked, session))
