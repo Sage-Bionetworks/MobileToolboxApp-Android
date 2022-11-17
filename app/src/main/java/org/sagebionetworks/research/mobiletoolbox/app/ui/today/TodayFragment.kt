@@ -59,9 +59,9 @@ class TodayFragment : MtbBaseFragment() {
             "3DRotationV1" to R.drawable.ic_as_block_rotation,
             "ProgressiveMatricesV1" to R.drawable.ic_as_puzzle_completion,
             "FaceEmotionV1" to R.drawable.ic_as_faces_and_feelings,
-            "GradualOnset" to R.drawable.ic_as_cities_and_mountains, //TODO: Check with next build if identifier needs updating -nbrown 11/15/22
-            "ProbabilisticRewardV1" to R.drawable.ic_as_number_guessing,
-            "ProbabilisticRewardV2" to R.drawable.ic_as_number_guessing,
+            "GradualOnsetV1" to R.drawable.ic_as_cities_and_mountains,
+            "ProbabilisticRewardForm1V1" to R.drawable.ic_as_number_guessing,
+            "ProbabilisticRewardForm2V1" to R.drawable.ic_as_number_guessing,
         )
 
     }
