@@ -21,6 +21,7 @@ import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
+import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.RecorderRunner
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.RecorderScheduledAssessmentConfig
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderConfigJsonCoder
@@ -31,6 +32,7 @@ class MtbAssessmentActivity : AssessmentActivity() {
     private val adherenceRecordRepo: AdherenceRecordRepo by inject()
     private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory by inject()
     private val assessmentResultCache: AssessmentResultCache by inject()
+    private val authRepo: AuthenticationRepository by inject()
     private lateinit var adherenceRecord: AdherenceRecord
     private lateinit var sessionExpiration: Instant
     lateinit var recorderScheduledAssessmentConfigs: List<RecorderScheduledAssessmentConfig>
@@ -104,7 +106,8 @@ class MtbAssessmentActivity : AssessmentActivity() {
                     adherenceRecordRepo,
                     adherenceRecord,
                     sessionExpiration,
-                    recorderRunnerFactory
+                    recorderRunnerFactory,
+                    authRepo.currentStudyId()!!
                 )
         ).get(MtbRootAssessmentViewModel::class.java)
 

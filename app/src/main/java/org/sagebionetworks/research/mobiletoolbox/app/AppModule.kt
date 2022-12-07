@@ -38,7 +38,7 @@ val appModule = module {
     single<AssessmentResultCache> { AssessmentResultCacheImpl(get()) }
 
     single<AssessmentResultArchiveUploader> {
-        MtbAssessmentResultArchiveUploader(get(), get(), get(), get())
+        AssessmentResultArchiveUploader(get(), get(), get())
     }
 
     single<AssessmentRegistryProvider>() {
