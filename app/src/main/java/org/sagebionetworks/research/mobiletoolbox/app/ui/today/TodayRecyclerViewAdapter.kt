@@ -125,9 +125,8 @@ class TodayRecyclerViewAdapter(private val onClick: (ScheduledAssessmentReferenc
 
             val foregroundColor = Color.parseColor(assessmentInfo.colorScheme?.foreground ?: "#8FD6FF")
             binding.imageBackground.background = ColorDrawable(foregroundColor)
-            TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
-                binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, it, null))
-            } ?: binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.sage_survey_default, null))
+            val iconResourceId = TodayFragment.getAssessmentIcon(context, assessmentInfo)
+            binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, iconResourceId, null))
         }
 
         init {
