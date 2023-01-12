@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import org.sagebionetworks.assessmentmodel.presentation.compose.BottomNavigation
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentPrivacyNoticeOnboardingBinding
 import org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeFragment
@@ -19,11 +21,16 @@ class PrivacyNoticeOnboardingFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentPrivacyNoticeOnboardingBinding.inflate(inflater, container, false)
-        binding.nextButton.setOnClickListener {
-            onNextClicked()
-        }
-        binding.prevButton.setOnClickListener {
-            onPrevClicked()
+
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                BottomNavigation(
+                    { onPrevClicked() },
+                    { onNextClicked() },
+                    nextEnabled = true
+                )
+            }
         }
 
         return binding.root

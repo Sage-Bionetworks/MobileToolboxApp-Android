@@ -9,14 +9,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
-        minSdkVersion(23)
-        targetSdk = 30
-        versionCode = 18
-        versionName = "0.22.$versionCode"
+        minSdk = 23
+        targetSdk = 33
+        versionCode = 26
+        versionName = "0.24.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -61,6 +61,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.2.0"
+    }
 
     buildFeatures.viewBinding = true
     ndkVersion = "22.1.7171670"
@@ -96,9 +102,9 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.3.3")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.24")
 
-    val assessmentVersion = "0.4.6"
+    val assessmentVersion = "0.8.7"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
 
@@ -114,7 +120,7 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") {
         version {
@@ -147,6 +153,13 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.3.5")
 
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+
+    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
+
+
+    implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 
     //For support Instant now() for API <26
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")

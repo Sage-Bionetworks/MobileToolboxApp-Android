@@ -84,6 +84,7 @@ class SettingsFragment : Fragment() {
                 button.setBackgroundColor(resources.getColor(R.color.backgroundBlue))
             }
 
+            else -> {}
         }
     }
 

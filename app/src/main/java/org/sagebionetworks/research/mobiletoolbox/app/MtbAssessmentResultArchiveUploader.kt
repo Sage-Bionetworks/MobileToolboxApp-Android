@@ -3,6 +3,7 @@ package org.sagebionetworks.research.mobiletoolbox.app
 import android.content.Context
 import co.touchlab.kermit.Logger
 import com.google.common.io.Files
+import edu.northwestern.mobiletoolbox.common.data.MtbAssessmentResult
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
@@ -76,8 +77,14 @@ class MtbAssessmentResultArchiveUploader(
 
     // maybe we can pull from AppConfig? -liujoshua 04/02/2021
     override fun getArchiveBuilderForActivity(assessmentResult: AssessmentResult): Archive.Builder {
-        val schema = assessmentResult.schemaIdentifier
-        return Archive.Builder.forActivity(schema, schemaVersionMap[schema] ?: 1)
+        val item = assessmentResult.schemaIdentifier ?: assessmentResult.identifier
+        val schemaVersion = schemaVersionMap[item]
+        val builder = if (schemaVersion != null) {
+            Archive.Builder.forActivity(item, schemaVersion)
+        } else {
+            Archive.Builder.forActivity(item)
+        }
+        return builder
     }
 
     fun convertAsyncResultToArchiveFile(resultData: ResultData): Set<ArchiveFile> {
@@ -87,6 +94,10 @@ class MtbAssessmentResultArchiveUploader(
             val file = File(resultData.relativePath)
             if (!file.isFile) {
                 Logger.w("No file found at relative path, skipping file result: $resultData")
+                return emptySet()
+            }
+            if (file.length() > 100000000) {
+                Logger.w("File larger than 100mb, skipping file result: $resultData")
                 return emptySet()
             }
 
@@ -120,9 +131,19 @@ class MtbAssessmentResultArchiveUploader(
         val kotlinEndTimeInstant = assessmentResult.endDateTime!!
         val jodaEndTime = kotlinEndTimeInstant.toJodaDateTime()
 
+        // TODO: Figure out generalized solution that gets filename from the result and can handle multiple files -nbrown 6/24/22
+        // Right now the only assessments supported are surveys and those from NU -nbrown 6/24/22
+        val fileName = if (assessmentResult is MtbAssessmentResult) {
+            // Results from Northwestern built assessments are written to taskData.json
+            "taskData.json"
+        } else {
+            // Survey results are written to assessmentResult.json
+            "assessmentResult.json"
+        }
+
         return setOf(
             JsonArchiveFile(
-                "taskData.json",
+                fileName,
                 jodaEndTime,
                 resultString
             )

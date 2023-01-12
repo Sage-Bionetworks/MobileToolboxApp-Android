@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.sagebionetworks.assessmentmodel.presentation.compose.BlackNextButton
+import org.sagebionetworks.assessmentmodel.presentation.compose.BottomNavigation
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.research.mobiletoolbox.app.R
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentSelectStudyBinding
@@ -26,10 +29,15 @@ class SelectStudyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSelectStudyBinding.inflate(inflater, container, false)
-        binding.nextButton.setOnClickListener {
-            binding.progressOverlay.progressOverlay.visibility = View.VISIBLE
-            val studyId = binding.studyIdInput.text.toString()
-            viewModel.findStudyInfo(studyId)
+
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                BlackNextButton(
+                    { onNextClicked() },
+                    enabled = true
+                )
+            }
         }
         if (viewModel.studyInfo != null) {
             //Coming back from next screen
@@ -58,6 +66,12 @@ class SelectStudyFragment : Fragment() {
         binding.studyIdInput.doAfterTextChanged { binding.studyIdInputLayout.error = null }
 
         return binding.root
+    }
+
+    fun onNextClicked() {
+        binding.progressOverlay.progressOverlay.visibility = View.VISIBLE
+        val studyId = binding.studyIdInput.text.toString()
+        viewModel.findStudyInfo(studyId)
     }
 
 

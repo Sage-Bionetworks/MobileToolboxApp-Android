@@ -63,7 +63,7 @@ class HistoryRecyclerViewAdapter : ListAdapter<AssessmentHistoryRecord, HistoryR
             binding.check.imageTintMode = PorterDuff.Mode.MULTIPLY
             TodayFragment.assessmentIconMap.get(assessmentInfo.identifier)?.let {
                 binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, it, null))
-            }
+            }?: binding.assessmentImage.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.sage_survey_default, null))
         }
 
         companion object {
