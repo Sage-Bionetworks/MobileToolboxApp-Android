@@ -8,10 +8,9 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
+import org.sagebionetworks.bridge.kmm.shared.repo.AssessmentHistoryRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
-import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionWindow
 import org.sagebionetworks.research.mobiletoolbox.app.MtbBaseFragment
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.FragmentTodayListBinding
 
@@ -28,17 +27,7 @@ class HistoryFragment : MtbBaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.sessionLiveData.observe(this, {
-            when(it) {
-                is ResourceResult.Success -> {
-                    sessionsLoaded(it.data.scheduledSessionWindows)
-                }
-                is ResourceResult.InProgress -> {
-
-                }
-                is ResourceResult.Failed -> {
-
-                }
-            }
+            adherenceHistoryLoaded(it)
         })
     }
 
@@ -65,11 +54,7 @@ class HistoryFragment : MtbBaseFragment() {
         viewModel.loadTodaysSessions()
     }
 
-    private fun sessionsLoaded(sessions: List<ScheduledSessionWindow>) {
-        val records = sessions.flatMap {
-            it.assessments.flatMap { assessment -> assessment.history() }
-        }.sortedBy { it.finishedOn }
-
+    private fun adherenceHistoryLoaded(records: List<AssessmentHistoryRecord>) {
         val minutes = records.sumOf { it.minutes }
 
         listAdapter.submitList(records)
@@ -77,7 +62,6 @@ class HistoryFragment : MtbBaseFragment() {
         headerAdapter.loading = false
         headerAdapter.minutes = minutes
         headerAdapter.notifyDataSetChanged()
-
     }
 
 }

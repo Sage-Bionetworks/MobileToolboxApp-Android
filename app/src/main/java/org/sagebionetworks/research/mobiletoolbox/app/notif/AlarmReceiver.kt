@@ -11,7 +11,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -22,7 +21,6 @@ import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledNotification
 import org.sagebionetworks.research.mobiletoolbox.app.MtbMainActivity
 import org.sagebionetworks.research.mobiletoolbox.app.R
-import java.time.LocalDateTime
 import java.time.ZoneId
 
 
@@ -46,10 +44,6 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
             // so we should only be showing notifications that still need to be completed. -nbrown 9/13/2001
 
             showNotification(context, notification)
-            notification.repeatInterval?.let {
-                //If this is a repeating notification schedule next one
-                scheduleNotificationAlarm(context, notification, intent.getIntExtra(KEY_REQUEST_CODE, 0))
-            }
         }
     }
 
@@ -108,7 +102,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
         }
 
         fun scheduleNotificationAlarm(context: Context, notification: ScheduledNotification, requestCode: Int) {
-            notification.nextScheduledTime()?.let { scheduledTime ->
+            notification.scheduleOn.toJavaLocalDateTime().let { scheduledTime ->
                 val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 val alarmTimeInstant = scheduledTime.atZone(ZoneId.systemDefault()).toInstant()
                 val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
@@ -133,32 +127,4 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent{
         }
     }
 
-}
-
-/**
- * Extension function to go from a kotlinx.date.DateTimePeriod
- * to a java.time.Duration. Seems like something the kotlinx datetime library
- * should have, but as of 9/10/2001 it doesn't.
- */
-fun DateTimePeriod.toDuration(): java.time.Duration {
-    return java.time.Duration.parse(toString())
-}
-
-/**
- * Extension function to get the next time this notification should be shown.
- */
-fun ScheduledNotification.nextScheduledTime(): LocalDateTime? {
-    if (repeatInterval != null) {
-        val now = LocalDateTime.now()
-        var scheduledTime = scheduleOn.toJavaLocalDateTime()
-        while (scheduledTime.isBefore(now)) {
-            val duration = repeatInterval!!.toDuration()
-            scheduledTime = scheduledTime.plus(duration)
-        }
-        if (scheduledTime.isBefore(repeatUntil!!.toJavaLocalDateTime())) {
-            return scheduledTime
-        }
-        return null
-    }
-    return scheduleOn.toJavaLocalDateTime()
 }
