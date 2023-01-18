@@ -1,5 +1,6 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.today
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -19,9 +20,11 @@ import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.sagebionetworks.assessmentmodel.presentation.AssessmentActivity
+import org.sagebionetworks.assessmentmodel.resourcemanagement.StandardResourceAssetType
 import org.sagebionetworks.assessmentmodel.serialization.AssessmentInfoObject
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
+import org.sagebionetworks.bridge.kmm.shared.models.AssessmentInfo
 import org.sagebionetworks.bridge.kmm.shared.models.PerformanceOrder
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
@@ -64,6 +67,24 @@ class TodayFragment : MtbBaseFragment() {
             "ProbabilisticRewardForm2V1" to R.drawable.ic_as_number_guessing,
         )
 
+        fun getAssessmentIcon(context: Context, assessmentInfo: AssessmentInfo) : Int {
+            // First try to find icon resource identifier based on assessment identifier
+            assessmentIconMap.get(assessmentInfo.identifier)?.let { resourceId ->
+                return resourceId
+            }
+            // Next try the imageResource from AssessmentInfo
+            assessmentInfo.imageResource?.let { imageResource ->
+                val resourceName = imageResource.module?.let { module ->
+                    module + "_" + imageResource.name
+                } ?: imageResource.name
+                val resourceId = context.resources.getIdentifier(resourceName, StandardResourceAssetType.DRAWABLE, context.packageName)
+                if (resourceId != 0) {
+                    return resourceId
+                }
+            }
+            // Default to the default survey icon
+            return R.drawable.sage_survey_default
+        }
     }
 
     private val viewModel: TodayViewModel by viewModel()
