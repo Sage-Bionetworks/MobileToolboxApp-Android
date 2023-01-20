@@ -107,6 +107,7 @@ dependencies {
     val assessmentVersion = "0.10.1"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
+    implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.2")
 
     // Kermit
     implementation("co.touchlab:kermit:${Versions.kermit}")
