@@ -105,6 +105,7 @@ class MtbRootAssessmentViewModel(
 
                         assessmentResult.inputResults.addAll(recorderResults)
 
+                        //TODO: Figure out better approach to determining filename for the results json file -nbrown 1/23/2023
                         val fileName = if (assessmentResult is MtbAssessmentResult) {
                             // Results from Northwestern built assessments are written to taskData.json
                             "taskData.json"
