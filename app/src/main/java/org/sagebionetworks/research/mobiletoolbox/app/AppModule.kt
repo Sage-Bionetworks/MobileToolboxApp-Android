@@ -36,8 +36,8 @@ import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayViewModel
 val appModule = module {
 
     single<AssessmentResultCache> { AssessmentResultCacheImpl(get()) }
-
-    single<AssessmentResultArchiveUploader> {
+    
+    factory <AssessmentResultArchiveUploader> {
         AssessmentResultArchiveUploader(get(), get(), get())
     }
 

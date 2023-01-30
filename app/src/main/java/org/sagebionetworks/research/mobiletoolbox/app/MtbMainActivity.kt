@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import org.koin.android.ext.android.inject
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mobiletoolbox.app.databinding.ActivityMtbMainBinding
@@ -37,6 +39,11 @@ class MtbMainActivity : AppCompatActivity() {
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
             startActivity(launchIntent)
+        } else {
+            // If authenticated use the account userID as the identifier for Crashlytics
+            authenticationRepository.session()?.id?.let { userId ->
+                Firebase.crashlytics.setUserId(userId)
+            }
         }
     }
 

@@ -83,7 +83,7 @@ class MtbRootAssessmentViewModel(
             }
 
             val coroutineExceptionLogger = CoroutineExceptionHandler { coroutineContext, throwable ->
-                Logger.w("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
+                Logger.e("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
             }
 
             CoroutineScope(Dispatchers.IO)
