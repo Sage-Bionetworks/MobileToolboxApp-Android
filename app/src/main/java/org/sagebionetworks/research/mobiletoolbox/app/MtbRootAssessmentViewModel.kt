@@ -83,7 +83,7 @@ class MtbRootAssessmentViewModel(
             }
 
             val coroutineExceptionLogger = CoroutineExceptionHandler { coroutineContext, throwable ->
-                Logger.w("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
+                Logger.e("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
             }
 
             CoroutineScope(Dispatchers.IO)
@@ -105,6 +105,7 @@ class MtbRootAssessmentViewModel(
 
                         assessmentResult.inputResults.addAll(recorderResults)
 
+                        //TODO: Figure out better approach to determining filename for the results json file -nbrown 1/23/2023
                         val fileName = if (assessmentResult is MtbAssessmentResult) {
                             // Results from Northwestern built assessments are written to taskData.json
                             "taskData.json"

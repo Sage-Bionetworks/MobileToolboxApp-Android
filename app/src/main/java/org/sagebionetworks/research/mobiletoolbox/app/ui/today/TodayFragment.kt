@@ -143,6 +143,7 @@ class TodayFragment : MtbBaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        recorderConfigViewModel.loadRecorderConfigs()
         viewModel.loadTodaysSessions()
     }
 
