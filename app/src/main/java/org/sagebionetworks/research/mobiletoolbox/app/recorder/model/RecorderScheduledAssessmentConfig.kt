@@ -16,6 +16,6 @@ data class RecorderScheduledAssessmentConfig(
     fun isRecorderDisabled(taskId: String): Boolean {
         return disabledByAppForTaskIdentifiers.contains(taskId)
                 // present && false disables recorder for this study
-                || enabledByStudyClientData?.equals(false) ?: false
+                || enabledByStudyClientData?.equals(false) ?: true // if we don't have a value default to true, which disables recorders
     }
 }
