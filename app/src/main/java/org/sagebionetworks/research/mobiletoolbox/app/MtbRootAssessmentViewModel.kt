@@ -118,6 +118,7 @@ class MtbRootAssessmentViewModel(
                             jsonCoder,
                             adherenceRecord.instanceGuid,
                             adherenceRecord.eventTimestamp,
+                            startedTimeStamp,
                             fileName,
                             sessionExpire
                         )
