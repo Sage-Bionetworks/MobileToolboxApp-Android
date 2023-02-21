@@ -12,6 +12,9 @@ on:
 jobs:
   connected-test:
     runs-on: macos-latest
+    env:
+      GPR_USER: ${{ secrets.GPR_USER }}
+      GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
     strategy:
       matrix:
         api-level: [23, 33]
