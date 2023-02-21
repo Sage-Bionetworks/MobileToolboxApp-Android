@@ -1,0 +1,68 @@
+name: Check PR
+
+on:
+  # Triggers the workflow on every pull request to develop branch
+  pull_request:
+    branches:
+      - develop
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  connected-test:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [23, 33]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: Write study public key pem file
+        env:
+          STUDY_PUBLIC_KEY_BASE64: ${{ secrets.STUDY_PUBLIC_KEY_BASE64 }}
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/app/src/main/assets/
+          echo "$STUDY_PUBLIC_KEY_BASE64" | base64 --decode > ${GITHUB_WORKSPACE}/app/src/main/assets/study_public_key.pem
+
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      - name: Run unit tests
+        run: ./gradlew test --stacktrace
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ matrix.api-level }}
+
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew connectedCheck --stacktrace
+
+      - name: Upload Reports
+          uses: actions/upload-artifact@v2
+          with:
+            name: Test-Reports
+            path: app/build/reports
+          if: always()

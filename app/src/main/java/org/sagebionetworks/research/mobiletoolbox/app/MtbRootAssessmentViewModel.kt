@@ -44,6 +44,7 @@ class MtbRootAssessmentViewModel(
 
     private var isAlreadyStarted = false
     private lateinit var recorderRunner: RecorderRunner
+    internal var saveJob: Job? = null
 
     fun startRecorderRunner() {
         // in TodayFragment#launchAssessment, we replaced assessmentId with taskId
@@ -86,7 +87,7 @@ class MtbRootAssessmentViewModel(
                 Logger.e("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
             }
 
-            CoroutineScope(Dispatchers.IO)
+            saveJob = CoroutineScope(Dispatchers.IO)
                 .launch(coroutineExceptionLogger) {
                     Logger.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
 
