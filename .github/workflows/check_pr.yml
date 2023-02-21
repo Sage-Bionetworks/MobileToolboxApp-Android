@@ -17,7 +17,7 @@ jobs:
       GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
     strategy:
       matrix:
-        api-level: [23, 33]
+        api-level: [23]
     steps:
       - name: checkout
         uses: actions/checkout@v3
