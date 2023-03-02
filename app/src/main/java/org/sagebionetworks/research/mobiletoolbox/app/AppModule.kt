@@ -45,18 +45,19 @@ val appModule = module {
         RootAssessmentRegistryProvider(get(), listOf(
             get(qualifier = named("mtb-northwestern")),
             get(qualifier = named("sage-motorcontrol")),
-            get(qualifier = named("sage-survey"))))
-
+            //get(qualifier = named("sage-survey")),
+            get(qualifier = named("washu-arc"))))
     }
-    single<AssessmentRegistryProvider>(StringQualifier("sage-survey")) {
-        BridgeAssessmentRegistryProvider(get(), get())
-    }
+//    single<AssessmentRegistryProvider>(StringQualifier("sage-survey")) {
+//        BridgeAssessmentRegistryProvider(get(), get())
+//    }
 
     single<AssessmentFragmentProvider>() {
         RootAssessmentFragmentProvider(listOf(
             get(qualifier = named("mtb-northwestern")),
             get(qualifier = named("sage-motorcontrol")),
-            get(qualifier = named("sage-survey"))))
+            get(qualifier = named("sage-survey")),
+            get(qualifier = named("washu-arc"))))
     }
     
     single<CustomNodeStateProvider>() {

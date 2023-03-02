@@ -1,0 +1,12 @@
+[
+  {
+    "type": "ArcModuleInfoObject",
+    "assessments": [
+      {
+        "type": "arcSymbolAssessmentObject",
+        "identifier": "symbol_test",
+        "title": "Symbol Test"
+      }
+    ]
+  }
+]

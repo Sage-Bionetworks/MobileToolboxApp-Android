@@ -109,6 +109,10 @@ dependencies {
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
     implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.3")
 
+    // WashU Arc
+    implementation("edu.wustl.arc.assessments:core-library:1.0.0")
+    implementation("com.github.gcacace:signature-pad:1.3.1")
+
     // Kermit
     implementation("co.touchlab:kermit:${Versions.kermit}")
     implementation("co.touchlab:kermit-crashlytics:${Versions.kermit}")
