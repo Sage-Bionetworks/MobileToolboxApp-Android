@@ -1,14 +1,11 @@
 package org.sagebionetworks.research.mobiletoolbox.app.arc
 
-import android.content.Context
-import androidx.fragment.app.Fragment
-import edu.wustl.arc.path_data.GridTestPathData
-import edu.wustl.arc.path_data.SymbolsTestPathData
-import edu.wustl.arc.paths.templates.TestInfoTemplate
-import edu.wustl.arc.paths.tests.SymbolTest
-import edu.wustl.arc.paths.tests.TestBegin
-import edu.wustl.arc.study.Study
-import edu.wustl.arc.utilities.ViewUtil
+import com.google.gson.GsonBuilder
+import edu.wustl.arc.api.models.TestSubmission
+import edu.wustl.arc.core.Device
+import edu.wustl.arc.study.TestSession
+import edu.wustl.arc.time.TimeUtil
+import edu.wustl.arc.utilities.VersionUtil
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
@@ -24,20 +21,16 @@ import org.sagebionetworks.assessmentmodel.AssessmentResult
 import org.sagebionetworks.assessmentmodel.AsyncActionConfiguration
 import org.sagebionetworks.assessmentmodel.AsyncActionContainer
 import org.sagebionetworks.assessmentmodel.ImageInfo
-import org.sagebionetworks.assessmentmodel.InstructionStep
 import org.sagebionetworks.assessmentmodel.InterruptionHandlingObject
 import org.sagebionetworks.assessmentmodel.JsonArchivableFile
 import org.sagebionetworks.assessmentmodel.JsonFileArchivableResult
 import org.sagebionetworks.assessmentmodel.ModuleInfo
 import org.sagebionetworks.assessmentmodel.Node
 import org.sagebionetworks.assessmentmodel.Result
-import org.sagebionetworks.assessmentmodel.Step
 import org.sagebionetworks.assessmentmodel.navigation.BranchNodeState
 import org.sagebionetworks.assessmentmodel.navigation.Navigator
 import org.sagebionetworks.assessmentmodel.serialization.NodeContainerObject
 import org.sagebionetworks.assessmentmodel.serialization.StepObject
-import org.sagebionetworks.research.mobiletoolbox.app.R
-import org.sagebionetworks.research.mobiletoolbox.app.arc.ArcTestInfoStepObject.Companion.createTestInfoFragment
 
 val arcNodeSerializersModule = SerializersModule {
     polymorphic(Node::class) {
@@ -46,26 +39,34 @@ val arcNodeSerializersModule = SerializersModule {
         subclass(ArcSymbolTestStepObject::class)
     }
     polymorphic(Assessment::class) {
-        subclass(ArcSymbolAssessmentObject::class)
+        subclass(ArcAssessmentObject::class)
     }
     polymorphic(Result::class) {
-        subclass(ArcSymbolTestResultObject::class)
+        subclass(ArcTestResultObject::class)
     }
-}
-
-
-interface ArcContextCreatable<out T> {
-    fun createFromContext(context: Context): T
-}
-
-
-interface ArcStepFragmentCreatable {
-    fun createFromStep(context: Context, step: Step): Fragment?
 }
 
 @Serializable
-@SerialName("arcSymbolAssessmentObject")
-data class ArcSymbolAssessmentObject(
+enum class ArcAssessmentType {
+    @SerialName("symbol_test")
+    SYMBOLS,
+    @SerialName("price_test")
+    PRICES,
+    @SerialName("grid_test")
+    GRIDS;
+
+    fun toIdentifier(): String {
+        return when(this) {
+            SYMBOLS -> "symbols"
+            PRICES -> "prices"
+            GRIDS -> "grids"
+        }
+    }
+}
+
+@Serializable
+@SerialName("arcAssessmentObject")
+data class ArcAssessmentObject(
     override val identifier: String,
     override val guid: String? = null,
     override val versionString: String? = null,
@@ -81,28 +82,40 @@ data class ArcSymbolAssessmentObject(
     override val children: List<Node> = listOf()
 ) : NodeContainerObject(), Assessment, AsyncActionContainer {
 
-    companion object: ArcStepFragmentCreatable {
+    companion object {
+        val gson = GsonBuilder().setPrettyPrinting().create()
 
-        override fun createFromStep(context: Context, step: Step): Fragment? {
-            return when (step) {
-                is ArcStepFragmentCreatable -> step.createFromStep(context, step)
-                else -> return null
-            }
-        }
+        fun createAssessmentResult(session: TestSession,
+                                arcTestResultObject: ArcTestResultObject,
+                                participantId: String): ArcTestResultObject {
 
-        fun createFromContext(context: Context, guid: String, schemaId: String): ArcSymbolAssessmentObject {
-            val id = "symbol_test"
+            val test = TestSubmission()
+            test.app_version = VersionUtil.getAppVersionName()
+            test.device_id = Device.getId()
+            test.device_info = Device.getInfo()
+            test.participant_id = participantId
+            test.session_id = java.lang.String.valueOf(session.id)
+            test.id = test.session_id
+            test.tests = session.copyOfTestData
+            test.timezone_name = TimeUtil.getTimezoneName()
+            test.timezone_offset = TimeUtil.getTimezoneOffset()
 
-            val children = listOf<Node>(
-                ArcTestInfoStepObject.createFromContext(context),
-                ArcTestBeginStepObject.createFromContext(context),
-                ArcSymbolTestStepObject.createFromContext(context))
+            // TODO: mdephillips 3/2/23 Are these fields relevant anymore?
+//            test.session_date = TimeUtil.toUtcDouble(session.scheduledTime)
+//            if (session.startTime != null) {
+//                test.start_time = TimeUtil.toUtcDouble(session.startTime)
+//            }
+//            test.day = session.dayIndex
+//            test.week = weeks
+//            test.session = session.index
+//            test.missed_session = if (session.wasMissed()) 1 else 0
+//            test.finished_session = if (session.wasFinished()) 1 else 0
 
-            return ArcSymbolAssessmentObject(
-                identifier = id,
-                guid = guid,
-                schemaIdentifier = schemaId,
-                children = children)
+            val jsonStr = gson.toJson(test)
+
+            return arcTestResultObject.copy(
+                endDateTime = Clock.System.now(),
+                resultJsonStr = jsonStr)
         }
     }
 
@@ -113,7 +126,7 @@ data class ArcSymbolAssessmentObject(
     override fun createResult(): AssessmentResult = super<Assessment>.createResult()
     override fun unpack(originalNode: Node?,
                         moduleInfo: ModuleInfo,
-                        registryProvider: AssessmentRegistryProvider): ArcSymbolAssessmentObject {
+                        registryProvider: AssessmentRegistryProvider): ArcAssessmentObject {
         super<Assessment>.unpack(originalNode, moduleInfo, registryProvider)
         val copyChildren = children.map {
             it.unpack(null, moduleInfo, registryProvider)
@@ -135,38 +148,8 @@ data class ArcTestInfoStepObject(
     override val identifier: String,
     @SerialName("image")
     override var imageInfo: ImageInfo? = null,
-    var buttonText: String? = null,
-    var type: String? = null
-) : StepObject() {
-
-    companion object: ArcContextCreatable<ArcTestInfoStepObject> {
-
-        override fun createFromContext(context: Context): ArcTestInfoStepObject {
-            val step = ArcTestInfoStepObject(
-                identifier = "intro",
-                buttonText = ViewUtil.getHtmlString(R.string.button_begintest),
-                type = "symbols")
-            step.title = ViewUtil.getHtmlString(edu.wustl.arc.assessments.R.string.symbols_header)
-            step.subtitle = ViewUtil.getHtmlString(edu.wustl.arc.assessments.R.string.symbols_body)
-            return step
-        }
-
-        fun createTestInfoFragment(step: ArcTestInfoStepObject): TestInfoTemplate {
-            val data = when(step.type) {
-                "symbol" -> SymbolsTestPathData()
-                else -> GridTestPathData()
-            }
-            Study.setCurrentSegmentData(data)
-
-            return TestInfoTemplate(
-                step.detail,
-                step.title,
-                step.subtitle,
-                step.type,
-                step.buttonText)
-        }
-    }
-}
+    var testType: ArcAssessmentType
+) : StepObject()
 
 /**
  * Step where user can get prepared right before they begin a test
@@ -176,57 +159,38 @@ data class ArcTestInfoStepObject(
 data class ArcTestBeginStepObject(
     override val identifier: String,
     override var imageInfo: ImageInfo? = null
-) : StepObject() {
-
-    companion object: ArcContextCreatable<ArcTestBeginStepObject>, ArcStepFragmentCreatable {
-
-        override fun createFromStep(context: Context, step: Step): Fragment? {
-            return TestBegin()
-        }
-
-        override fun createFromContext(context: Context): ArcTestBeginStepObject {
-            return ArcTestBeginStepObject("test_begin")
-        }
-    }
-}
+) : StepObject()
 
 /**
  * Step where user participates in the Symbols Test and the resulting data is collected
  */
 @Serializable
-@SerialName("symbolTest")
+@SerialName("symbolsTest")
 data class ArcSymbolTestStepObject(
     override val identifier: String,
     override var imageInfo: ImageInfo? = null
-) : StepObject() {
-
-    companion object: ArcContextCreatable<ArcSymbolTestStepObject>, ArcStepFragmentCreatable {
-
-        override fun createFromStep(context: Context, step: Step): Fragment? {
-            return SymbolTest()
-        }
-
-        override fun createFromContext(context: Context): ArcSymbolTestStepObject {
-            return ArcSymbolTestStepObject("symbols_test")
-        }
-    }
-}
+) : StepObject()
 
 @Serializable
 @SerialName("symbol")
-data class ArcSymbolTestResultObject(
+data class ArcTestResultObject(
     override val identifier: String,
     override var startDateTime: Instant = Clock.System.now(),
-    override var endDateTime: Instant? = null
+    override var endDateTime: Instant? = null,
+    var isComplete: Boolean = false,
+    var assessmentType: ArcAssessmentType,
+    var resultJsonStr: String? = null,
 ) : JsonFileArchivableResult {
-    override fun copyResult(identifier: String): ArcSymbolTestResultObject {
+
+    override fun copyResult(identifier: String): ArcTestResultObject {
         return this.copy()
     }
 
     override fun getJsonArchivableFile(stepPath: String): JsonArchivableFile {
         return JsonArchivableFile(
-            filename = "symbol_test",
-            json = Json.encodeToString(this),
+            filename = "data.json",
+            json = Json.encodeToString(resultJsonStr),
+            // TODO: mdephillips 3/2/23 how do I add ARC JSON schemas to git here?
             jsonSchema = ""//"https://sage-bionetworks.github.io/mobile-client-json/schemas/v1/TappingResultObject.json"
         )
     }

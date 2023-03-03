@@ -2,13 +2,13 @@ package org.sagebionetworks.research.mobiletoolbox.app.arc
 
 import android.content.res.Configuration
 import androidx.multidex.MultiDexApplication
-import edu.wustl.Arc.app.arc.model.ArcMtbStateMachine
+import edu.wustl.Arc.app.arc.model.ArcStateMachine
+import edu.wustl.arc.core.ArcApplication
 import edu.wustl.arc.core.Config
 import edu.wustl.arc.study.Study
 import edu.wustl.arc.study.TestVariant
 import edu.wustl.arc.ui.BottomNavigationView
 import org.koin.core.component.KoinComponent
-import org.sagebionetworks.assessmentmodel.navigation.BranchNodeState
 
 open class ArcAssessmentApplication : MultiDexApplication(), KoinComponent {
 
@@ -28,17 +28,17 @@ open class ArcAssessmentApplication : MultiDexApplication(), KoinComponent {
         Config.TEST_VARIANT_PRICE = TestVariant.Price.Original
 
         // Initialize library
-        edu.wustl.arc.core.Application.initialize(this) {
+        ArcApplication.initialize(this) {
             Study.getInstance().registerStateMachine(
-                ArcMtbStateMachine::class.java
+                ArcStateMachine::class.java
             )
         }
         Study.getStateMachine().initialize()
-        edu.wustl.arc.core.Application.getInstance().localeOptions = ArrayList()
+        ArcApplication.getInstance().localeOptions = ArrayList()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        edu.wustl.arc.core.Application.getInstance()?.onConfigurationChanged(newConfig)
+        ArcApplication.getInstance()?.onConfigurationChanged(newConfig)
     }
 }

@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
 import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
+import edu.wustl.arc.navigation.NavigationManager
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.decodeFromString
@@ -87,6 +88,8 @@ class MtbAssessmentActivity : AssessmentActivity() {
             (viewModel as MtbRootAssessmentViewModel).startRecorderRunner()
         }
 
+        // Needed to show Arc Assessments
+        NavigationManager.initialize(supportFragmentManager)
     }
 
     override fun initViewModel(
