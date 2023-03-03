@@ -42,7 +42,7 @@ val arcNodeSerializersModule = SerializersModule {
         subclass(ArcAssessmentObject::class)
     }
     polymorphic(Result::class) {
-        subclass(ArcTestResultObject::class)
+        subclass(ArcAssessmentResultObject::class)
     }
 }
 
@@ -86,8 +86,8 @@ data class ArcAssessmentObject(
         val gson = GsonBuilder().setPrettyPrinting().create()
 
         fun createAssessmentResult(session: TestSession,
-                                arcTestResultObject: ArcTestResultObject,
-                                participantId: String): ArcTestResultObject {
+                                   arcTestResultObject: ArcAssessmentResultObject,
+                                   participantId: String): ArcAssessmentResultObject {
 
             val test = TestSubmission()
             test.app_version = VersionUtil.getAppVersionName()
@@ -172,8 +172,8 @@ data class ArcSymbolTestStepObject(
 ) : StepObject()
 
 @Serializable
-@SerialName("symbol")
-data class ArcTestResultObject(
+@SerialName("arcResult")
+data class ArcAssessmentResultObject(
     override val identifier: String,
     override var startDateTime: Instant = Clock.System.now(),
     override var endDateTime: Instant? = null,
@@ -182,7 +182,7 @@ data class ArcTestResultObject(
     var resultJsonStr: String? = null,
 ) : JsonFileArchivableResult {
 
-    override fun copyResult(identifier: String): ArcTestResultObject {
+    override fun copyResult(identifier: String): ArcAssessmentResultObject {
         return this.copy()
     }
 

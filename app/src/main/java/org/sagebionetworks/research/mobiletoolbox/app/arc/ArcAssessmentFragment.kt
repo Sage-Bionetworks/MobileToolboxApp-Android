@@ -76,19 +76,19 @@ class ArcAssessmentFragment: AssessmentFragment() {
 class ArcAssessmentViewModel(app: Application): AndroidViewModel(app), SessionCompleteListener {
 
     // Keeps track of an ARC Result, non-null when an ARC assessment is running
-    var arcResultLiveData = MutableLiveData<ArcTestResultObject>()
+    var arcResultLiveData = MutableLiveData<ArcAssessmentResultObject>()
 
     init {
         (Study.getStateMachine() as? ArcStateMachine)?.listener = this
     }
 
     fun startArcSessionResult(assessmentType: ArcAssessmentType) {
-        arcResultLiveData.value = ArcTestResultObject(
+        arcResultLiveData.value = ArcAssessmentResultObject(
             identifier = assessmentType.toIdentifier(),
             assessmentType = assessmentType)
     }
 
-    // ARC library callback when an ArcAssessment if finished
+    // ARC library callback when an ArcAssessment is finished
     override fun onSessionComplete(signatureList: ArrayList<File>, session: TestSession) {
         val startResult = arcResultLiveData.value ?: run {
             Logger.e("currentArcResult must be non-null, did you call startArcSessionResult before this?")
