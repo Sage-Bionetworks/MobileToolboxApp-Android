@@ -35,8 +35,6 @@ import org.sagebionetworks.assessmentmodel.serialization.StepObject
 val arcNodeSerializersModule = SerializersModule {
     polymorphic(Node::class) {
         subclass(ArcTestInfoStepObject::class)
-        subclass(ArcTestBeginStepObject::class)
-        subclass(ArcSymbolTestStepObject::class)
     }
     polymorphic(Assessment::class) {
         subclass(ArcAssessmentObject::class)
@@ -149,26 +147,6 @@ data class ArcTestInfoStepObject(
     @SerialName("image")
     override var imageInfo: ImageInfo? = null,
     var testType: ArcAssessmentType
-) : StepObject()
-
-/**
- * Step where user can get prepared right before they begin a test
- */
-@Serializable
-@SerialName("testBegin")
-data class ArcTestBeginStepObject(
-    override val identifier: String,
-    override var imageInfo: ImageInfo? = null
-) : StepObject()
-
-/**
- * Step where user participates in the Symbols Test and the resulting data is collected
- */
-@Serializable
-@SerialName("symbolsTest")
-data class ArcSymbolTestStepObject(
-    override val identifier: String,
-    override var imageInfo: ImageInfo? = null
 ) : StepObject()
 
 @Serializable
