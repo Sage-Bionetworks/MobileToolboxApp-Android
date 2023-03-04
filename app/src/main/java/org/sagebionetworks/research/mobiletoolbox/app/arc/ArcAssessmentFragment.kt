@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -112,6 +113,11 @@ class ArcNavigatorFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_arc_navigator, container, false)
+        view.findViewById<ImageButton>(R.id.arc_close_button).setOnClickListener {
+            NavigationManager.getInstance().clearBackStack()
+            Study.getStateMachine().cache.segments = mutableListOf()
+            (parentFragment as? ArcAssessmentFragment)?.viewModel?.cancel()
+        }
         return view
     }
 }
