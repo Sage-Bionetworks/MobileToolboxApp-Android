@@ -241,7 +241,7 @@ internal fun <T> getValue(liveData: LiveData<T>): T? {
     var data: T? = null
     val latch = CountDownLatch(1)
     val observer = object : Observer<T> {
-        override fun onChanged(changedData: T?) {
+        override fun onChanged(changedData: T) {
             data = changedData
             latch.countDown()
             liveData.removeObserver(this)

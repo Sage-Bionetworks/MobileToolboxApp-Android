@@ -26,6 +26,9 @@ android {
             abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
             debugSymbolLevel = "FULL"
         }
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     splits {
@@ -50,6 +53,9 @@ android {
     packagingOptions {
         jniLibs {
             pickFirsts += setOf("**/*.so")
+        }
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 
@@ -158,6 +164,8 @@ dependencies {
     implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["compose_version"]}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
+    implementation("androidx.activity:activity-compose:1.6.1")
 
 
     implementation("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")

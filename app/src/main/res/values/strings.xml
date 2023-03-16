@@ -62,5 +62,8 @@
     <string name="notifications">Notifications</string>
     <string name="allow">Allow</string>
     <string name="dont_allow">Don\'t Allow</string>
+    <string name="update_the_app">Update the app to unlock new features and continue your experience.</string>
+    <string name="we_are_getting_better">We\'re Getting Better</string>
+    <string name="update_now">Update Now</string>
 
 </resources>
