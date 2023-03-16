@@ -5,6 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/upload_status_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <ProgressBar
+            android:id="@+id/upload_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ProgressBar>
+        <TextView
+            android:id="@+id/upload_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@font/playfair_display_italic"
+            android:text="@string/your_results_are_uploading"
+            android:textColor="#2A2727"
+            android:textAppearance="@style/TextAppearance.Sage.H2"
+            android:textAlignment="center" />
+    </LinearLayout>
     <TextView
         android:id="@+id/todays_date"
         android:layout_width="match_parent"

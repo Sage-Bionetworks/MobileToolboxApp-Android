@@ -2,12 +2,13 @@ package org.sagebionetworks.research.mobiletoolbox.app.ui.today
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -137,6 +138,16 @@ class TodayFragment : MtbBaseFragment() {
                 }
             }
         })
+        viewModel.resultsUploading.observe(viewLifecycleOwner) {
+            headerAdapter.resultsUploading = it.isNotEmpty()
+            headerAdapter.hasInternet = true
+            if (headerAdapter.resultsUploading) {
+                val connectivityManager = getSystemService(requireContext(), ConnectivityManager::class.java)
+                val caps = connectivityManager?.getNetworkCapabilities(connectivityManager.activeNetwork)
+                headerAdapter.hasInternet = caps?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
+            }
+            headerAdapter.notifyDataSetChanged()
+        }
 
         return binding.root
     }
