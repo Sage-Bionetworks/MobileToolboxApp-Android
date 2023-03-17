@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
 import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
 import edu.wustl.arc.navigation.NavigationManager
+import edu.wustl.arc.sageassessments.ArcAssessmentType
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.decodeFromString
@@ -61,6 +62,17 @@ class MtbAssessmentActivity : AssessmentActivity() {
                 ?.let { recorderConfigJsonCoder.decodeFromString(it) } ?: listOf()
 
         recorderRunnerFactory.withConfig(recorderScheduledAssessmentConfigs)
+
+        // Needed to show Arc Assessments with a status bar
+        // May want to consider applying this layout for all assessments
+        // that do not require full screen, no status bar, look and feel, like Northwestern's.
+        intent.getStringExtra(ARG_ASSESSMENT_ID_KEY)?.let { assessmentIdentifier ->
+            if (ArcAssessmentType.values().any {
+                assessmentIdentifier == it.toAssessmentIdentifier()
+            }) {
+                setContentView(R.layout.activity_mtb_status_bar_assessment)
+            }
+        }
 
         super.onCreate(savedInstanceState)
 
