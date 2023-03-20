@@ -14,6 +14,7 @@ import org.koin.core.component.get
 import org.koin.core.logger.Level
 import org.sagebionetworks.bridge.kmm.shared.di.*
 import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
+import org.sagebionetworks.motorControlModule
 import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 
 
@@ -32,6 +33,7 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
             androidContext(this@MtbApplication)
             workManagerFactory()
             modules(appModule)
+            modules(motorControlModule)
             modules(mtbModules())
         }
 

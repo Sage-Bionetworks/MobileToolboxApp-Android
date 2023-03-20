@@ -5,25 +5,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
-import org.sagebionetworks.bridge.kmm.shared.repo.ActivityEventsRepo
+import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
+import org.sagebionetworks.bridge.kmm.shared.repo.AssessmentHistoryRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
-import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionTimelineSlice
 import java.time.LocalDate
 
 class HistoryViewModel(private val timelineRepo: ScheduleTimelineRepo,
                      private val authRepo: AuthenticationRepository,
-                     private val activityEventsRepo: ActivityEventsRepo
+                     private val adherenceRecordRepo: AdherenceRecordRepo
 ) : ViewModel() {
     init {
         loadTodaysSessions()
     }
 
-    private val _sessionLiveData = MutableLiveData<ResourceResult<ScheduledSessionTimelineSlice>>()
-    val sessionLiveData: LiveData<ResourceResult<ScheduledSessionTimelineSlice>> = _sessionLiveData
+    private val _sessionLiveData = MutableLiveData<List<AssessmentHistoryRecord>>()
+    val sessionLiveData: LiveData<List<AssessmentHistoryRecord>> = _sessionLiveData
 
     private var timelineJob: Job? = null
     private var sessionLoadDate: LocalDate? = null
@@ -38,7 +36,7 @@ class HistoryViewModel(private val timelineRepo: ScheduleTimelineRepo,
         studyId?.let {
             sessionLoadDate = LocalDate.now()
             timelineJob = viewModelScope.launch {
-                timelineRepo.getPastSessions(studyId).collect {
+                adherenceRecordRepo.getAllCompletedCachedAssessmentAdherence(studyId).collect {
                     _sessionLiveData.postValue(it)
                 }
             }

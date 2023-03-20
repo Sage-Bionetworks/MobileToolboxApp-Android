@@ -15,8 +15,8 @@ android {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdk = 23
         targetSdk = 33
-        versionCode = 29
-        versionName = "0.24.$versionCode"
+        versionCode = 31
+        versionName = "0.25.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -104,9 +104,10 @@ dependencies {
 
     implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.4.25")
 
-    val assessmentVersion = "0.8.7"
+    val assessmentVersion = "0.10.1"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
     implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
+    implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.3")
 
     // Kermit
     implementation("co.touchlab:kermit:${Versions.kermit}")

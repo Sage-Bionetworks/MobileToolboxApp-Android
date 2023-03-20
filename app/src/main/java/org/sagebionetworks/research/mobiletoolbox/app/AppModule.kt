@@ -36,14 +36,15 @@ import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayViewModel
 val appModule = module {
 
     single<AssessmentResultCache> { AssessmentResultCacheImpl(get()) }
-
+    
     factory <AssessmentResultArchiveUploader> {
-        MtbAssessmentResultArchiveUploader(get(), get(), get(), get())
+        AssessmentResultArchiveUploader(get(), get(), get())
     }
 
     single<AssessmentRegistryProvider>() {
         RootAssessmentRegistryProvider(get(), listOf(
             get(qualifier = named("mtb-northwestern")),
+            get(qualifier = named("sage-motorcontrol")),
             get(qualifier = named("sage-survey"))))
 
     }
@@ -54,6 +55,7 @@ val appModule = module {
     single<AssessmentFragmentProvider>() {
         RootAssessmentFragmentProvider(listOf(
             get(qualifier = named("mtb-northwestern")),
+            get(qualifier = named("sage-motorcontrol")),
             get(qualifier = named("sage-survey"))))
     }
     

@@ -3,6 +3,7 @@ package org.sagebionetworks.research.mobiletoolbox.app
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
+import edu.northwestern.mobiletoolbox.common.data.MtbAssessmentResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,8 @@ class MtbRootAssessmentViewModel(
     private val archiveUploader: AssessmentResultArchiveUploader,
     private val adherenceRecordRepo: AdherenceRecordRepo,
     private val adherenceRecord: AdherenceRecord,
-    private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
+    private val recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory,
+    private val studyId: String
 ) : RootAssessmentViewModel(assessmentPlaceholder, registryProvider, nodeStateProvider, assessmentResultCache, assessmentInstanceId, sessionExpiration) {
 
     private var isAlreadyStarted = false
@@ -63,7 +65,6 @@ class MtbRootAssessmentViewModel(
             null
         }
         val startedTimeStamp = nodeState.currentResult.startDateTime
-        val studyId = archiveUploader.authenticationRepository.currentStudyId()!!
         adherenceRecordRepo.createUpdateAdherenceRecord(
             adherenceRecord.copy(
                 startedOn = startedTimeStamp,
@@ -101,15 +102,24 @@ class MtbRootAssessmentViewModel(
                         Logger.i(
                             "Recorder results: ${recorderResults.map { it.identifier }}"
                         )
-                        (archiveUploader as MtbAssessmentResultArchiveUploader)
-                            .asyncResults.addAll(
-                                recorderResults
-                            )
+
+                        assessmentResult.inputResults.addAll(recorderResults)
+
+                        //TODO: Figure out better approach to determining filename for the results json file -nbrown 1/23/2023
+                        val fileName = if (assessmentResult is MtbAssessmentResult) {
+                            // Results from Northwestern built assessments are written to taskData.json
+                            "taskData.json"
+                        } else {
+                            // Survey results are written to assessmentResult.json
+                            "assessmentResult.json"
+                        }
                         archiveUploader.archiveResultAndQueueUpload(
                             assessmentResult,
                             jsonCoder,
                             adherenceRecord.instanceGuid,
                             adherenceRecord.eventTimestamp,
+                            startedTimeStamp,
+                            fileName,
                             sessionExpire
                         )
                     } catch (e: CancellationException) {
@@ -143,7 +153,8 @@ open class MtbRootAssessmentViewModelFactory {
         adherenceRecordRepo: AdherenceRecordRepo,
         adherenceRecord: AdherenceRecord,
         sessionExpiration: Instant,
-        recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory
+        recorderRunnerFactory: RecorderRunner.RecorderRunnerFactory,
+        studyId: String
     ): ViewModelProvider.Factory {
         return object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -160,7 +171,8 @@ open class MtbRootAssessmentViewModelFactory {
                         archiveUploader = archiveUploader,
                         adherenceRecordRepo = adherenceRecordRepo,
                         adherenceRecord = adherenceRecord,
-                        recorderRunnerFactory = recorderRunnerFactory
+                        recorderRunnerFactory = recorderRunnerFactory,
+                        studyId = studyId
                     ) as T
                 }
 
