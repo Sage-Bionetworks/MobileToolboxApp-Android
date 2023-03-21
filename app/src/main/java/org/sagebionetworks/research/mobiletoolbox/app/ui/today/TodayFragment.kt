@@ -181,7 +181,7 @@ class TodayFragment : MtbBaseFragment() {
         session: ScheduledSessionWindow,
         dataList: MutableList<DataItem>
     ): Boolean {
-        if (session.isCompleted || session.assessments.isEmpty()) return false //Don't add session if it is completed
+        if ((!session.persistent && session.isCompleted) || session.assessments.isEmpty()) return false //Don't add session if it is completed
         //TODO: Mark first future header so we can add "Up next" title
         //Add HeaderItem
         dataList.add(SessionHeaderItem(session))
