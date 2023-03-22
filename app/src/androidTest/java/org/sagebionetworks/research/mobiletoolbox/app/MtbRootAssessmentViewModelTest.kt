@@ -237,7 +237,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 }
 
 @Throws(InterruptedException::class)
-internal fun <T> getValue(liveData: LiveData<T>): T? {
+internal fun <T> getValue(liveData: LiveData<T>, timeoutSeconds: Long = 2): T? {
     var data: T? = null
     val latch = CountDownLatch(1)
     val observer = object : Observer<T> {
@@ -248,7 +248,7 @@ internal fun <T> getValue(liveData: LiveData<T>): T? {
         }
     }
     liveData.observeForever(observer)
-    latch.await(2, TimeUnit.SECONDS)
+    latch.await(timeoutSeconds, TimeUnit.SECONDS)
     liveData.removeObserver(observer)
     return data
 }
