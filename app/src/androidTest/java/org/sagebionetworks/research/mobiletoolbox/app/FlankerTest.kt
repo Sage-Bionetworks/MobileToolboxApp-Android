@@ -19,7 +19,6 @@ import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@RunWith(AndroidJUnit4::class)
 class FlankerTest : KoinComponent {
 
     companion object : KoinComponent {
