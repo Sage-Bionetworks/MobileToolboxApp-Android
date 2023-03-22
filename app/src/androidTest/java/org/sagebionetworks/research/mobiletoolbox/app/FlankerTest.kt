@@ -82,7 +82,8 @@ class FlankerTest : KoinComponent {
 
             // At this point the zip file should be written to the upload queue and the upload worker should be starting
 
-            //Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
+            // Finish the Assessment
+            Espresso.onView(ViewMatchers.withId(R.id.feedback_navigation_btn)).perform(ViewActions.click())
         }
 
         fun getTopActivity(): Activity? {

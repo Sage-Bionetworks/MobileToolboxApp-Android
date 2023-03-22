@@ -5,7 +5,7 @@ object Versions {
     const val kermit = "1.0.0"
     const val bridgeClient = "0.15.3"
     const val passiveData = "0.5.1"
-    const val kotlinCoroutines = "1.5.1-native-mt"
+    const val kotlinCoroutines = "1.6.4"
     const val kotlinxSerializationJson = "1.3.0"
 }
 
