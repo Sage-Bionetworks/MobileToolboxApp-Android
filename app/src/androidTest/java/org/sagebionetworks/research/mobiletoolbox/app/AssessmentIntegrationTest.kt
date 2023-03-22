@@ -3,6 +3,7 @@
 package org.sagebionetworks.research.mobiletoolbox.app
 
 import android.Manifest
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -58,8 +59,14 @@ class AssessmentIntegrationTest : KoinComponent {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+
     @get:Rule
-    val mRuntimePermissionRule = GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS)
+    val mRuntimePermissionRule: GrantPermissionRule = if (Build.VERSION.SDK_INT >= 33) {
+        GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.ACCESS_COARSE_LOCATION)
+    } else {
+        GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION)
+    }
+
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule(MtbMainActivity::class.java)
