@@ -11,6 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -97,7 +98,7 @@ class AssessmentIntegrationTest : KoinComponent {
             //TODO: Figure out idling resources to wait for login to complete -nbrown 03/21/23
             Thread.sleep(10000)
             // Welcome screen
-            onView(withId(R.id.next_button)).perform(click())
+            onView(withId(R.id.next_button)).perform(scrollTo(), click())
             // Privacy notice screens
             composeTestRule.onNodeWithText("Next").performClick()
             composeTestRule.onNodeWithText("Next").performClick()
