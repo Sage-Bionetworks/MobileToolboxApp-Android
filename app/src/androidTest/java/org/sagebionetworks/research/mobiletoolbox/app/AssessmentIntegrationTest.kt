@@ -95,7 +95,7 @@ class AssessmentIntegrationTest : KoinComponent {
             composeTestRule.onNodeWithText("Login").performClick()
 
             //TODO: Figure out idling resources to wait for login to complete -nbrown 03/21/23
-            Thread.sleep(5000)
+            Thread.sleep(10000)
             // Welcome screen
             onView(withId(R.id.next_button)).perform(click())
             // Privacy notice screens
@@ -113,7 +113,7 @@ class AssessmentIntegrationTest : KoinComponent {
             //Should now be on today screen
 
             //TODO: Figure out idling resources to wait for schedule to load on today screen -nbrown 03/21/23
-            Thread.sleep(5000)
+            Thread.sleep(10000)
 
             // Verify that there are no pending uploads
             assertFalse(archiveUploader.uploadRequester.pendingUploads)
