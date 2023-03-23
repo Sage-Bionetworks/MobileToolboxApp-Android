@@ -21,6 +21,7 @@ android {
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["useTestStorageService"] = "true"
 
         ndk {
             abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
@@ -181,6 +182,8 @@ dependencies {
     androidTestImplementation("org.hamcrest:hamcrest:2.2")
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
+
+    androidTestUtil("androidx.test.services:test-services:1.4.2")
 
     // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")

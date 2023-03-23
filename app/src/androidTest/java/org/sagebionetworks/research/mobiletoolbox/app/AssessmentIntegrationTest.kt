@@ -8,6 +8,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.test.core.app.takeScreenshot
+import androidx.test.core.graphics.writeToTestStorage
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
@@ -102,6 +104,9 @@ class AssessmentIntegrationTest : KoinComponent {
             val session = authRepo.session()
             assertNotNull(session)
             assertTrue(session!!.authenticated)
+
+            takeScreenshot()
+                .writeToTestStorage("welcome_screen")
 
             // Allow motion so there will be a background recorder running
             PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
