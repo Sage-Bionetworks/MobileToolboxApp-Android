@@ -19,6 +19,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -97,6 +98,14 @@ class AssessmentIntegrationTest : KoinComponent {
 
             //TODO: Figure out idling resources to wait for login to complete -nbrown 03/21/23
             Thread.sleep(10000)
+
+            val session = authRepo.session()
+            assertNotNull(session)
+            assertTrue(session!!.authenticated)
+
+            // Allow motion so there will be a background recorder running
+            PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
+
             // Welcome screen
             onView(withId(R.id.next_button)).perform(scrollTo(), click())
             // Privacy notice screens
@@ -106,8 +115,6 @@ class AssessmentIntegrationTest : KoinComponent {
             // Permissions screens
             composeTestRule.onNodeWithText("Next").performClick()
             composeTestRule.onNodeWithText("Next").performClick()
-            // Allow motion so there will be a background recorder running
-            PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
 
             composeTestRule.onNodeWithText("Next").performClick()
 

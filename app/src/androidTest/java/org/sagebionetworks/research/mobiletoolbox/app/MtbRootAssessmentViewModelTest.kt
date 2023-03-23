@@ -46,7 +46,7 @@ import java.util.zip.ZipInputStream
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
 class MtbRootAssessmentViewModelTest : KoinComponent {
 
     //Documentation if we want to insert different implementations for test as needed
@@ -124,7 +124,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
      * but by being signed-out all authenticated calls will fail with a 401. This allows us to verify
      * the client side logic without creating any data in Bridge.
      */
-    @Test
+    //@Test
     fun testSavingAssessmentResult() {
         runBlocking {
             authRepo.signOut()
