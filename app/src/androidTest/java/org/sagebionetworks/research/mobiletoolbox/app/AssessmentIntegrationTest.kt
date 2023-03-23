@@ -13,9 +13,9 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.core.AllOf.allOf
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
@@ -33,6 +32,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayRecyclerViewAdapter
 
 
@@ -75,6 +75,8 @@ class AssessmentIntegrationTest : KoinComponent {
     @Test
     fun testFlankerAssessment() {
         runTest {
+            val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
+
             val participantId = "605291"
 
             // Select study screen
@@ -103,8 +105,9 @@ class AssessmentIntegrationTest : KoinComponent {
             // Permissions screens
             composeTestRule.onNodeWithText("Next").performClick()
             composeTestRule.onNodeWithText("Next").performClick()
-            // Click allow motion so there will be a background recorder running
-            onView(allOf(withId(R.id.allow_radio), isCompletelyDisplayed())).perform(click())
+            // Allow motion so there will be a background recorder running
+            PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
+
             composeTestRule.onNodeWithText("Next").performClick()
 
             //Should now be on today screen
