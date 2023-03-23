@@ -11,7 +11,7 @@ on:
 
 jobs:
   connected-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-4-cores
     env:
       GPR_USER: ${{ secrets.GPR_USER }}
       GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
@@ -48,7 +48,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
+          key: ${{ runner.os }}-avd-${{ matrix.api-level }}
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
