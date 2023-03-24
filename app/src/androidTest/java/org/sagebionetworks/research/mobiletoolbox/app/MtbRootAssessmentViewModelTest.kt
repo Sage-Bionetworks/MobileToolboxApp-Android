@@ -97,30 +97,6 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
       "services":[
          
       ]
-   },
-   {
-      "recorder":{
-         "identifier":"weather",
-         "type":"weather"
-      },
-      "enabledByStudyClientData":true,
-      "disabledByAppForTaskIdentifiers":[
-
-      ],
-      "services": [
-        {
-          "identifier": "airQuality",
-          "type": "airNow",
-          "provider": "airNow",
-          "key": "97FBF5CE-08DC-405F-955D-AEF374E68998"
-        },
-        {
-          "identifier": "weather",
-          "type": "openWeather",
-          "provider": "openWeather",
-          "key": "888d0c4989982cddc0d60cce95b25c8e"
-        }
-      ]
    }
 ]"""
 
