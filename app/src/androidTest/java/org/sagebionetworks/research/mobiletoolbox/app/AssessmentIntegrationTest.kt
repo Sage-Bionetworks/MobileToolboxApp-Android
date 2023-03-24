@@ -108,8 +108,8 @@ class AssessmentIntegrationTest : KoinComponent {
 //            takeScreenshot()
 //                .writeToTestStorage("welcome_screen")
 
-            // Allow motion so there will be a background recorder running
-            PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
+            // Don't allow motion sensor since emulator behaves strangely
+            PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, false)
 
             // Welcome screen
             onView(withId(R.id.next_button)).perform(scrollTo(), click())
