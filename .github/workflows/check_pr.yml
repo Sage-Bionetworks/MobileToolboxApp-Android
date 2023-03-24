@@ -70,11 +70,11 @@ jobs:
           disable-animations: false
           script: ./gradlew connectedCheck --stacktrace
 
-      - name: Upload Outputs
+      - name: Upload Test Results
         uses: actions/upload-artifact@v2
         with:
-          name: Outputs
-          path: app/build/outputs
+          name: Test-Results
+          path: app/build/outputs/androidTest-results
         if: always()
 
       - name: Upload Reports

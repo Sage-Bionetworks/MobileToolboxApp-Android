@@ -105,8 +105,8 @@ class AssessmentIntegrationTest : KoinComponent {
             assertNotNull(session)
             assertTrue(session!!.authenticated)
 
-            takeScreenshot()
-                .writeToTestStorage("welcome_screen")
+//            takeScreenshot()
+//                .writeToTestStorage("welcome_screen")
 
             // Allow motion so there will be a background recorder running
             PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
