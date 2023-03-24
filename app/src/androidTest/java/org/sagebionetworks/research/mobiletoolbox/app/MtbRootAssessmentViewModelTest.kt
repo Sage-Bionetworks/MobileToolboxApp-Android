@@ -1,11 +1,14 @@
 package org.sagebionetworks.research.mobiletoolbox.app
 
+import android.Manifest
 import android.content.Context
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
@@ -46,7 +49,7 @@ import java.util.zip.ZipInputStream
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-//@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class MtbRootAssessmentViewModelTest : KoinComponent {
 
     //Documentation if we want to insert different implementations for test as needed
@@ -89,13 +92,34 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
       },
       "enabledByStudyClientData":true,
       "disabledByAppForTaskIdentifiers":[
-         "MTB Spelling Form 1",
-         "Picture Sequence MemoryV1",
-         "MyCogMobileV1",
-         "MyCogMobilePSM"
-      ],
+
+       ],
       "services":[
          
+      ]
+   },
+   {
+      "recorder":{
+         "identifier":"weather",
+         "type":"weather"
+      },
+      "enabledByStudyClientData":true,
+      "disabledByAppForTaskIdentifiers":[
+
+      ],
+      "services": [
+        {
+          "identifier": "airQuality",
+          "type": "airNow",
+          "provider": "airNow",
+          "key": "97FBF5CE-08DC-405F-955D-AEF374E68998"
+        },
+        {
+          "identifier": "weather",
+          "type": "openWeather",
+          "provider": "openWeather",
+          "key": "888d0c4989982cddc0d60cce95b25c8e"
+        }
       ]
    }
 ]"""
@@ -104,6 +128,9 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.RECORD_AUDIO)
 
     @Before
     fun setup() {
@@ -124,13 +151,13 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
      * but by being signed-out all authenticated calls will fail with a 401. This allows us to verify
      * the client side logic without creating any data in Bridge.
      */
-    //@Test
+    @Test
     fun testSavingAssessmentResult() {
         runBlocking {
             authRepo.signOut()
         }
-        // Give permission to collect motion so we have a recorder running
-        PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
+        // Don't allow motion sensor since emulator behaves strangely
+        PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, false)
 
         // Verify that there are no pending uploads
         assertFalse(archiveUploader.uploadRequester.pendingUploads)
@@ -155,7 +182,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
         // Check that archives have expected files
         for (uploadResource in pendingUploads) {
-            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "motion.json")
+            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "microphone.json")
             verifyArchive(uploadResource.loadResource()!!, expectedFiles)
         }
 
@@ -204,6 +231,8 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
         viewModel.startRecorderRunner()
 
         assessmentViewModel.start()
+        // Sleep for 5 seconds so audio recorder has time to startup
+        Thread.sleep(5000)
         assessmentViewModel.declineAssessment()
 
         assertNotNull(viewModel.saveJob)

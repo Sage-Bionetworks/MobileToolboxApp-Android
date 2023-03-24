@@ -12,7 +12,6 @@ on:
 jobs:
   connected-test:
     runs-on: macos-latest
-    continue-on-error: true
     env:
       GPR_USER: ${{ secrets.GPR_USER }}
       GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
