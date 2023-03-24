@@ -38,6 +38,8 @@ import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchive
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayRecyclerViewAdapter
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 @RunWith(AndroidJUnit4::class)
@@ -132,6 +134,7 @@ class AssessmentIntegrationTest : KoinComponent {
             assertFalse(archiveUploader.uploadRequester.pendingUploads)
 
             // Watch the pending uploads Flow so we can verify that results were saved and then uploaded
+            val uploadLatch = CountDownLatch(1)
             var uploadQueued = false
             var uploadSuccess = false
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -143,6 +146,7 @@ class AssessmentIntegrationTest : KoinComponent {
                     if (uploadQueued && uploadList.isEmpty()) {
                         // Uploads were successfully processed and saved to Bridge
                         uploadSuccess = true
+                        uploadLatch.countDown()
                     }
                 }
             }
@@ -158,11 +162,10 @@ class AssessmentIntegrationTest : KoinComponent {
             // Run through flanker
             FlankerTest.runFlanker()
 
-            //TODO: Figure better approach to give time for uploads to complete -nbrown 03/21/23
-            Thread.sleep(5000)
-
             // TODO: Check adherence records -nbrown 03/21/23
 
+            //Wait for uplaods to succeed
+            uploadLatch.await(2, TimeUnit.MINUTES)
             // Check that upload succeeded
             assertTrue(uploadSuccess)
 
