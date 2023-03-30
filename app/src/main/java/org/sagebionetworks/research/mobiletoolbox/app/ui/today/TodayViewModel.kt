@@ -11,11 +11,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
+import org.sagebionetworks.bridge.kmm.shared.cache.Resource
 import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
 import org.sagebionetworks.bridge.kmm.shared.repo.AppConfigRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduleTimelineRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.ScheduledSessionTimelineSlice
+import org.sagebionetworks.bridge.kmm.shared.upload.UploadRequester
 import org.sagebionetworks.research.mobiletoolbox.app.notif.ScheduleNotificationsWorker
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.rest.AppConfigClientData
 import java.time.LocalDate
@@ -24,11 +26,13 @@ class TodayViewModel(
     private val timelineRepo: ScheduleTimelineRepo,
     private val authRepo: AuthenticationRepository,
     private val appConfigRepo: AppConfigRepo,
+    private val uploadRequester: UploadRequester,
     application: Application
 ) : AndroidViewModel(application) {
     init {
         loadTodaysSessions()
         loadAssessmentIdentifierMap()
+        checkUploadStatus()
     }
 
     /**
@@ -57,6 +61,9 @@ class TodayViewModel(
     val assessmentIdentifierMapLiveData: LiveData<Map<String, String>> =
         _assessmentIdentifierMapLiveData
 
+    private val _resultsUploading = MutableLiveData<List<Resource>>()
+    val resultsUploading: LiveData<List<Resource>> = _resultsUploading
+
     private var timelineJob: Job? = null
     private var sessionLoadDate: LocalDate? = null
 
@@ -76,6 +83,14 @@ class TodayViewModel(
                         ScheduleNotificationsWorker.runScheduleNotificationWorker(getApplication())
                     }
                 }
+            }
+        }
+    }
+
+    internal fun checkUploadStatus() {
+        viewModelScope.launch {
+            uploadRequester.getPendingFileUploadsFlow().collect {
+                _resultsUploading.postValue(it)
             }
         }
     }
