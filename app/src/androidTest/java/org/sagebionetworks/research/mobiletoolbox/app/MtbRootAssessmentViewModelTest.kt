@@ -1,11 +1,14 @@
 package org.sagebionetworks.research.mobiletoolbox.app
 
+import android.Manifest
 import android.content.Context
+import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.GrantPermissionRule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.Clock
@@ -89,11 +92,8 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
       },
       "enabledByStudyClientData":true,
       "disabledByAppForTaskIdentifiers":[
-         "MTB Spelling Form 1",
-         "Picture Sequence MemoryV1",
-         "MyCogMobileV1",
-         "MyCogMobilePSM"
-      ],
+
+       ],
       "services":[
          
       ]
@@ -104,6 +104,9 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    val mRuntimePermissionRule: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.RECORD_AUDIO)
 
     @Before
     fun setup() {
@@ -129,8 +132,8 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
         runBlocking {
             authRepo.signOut()
         }
-        // Give permission to collect motion so we have a recorder running
-        PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, true)
+        // Don't allow motion sensor since emulator behaves strangely
+        PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, false)
 
         // Verify that there are no pending uploads
         assertFalse(archiveUploader.uploadRequester.pendingUploads)
@@ -155,7 +158,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
         // Check that archives have expected files
         for (uploadResource in pendingUploads) {
-            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "motion.json")
+            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "microphone.json")
             verifyArchive(uploadResource.loadResource()!!, expectedFiles)
         }
 
@@ -204,6 +207,8 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
         viewModel.startRecorderRunner()
 
         assessmentViewModel.start()
+        // Sleep for 5 seconds so audio recorder has time to startup
+        Thread.sleep(5000)
         assessmentViewModel.declineAssessment()
 
         assertNotNull(viewModel.saveJob)
@@ -237,7 +242,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 }
 
 @Throws(InterruptedException::class)
-internal fun <T> getValue(liveData: LiveData<T>): T? {
+internal fun <T> getValue(liveData: LiveData<T>, timeoutSeconds: Long = 30): T? {
     var data: T? = null
     val latch = CountDownLatch(1)
     val observer = object : Observer<T> {
@@ -248,7 +253,7 @@ internal fun <T> getValue(liveData: LiveData<T>): T? {
         }
     }
     liveData.observeForever(observer)
-    latch.await(2, TimeUnit.SECONDS)
+    latch.await(timeoutSeconds, TimeUnit.SECONDS)
     liveData.removeObserver(observer)
     return data
 }

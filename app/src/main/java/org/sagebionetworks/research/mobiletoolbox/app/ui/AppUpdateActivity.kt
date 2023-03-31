@@ -23,6 +23,7 @@ class AppUpdateActivity : ComponentActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         //Override to block going back
     }

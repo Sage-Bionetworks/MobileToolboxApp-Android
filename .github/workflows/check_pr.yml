@@ -17,7 +17,7 @@ jobs:
       GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
     strategy:
       matrix:
-        api-level: [23]
+        api-level: [27]
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -48,7 +48,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
+          key: ${{ runner.os }}-avd-${{ matrix.api-level }}
 
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -56,6 +56,7 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           force-avd-creation: false
+          arch: x86_64
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
@@ -65,9 +66,17 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           force-avd-creation: false
+          arch: x86_64
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
+          disable-animations: false
           script: ./gradlew connectedCheck --stacktrace
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test-Results
+          path: app/build/outputs/androidTest-results
+        if: always()
 
       - name: Upload Reports
         uses: actions/upload-artifact@v2
