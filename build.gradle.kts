@@ -12,8 +12,8 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.4.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
-        classpath("com.google.gms:google-services:4.3.10")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
+        classpath("com.google.gms:google-services:4.3.15")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.4")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
