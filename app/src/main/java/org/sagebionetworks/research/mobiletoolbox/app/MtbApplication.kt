@@ -31,10 +31,10 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
         initKoin (enableNetworkLogs = BuildConfig.DEBUG){
             androidLogger(Level.ERROR)
             androidContext(this@MtbApplication)
-            workManagerFactory()
             modules(appModule)
             modules(motorControlModule)
             modules(mtbModules())
+            workManagerFactory()
         }
 
         MTBKitCore.boot(this)
