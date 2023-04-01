@@ -137,7 +137,7 @@ dependencies {
 
 
     // Firebase crashlytics
-    implementation("com.google.firebase:firebase-crashlytics-ktx:18.2.10")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:18.3.6")
 
     // Android
     implementation("androidx.appcompat:appcompat:1.3.1")
