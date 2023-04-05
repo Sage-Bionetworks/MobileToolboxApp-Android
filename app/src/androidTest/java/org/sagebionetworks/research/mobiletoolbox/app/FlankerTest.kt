@@ -15,6 +15,7 @@ import junit.framework.TestCase.assertTrue
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.koin.core.component.KoinComponent
+import org.sagebionetworks.assessmentmodel.AssessmentResult
 import org.sagebionetworks.assessmentmodel.navigation.FinishedReason
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -23,7 +24,7 @@ class FlankerTest : KoinComponent {
 
     companion object : KoinComponent {
 
-        fun runFlanker() {
+        fun runFlanker() : Pair<String, AssessmentResult>{
             // Run Flanker assessment, assumes this is first time through
             Espresso.onView(ViewMatchers.withId(R.id.welcome_navigation_black_button)).perform(ViewActions.click())
             Thread.sleep(1000)
@@ -64,6 +65,7 @@ class FlankerTest : KoinComponent {
             val activity = getTopActivity() as MtbAssessmentActivity
             val viewModel = activity.viewModel as MtbRootAssessmentViewModel
 
+
             // Wait for measure to complete and handleReadyToSave to be called
             val saveCalled = getValue(viewModel.assessmentReadyToSave, timeoutSeconds = 300)
             assertEquals(FinishedReason.Complete, saveCalled)
@@ -79,10 +81,14 @@ class FlankerTest : KoinComponent {
             }
             assertTrue(viewModel.saveJob?.isCompleted == true)
 
+            val assessmentInstanceGuid = viewModel.assessmentInstanceId
+            val results = viewModel.assessmentNodeState?.currentResult as AssessmentResult
+
             // At this point the zip file should be written to the upload queue and the upload worker should be starting
 
             // Finish the Assessment
             Espresso.onView(ViewMatchers.withId(R.id.feedback_navigation_btn)).perform(ViewActions.click())
+            return Pair(assessmentInstanceGuid!!, results)
         }
 
         fun getTopActivity(): Activity? {

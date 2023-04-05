@@ -20,14 +20,17 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.jsonObject
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
@@ -35,6 +38,7 @@ import org.junit.runner.RunWith
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
+import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayRecyclerViewAdapter
@@ -49,6 +53,7 @@ class AssessmentIntegrationTest : KoinComponent {
 
         private val authRepo: AuthenticationRepository by inject()
         private val archiveUploader: AssessmentResultArchiveUploader by inject()
+        private val adherenceRecordRepo: AdherenceRecordRepo by inject()
 
         @BeforeClass
         @JvmStatic fun setup() {
@@ -160,14 +165,29 @@ class AssessmentIntegrationTest : KoinComponent {
                 )
             )
             // Run through flanker
-            FlankerTest.runFlanker()
-
-            // TODO: Check adherence records -nbrown 03/21/23
+            val pair = FlankerTest.runFlanker()
+            val assessmentInstanceGuid = pair.first
+            val assessmentResult = pair.second
 
             //Wait for uplaods to succeed
             uploadLatch.await(2, TimeUnit.MINUTES)
             // Check that upload succeeded
             assertTrue(uploadSuccess)
+
+            // Give time for uploadComplete call to finish
+            Thread.sleep(10000)
+            assertFalse(archiveUploader.uploadRequester.pendingUploads)
+
+            // Check adherence record
+            adherenceRecordRepo.loadRemoteAdherenceRecords(STUDY_ID)
+            val recordsMap = adherenceRecordRepo.getAllCachedAdherenceRecords(STUDY_ID).first()
+            val records = recordsMap[assessmentInstanceGuid]
+            assertNotNull(records)
+            val adherenceRecord = records!!.first { it.startedOn == assessmentResult.startDateTime }
+            assertNotNull(adherenceRecord.uploadedOn)
+            assertEquals(assessmentResult.endDateTime, adherenceRecord.finishedOn)
+            assertNotNull(adherenceRecord.clientData)
+            assertTrue(adherenceRecord.clientData!!.jsonObject.containsKey("osName"))
 
         }
 
