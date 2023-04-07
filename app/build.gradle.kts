@@ -15,7 +15,7 @@ android {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
         minSdk = 23
         targetSdk = 33
-        versionCode = 33
+        versionCode = 34
         versionName = "0.27.$versionCode"
 
         multiDexEnabled = true
