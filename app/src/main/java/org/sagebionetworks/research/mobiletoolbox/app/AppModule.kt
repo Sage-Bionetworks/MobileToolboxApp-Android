@@ -89,7 +89,7 @@ val appModule = module {
     }
 
     factory<FileLoader> { FileLoaderAndroid(get()) }
-    viewModel { TodayViewModel(get(), get(), get(), get()) }
+    viewModel { TodayViewModel(get(), get(), get(), get(), get()) }
     viewModel { HistoryViewModel(get(), get(), get()) }
     viewModel { RecorderConfigViewModel(get(), get(), get()) }
     viewModel { StudyViewModel(get(), get()) }

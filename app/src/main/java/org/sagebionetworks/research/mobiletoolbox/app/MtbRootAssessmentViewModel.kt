@@ -1,5 +1,7 @@
 package org.sagebionetworks.research.mobiletoolbox.app
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
@@ -44,6 +46,10 @@ class MtbRootAssessmentViewModel(
 
     private var isAlreadyStarted = false
     private lateinit var recorderRunner: RecorderRunner
+    internal var saveJob: Job? = null
+
+    protected val assessmentReadyToSaveMutableLiveData: MutableLiveData<FinishedReason> = MutableLiveData()
+    val assessmentReadyToSave: LiveData<FinishedReason> = assessmentReadyToSaveMutableLiveData
 
     fun startRecorderRunner() {
         // in TodayFragment#launchAssessment, we replaced assessmentId with taskId
@@ -86,7 +92,7 @@ class MtbRootAssessmentViewModel(
                 Logger.e("Encountered coroutine exception in job ${coroutineContext[Job]}", throwable)
             }
 
-            CoroutineScope(Dispatchers.IO)
+            saveJob = CoroutineScope(Dispatchers.IO)
                 .launch(coroutineExceptionLogger) {
                     Logger.d("Working in thread ${Thread.currentThread().name}, job ${coroutineContext[Job]}")
 
@@ -130,6 +136,7 @@ class MtbRootAssessmentViewModel(
         } else {
             recorderRunner.cancel()
         }
+        assessmentReadyToSaveMutableLiveData.value = reason
     }
 
     override fun onCleared() {
