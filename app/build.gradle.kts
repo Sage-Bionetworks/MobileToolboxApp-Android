@@ -51,6 +51,17 @@ android {
             )
         }
     }
+    flavorDimensions += "version"
+    productFlavors {
+        create("prod") {
+            dimension = "version"
+        }
+        create("staging") {
+            dimension = "version"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
+        }
+    }
     packagingOptions {
         jniLibs {
             pickFirsts += setOf("**/*.so")
