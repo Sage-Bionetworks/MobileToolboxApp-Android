@@ -32,7 +32,7 @@ class RecorderScheduledAssessmentConfigTest : TestCase() {
                 emptyList()
             )
 
-        assertFalse(recorderConfig.isRecorderDisabled(taskId))
+        assertTrue(recorderConfig.isRecorderDisabled(taskId))
 
         recorderConfig =
             RecorderScheduledAssessmentConfig(

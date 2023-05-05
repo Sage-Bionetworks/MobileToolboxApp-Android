@@ -7,9 +7,9 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbApplication"
@@ -20,16 +20,22 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.AppUpdateActivity"
+            android:exported="false"/>
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="@bool/crashlytics_enabled" />
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.study.PrivacyNoticeActivity"/>
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.ui.login.LoginActivity" />
+
+        <activity android:name=".ui.study.PrivacyNoticeActivity" />
+        <activity android:name=".ui.login.LoginActivity" />
         <!--
         https://github.com/readdle/swift-android-toolchain/issues/18
                 android:allowNativeHeapPointerTagging="false"
         -->
-        <activity android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbMainActivity"
+        <activity
+            android:name="org.sagebionetworks.research.mobiletoolbox.app.MtbMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,7 +48,8 @@
             android:screenOrientation="portrait" />
 
         <receiver android:name=".notif.AlarmReceiver" />
-        <receiver android:name=".notif.BootReceiver"
+        <receiver
+            android:name=".notif.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
