@@ -20,6 +20,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
@@ -36,7 +37,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
+import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
@@ -58,7 +62,8 @@ class AssessmentIntegrationTest : KoinComponent {
         @BeforeClass
         @JvmStatic fun setup() {
             runBlocking {
-                // TODO: Need clearData functionality from NWU for repeated test runs -nbrown 03/21/23
+                val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
+                (mtbAppNodeStateProvider as MtbAppNodeStateProvider).deleteAllData()
                 authRepo.signOut()
             }
         }
