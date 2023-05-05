@@ -158,7 +158,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
         // Check that archives have expected files
         for (uploadResource in pendingUploads) {
-            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "microphone.json")
+            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "microphone_levels.json")
             verifyArchive(uploadResource.loadResource()!!, expectedFiles)
         }
 
