@@ -111,7 +111,7 @@ class AssessmentIntegrationTest : KoinComponent {
             composeTestRule.onNodeWithText("Login").performClick()
 
             //TODO: Figure out idling resources to wait for login to complete -nbrown 03/21/23
-            Thread.sleep(10000)
+            Thread.sleep(20000)
 
             val session = authRepo.session()
             assertNotNull(session)
