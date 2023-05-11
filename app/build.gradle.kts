@@ -65,7 +65,7 @@ android {
             dimension = "version"
             applicationId = "edu.northwestern.mobiletoolbox"
             versionCode = 209
-            versionName = "1.4.2" //TODO: Figure out versionName that covers version of app and MTB measures -nbrown 5/11/23
+            versionNameSuffix = " mtb-${Versions.mtbMeasures}-$versionCode"
         }
     }
     packagingOptions {
@@ -126,7 +126,7 @@ dependencies {
     implementation(Deps.MTB.glide)
     kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.5.3")
+    implementation("edu.northwestern.mobiletoolbox:assessments_provider:${Versions.mtbMeasures}")
 
     val assessmentVersion = "0.12.0"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
