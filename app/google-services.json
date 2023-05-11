@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:952239652487:android:a6e48f526880f432294222",
+        "android_client_info": {
+          "package_name": "edu.northwestern.mobiletoolbox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "952239652487-ag4bneq05p41fiut5dcaastvu4amkeep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIzkxgPivanY0voY2UW6n1WQCUAt1jjOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "952239652487-ag4bneq05p41fiut5dcaastvu4amkeep.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "952239652487-fe3bd7f4vs5r3fgt5bmm6776c8b5rt4h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.sagebionetworks.MobileToolboxApp-Staging"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:952239652487:android:bc7c154cab184660294222",
         "android_client_info": {
           "package_name": "org.sagebionetworks.research.mobiletoolbox.app"

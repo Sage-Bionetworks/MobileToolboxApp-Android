@@ -1,0 +1,52 @@
+name: Northwestern QA Build
+
+on:
+  push:
+    tags:
+      - 'northwestern*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GPR_USER: ${{ secrets.GPR_USER }}
+      GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Write study public key pem file
+        env:
+          STUDY_PUBLIC_KEY_BASE64: ${{ secrets.STUDY_PUBLIC_KEY_BASE64 }}
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/app/src/main/assets/
+          echo "$STUDY_PUBLIC_KEY_BASE64" | base64 --decode > ${GITHUB_WORKSPACE}/app/src/main/assets/study_public_key.pem
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-kmmcache-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties', 'buildSrc/*.kt', 'settings.gradle*', 'gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-kmmcache-
+
+      - name: Generate Release Bundle
+        run: ./gradlew bundleRelease
+      
+      - name: Sign Prod Release Bundle
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/bundle/northwesternRelease
+          signingKeyBase64: ${{ secrets.NORTHWESTERN_KEY_STORE_BASE64 }}
+          alias: ${{ secrets.NORTHWESTERN_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.NORTHWESTERN_KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.NORTHWESTERN_KEY_PASSWORD }}
+      # 4
+      - uses: actions/upload-artifact@master
+        with:
+          name: app-northwestern-release.aab
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+

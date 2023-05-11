@@ -61,6 +61,12 @@ android {
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-staging"
         }
+        create("northwestern") {
+            dimension = "version"
+            applicationId = "edu.northwestern.mobiletoolbox"
+            versionCode = 209
+            versionName = "1.4.2" //TODO: Figure out versionName that covers version of app and MTB measures -nbrown 5/11/23
+        }
     }
     packagingOptions {
         jniLibs {
