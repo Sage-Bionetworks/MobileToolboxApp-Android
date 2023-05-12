@@ -64,7 +64,7 @@ android {
         create("northwestern") {
             dimension = "version"
             applicationId = "edu.northwestern.mobiletoolbox"
-            versionCode = 209
+            versionCode = 211
             versionNameSuffix = " mtb-${Versions.mtbMeasures}-$versionCode"
         }
     }
