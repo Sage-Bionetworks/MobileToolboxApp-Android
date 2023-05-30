@@ -35,12 +35,16 @@ class WelcomeScreenFragment : Fragment() {
         binding = FragmentWelcomeScreenBinding.inflate(inflater, container, false)
 
         binding.nextButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.container, PrivacyNoticeOnboardingFragment.newInstance())
-                .addToBackStack(null)
-                .commit()
+            onNextClicked()
         }
         return binding.root
+    }
+
+    internal fun onNextClicked() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.container, PrivacyNoticeOnboardingFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
