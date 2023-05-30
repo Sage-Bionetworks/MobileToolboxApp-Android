@@ -24,7 +24,7 @@ class ParticipantIdSignInFragment : Fragment() {
         fun newInstance() = ParticipantIdSignInFragment()
     }
 
-    private val viewModel: LoginViewModel by sharedViewModel()
+    internal val viewModel: LoginViewModel by sharedViewModel()
     private lateinit var binding: FragmentParticipantIdSignInBinding
 
     override fun onCreateView(

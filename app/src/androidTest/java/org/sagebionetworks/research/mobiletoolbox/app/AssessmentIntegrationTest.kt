@@ -9,6 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
@@ -44,8 +45,12 @@ import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
+import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
+import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.LoginActivity
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.ParticipantIdSignInFragment
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.WelcomeScreenFragment
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayRecyclerViewAdapter
@@ -107,6 +112,17 @@ class AssessmentIntegrationTest : KoinComponent {
             // https://developer.android.com/training/testing/espresso/idling-resource
             Thread.sleep(5000)
 
+            val loginActivity = (FlankerTest.getTopActivity() as FragmentActivity)
+            val signInFragment = loginActivity.supportFragmentManager.fragments.first { it is ParticipantIdSignInFragment } as ParticipantIdSignInFragment
+            val loginViewModel = signInFragment.viewModel
+            val studyLoadedLatch = CountDownLatch(1)
+            val studyLoadedObserver = Observer<ResourceResult<Study>> {
+                if (it is ResourceResult.Success) {
+                    studyLoadedLatch.countDown()
+                }
+            }
+            loginViewModel.studyLiveData.observeForever(studyLoadedObserver)
+
             // Login screen
             onView(withId(R.id.participantIdInput)).perform(
                 typeText(participantId),
@@ -114,8 +130,8 @@ class AssessmentIntegrationTest : KoinComponent {
             )
             composeTestRule.onNodeWithText("Login").performClick()
 
-            //TODO: Figure out idling resources to wait for login to complete -nbrown 03/21/23
-            Thread.sleep(20000)
+            studyLoadedLatch.await(20, TimeUnit.SECONDS)
+            loginViewModel.studyLiveData.removeObserver(studyLoadedObserver)
 
             val session = authRepo.session()
             assertNotNull(session)
