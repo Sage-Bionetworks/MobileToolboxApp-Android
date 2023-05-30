@@ -20,6 +20,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.networknt.schema.JsonSchemaFactory
+import com.networknt.schema.SpecVersion
 import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
@@ -32,6 +35,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.jsonObject
+import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
@@ -46,6 +50,7 @@ import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayRecyclerViewAdapter
+import java.net.URI
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -198,6 +203,14 @@ class AssessmentIntegrationTest : KoinComponent {
 
     }
 
+}
 
-
+fun validateJson(jsonString: String, schemaUrl: String) {
+    val jsonSchema = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7).getSchema(
+        URI(schemaUrl)
+    )
+    jsonSchema.initializeValidators()
+    val jsonNode = ObjectMapper().readTree(jsonString)
+    val errors = jsonSchema.validate(jsonNode)
+    Assert.assertTrue(errors.toString(), errors.isEmpty())
 }
