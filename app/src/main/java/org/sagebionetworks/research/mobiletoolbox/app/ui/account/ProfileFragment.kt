@@ -1,7 +1,6 @@
 package org.sagebionetworks.research.mobiletoolbox.app.ui.account
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.qualifier.named
+import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
 import org.sagebionetworks.research.mobiletoolbox.app.BuildConfig
 import org.sagebionetworks.research.mobiletoolbox.app.R
@@ -65,6 +68,9 @@ class ProfileFragment : Fragment() {
             navController.navigate(R.id.navigation_study_info, bundle)
         }
 
+        if (BuildConfig.DEBUG) {
+            binding.logoutButton.visibility = View.VISIBLE
+        }
         binding.logoutButton.setOnClickListener {
             val newFragment = ConfirmLogOutDialogFragment(viewModel.authRepo)
             newFragment.show(parentFragmentManager, "missiles")
@@ -88,6 +94,8 @@ class ConfirmLogOutDialogFragment(val authRepo: AuthenticationRepository) : Dial
                     { dialog, id ->
                         MainScope().launch {
                             authRepo.signOut()
+                            val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
+                            (mtbAppNodeStateProvider as? MtbAppNodeStateProvider)?.deleteAllData()
                             val navController = Navigation.findNavController(it, R.id.nav_host_fragment_activity_mtb_main)
                             navController.navigate(R.id.navigation_home)
                         }

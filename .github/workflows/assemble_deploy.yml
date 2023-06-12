@@ -34,12 +34,12 @@ jobs:
       - name: Generate Release Bundle
         run: ./gradlew bundleRelease
       
-      - name: Sign Release Bundle
+      - name: Sign Prod Release Bundle
         uses: r0adkll/sign-android-release@v1
         # ID used to access action output
         id: sign_app
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: app/build/outputs/bundle/prodRelease
           signingKeyBase64: ${{ secrets.KEY_STORE_BASE64 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -47,10 +47,22 @@ jobs:
       # 4
       - uses: actions/upload-artifact@master
         with:
-          name: app-release.aab
+          name: app-prod-release.aab
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
-      # 5
+
+      - name: Sign Staging Release Bundle
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_staging_app
+        with:
+          releaseDirectory: app/build/outputs/bundle/stagingRelease
+          signingKeyBase64: ${{ secrets.KEY_STORE_BASE64 }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      # 4
       - uses: actions/upload-artifact@master
         with:
-          name: mapping.txt
-          path: app/build/outputs/mapping/release/mapping.txt
+          name: app-staging-release.aab
+          path: ${{steps.sign_staging_app.outputs.signedReleaseFile}}
+
