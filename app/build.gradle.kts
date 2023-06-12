@@ -97,11 +97,17 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Sage dependencies
-    implementation("org.sagebionetworks:BridgeDataUploadUtils:0.2.6") {
+    implementation("org.sagebionetworks:BridgeDataUploadUtils:0.2.7") {
         exclude(group = "joda-time", module = "joda-time")
         exclude(group = "org.bouncycastle")
+        exclude(group = "com.fasterxml.jackson.core") //Depends on older version that is not compatible with json-schema-validator and doesn't use it
         exclude(group = "com.madgag.spongycastle") //pkix renamed to bcpkix-jdk15on, causes dupes
     }
+    val jacksonVersion = "2.14.2"
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+
     implementation("com.madgag.spongycastle:core:1.58.0.0")
     implementation("com.madgag.spongycastle:prov:1.58.0.0")
     // marked api due to propagation of CMSException
@@ -200,4 +206,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
     // Needed for createAndroidComposeRule, but not createComposeRule:
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
+
+    androidTestImplementation("com.networknt:json-schema-validator:1.0.82")
 }
+

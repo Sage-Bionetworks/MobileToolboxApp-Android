@@ -1,6 +1,7 @@
 package org.sagebionetworks.research.mobiletoolbox.app
 
 import android.app.Activity
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
@@ -12,6 +13,7 @@ import androidx.test.runner.lifecycle.Stage
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import junit.framework.TestCase.assertTrue
+import kotlinx.serialization.encodeToString
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.koin.core.component.KoinComponent
@@ -83,6 +85,14 @@ class FlankerTest : KoinComponent {
 
             val assessmentInstanceGuid = viewModel.assessmentInstanceId
             val results = viewModel.assessmentNodeState?.currentResult as AssessmentResult
+
+            val jsonCoder = viewModel.registryProvider.getJsonCoder(viewModel.assessmentPlaceholder)
+            var resultJson = jsonCoder.encodeToString(results)
+            Log.d("FlankerTest", resultJson)
+            // Hacky workaround until Northwestern updates their schema to allow type field. -nbrown 5/26/2023
+            resultJson = resultJson.replace("\"type\":\"edu.northwestern.mobiletoolbox.flanker.serialization.FlankerAssessmentResult\"," ,"")
+            resultJson = resultJson.replace("\"type\":\"edu.northwestern.mobiletoolbox.common.data.UserInteraction\"," ,"")
+            validateJson(resultJson, "https://raw.githubusercontent.com/MobileToolbox/MTBfx/937cdd1bf3b09815e97b53632c58208a14255b34/JSONschema/taskData_combinedSchema.json")
 
             // At this point the zip file should be written to the upload queue and the upload worker should be starting
 
