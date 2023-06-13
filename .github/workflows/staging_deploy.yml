@@ -57,4 +57,5 @@ jobs:
           packageName: org.sagebionetworks.research.mobiletoolbox.app.staging
           releaseFiles: ${{steps.sign_staging_app.outputs.signedReleaseFile}}
           track: internal
+          status: draft
 
