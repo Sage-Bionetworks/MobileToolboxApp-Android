@@ -1,0 +1,60 @@
+name: Staging Bundle and deploy
+
+on:
+  push:
+    tags:
+      - 'staging-v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GPR_USER: ${{ secrets.GPR_USER }}
+      GPR_API_KEY: ${{ secrets.GPR_API_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Write study public key pem file
+        env:
+          STUDY_PUBLIC_KEY_BASE64: ${{ secrets.STUDY_PUBLIC_KEY_BASE64 }}
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/app/src/main/assets/
+          echo "$STUDY_PUBLIC_KEY_BASE64" | base64 --decode > ${GITHUB_WORKSPACE}/app/src/main/assets/study_public_key.pem
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-kmmcache-${{ hashFiles('**/*.gradle*','**/gradle-wrapper.properties', 'buildSrc/*.kt', 'settings.gradle*', 'gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-kmmcache-
+
+      - name: Generate Release Bundle
+        run: ./gradlew bundleRelease
+
+      - name: Sign Staging Release Bundle
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_staging_app
+        with:
+          releaseDirectory: app/build/outputs/bundle/stagingRelease
+          signingKeyBase64: ${{ secrets.KEY_STORE_BASE64 }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      # 4
+      - uses: actions/upload-artifact@master
+        with:
+          name: app-staging-release.aab
+          path: ${{steps.sign_staging_app.outputs.signedReleaseFile}}
+
+      - name: Deploy to Internal test
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: org.sagebionetworks.research.mobiletoolbox.app.staging
+          releaseFiles: ${{steps.sign_staging_app.outputs.signedReleaseFile}}
+          track: internal
+
