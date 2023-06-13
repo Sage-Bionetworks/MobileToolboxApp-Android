@@ -50,19 +50,11 @@ jobs:
           name: app-prod-release.aab
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
 
-      - name: Sign Staging Release Bundle
-        uses: r0adkll/sign-android-release@v1
-        # ID used to access action output
-        id: sign_staging_app
+      - name: Deploy to Internal test
+        uses: r0adkll/upload-google-play@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/stagingRelease
-          signingKeyBase64: ${{ secrets.KEY_STORE_BASE64 }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-      # 4
-      - uses: actions/upload-artifact@master
-        with:
-          name: app-staging-release.aab
-          path: ${{steps.sign_staging_app.outputs.signedReleaseFile}}
-
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: org.sagebionetworks.research.mobiletoolbox.app
+          releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}
+          track: internal
+          status: draft
