@@ -8,18 +8,21 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.test.core.app.takeScreenshot
-import androidx.test.core.graphics.writeToTestStorage
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.networknt.schema.JsonSchemaFactory
+import com.networknt.schema.SpecVersion
+import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
@@ -31,17 +34,27 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.jsonObject
+import org.junit.Assert
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
+import org.sagebionetworks.assessmentmodel.navigation.CustomNodeStateProvider
 import org.sagebionetworks.bridge.assessmentmodel.upload.AssessmentResultArchiveUploader
+import org.sagebionetworks.bridge.kmm.shared.cache.ResourceResult
+import org.sagebionetworks.bridge.kmm.shared.models.Study
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.LoginActivity
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.ParticipantIdSignInFragment
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
+import org.sagebionetworks.research.mobiletoolbox.app.ui.login.WelcomeScreenFragment
 import org.sagebionetworks.research.mobiletoolbox.app.ui.today.TodayRecyclerViewAdapter
+import java.net.URI
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -58,7 +71,8 @@ class AssessmentIntegrationTest : KoinComponent {
         @BeforeClass
         @JvmStatic fun setup() {
             runBlocking {
-                // TODO: Need clearData functionality from NWU for repeated test runs -nbrown 03/21/23
+                val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
+                (mtbAppNodeStateProvider as MtbAppNodeStateProvider).deleteAllData()
                 authRepo.signOut()
             }
         }
@@ -98,6 +112,17 @@ class AssessmentIntegrationTest : KoinComponent {
             // https://developer.android.com/training/testing/espresso/idling-resource
             Thread.sleep(5000)
 
+            val loginActivity = (FlankerTest.getTopActivity() as FragmentActivity)
+            val signInFragment = loginActivity.supportFragmentManager.fragments.first { it is ParticipantIdSignInFragment } as ParticipantIdSignInFragment
+            val loginViewModel = signInFragment.viewModel
+            val studyLoadedLatch = CountDownLatch(1)
+            val studyLoadedObserver = Observer<ResourceResult<Study>> {
+                if (it is ResourceResult.Success) {
+                    studyLoadedLatch.countDown()
+                }
+            }
+            loginViewModel.studyLiveData.observeForever(studyLoadedObserver)
+
             // Login screen
             onView(withId(R.id.participantIdInput)).perform(
                 typeText(participantId),
@@ -105,8 +130,8 @@ class AssessmentIntegrationTest : KoinComponent {
             )
             composeTestRule.onNodeWithText("Login").performClick()
 
-            //TODO: Figure out idling resources to wait for login to complete -nbrown 03/21/23
-            Thread.sleep(10000)
+            studyLoadedLatch.await(20, TimeUnit.SECONDS)
+            loginViewModel.studyLiveData.removeObserver(studyLoadedObserver)
 
             val session = authRepo.session()
             assertNotNull(session)
@@ -119,7 +144,14 @@ class AssessmentIntegrationTest : KoinComponent {
             PermissionPageType.MOTION_PAGE.updateAllowToggle(targetContext, false)
 
             // Welcome screen
-            onView(withId(R.id.next_button)).perform(scrollTo(), click())
+            //Espresso call with scrollTo: onView(withId(R.id.next_button)).perform(scrollTo(), click())
+            // has been fragile, call onNextClicked() on fragment directly instead -nbrown 5/30/23
+            val activity = FlankerTest.getTopActivity() as FragmentActivity
+            val welcomeScreenFragment = activity.supportFragmentManager.fragments.first { it is WelcomeScreenFragment } as WelcomeScreenFragment
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                welcomeScreenFragment.onNextClicked()
+            }
+
             // Privacy notice screens
             composeTestRule.onNodeWithText("Next").performClick()
             composeTestRule.onNodeWithText("Next").performClick()
@@ -193,6 +225,14 @@ class AssessmentIntegrationTest : KoinComponent {
 
     }
 
+}
 
-
+fun validateJson(jsonString: String, schemaUrl: String) {
+    val jsonSchema = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7).getSchema(
+        URI(schemaUrl)
+    )
+    jsonSchema.initializeValidators()
+    val jsonNode = ObjectMapper().readTree(jsonString)
+    val errors = jsonSchema.validate(jsonNode)
+    Assert.assertTrue(errors.toString(), errors.isEmpty())
 }
