@@ -5,6 +5,8 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
 import edu.northwestern.mobiletoolbox.assessments_provider.mtbModules
 import edu.northwestern.mobiletoolbox.bridge.MTBKitCore
+import edu.wustl.arc.sageassessments.SageArcApplication
+import edu.wustl.arc.sageassessments.arcModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +41,7 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
             modules(appModule)
             modules(motorControlModule)
             modules(mtbModules())
+            modules(arcModule)
             workManagerFactory()
         }
 
@@ -47,6 +50,10 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
         //Trigger an upload worker to process any failed uploads
         val uploadRequester: UploadRequester = get()
         uploadRequester.queueUploadWorker()
+
+        // WashU Arc library setup
+        SageArcApplication.setupDefaultConfig(this)
+
         val authRepo: AuthenticationRepository = get()
         authRepo.currentStudyId()?.let { studyId ->
             val adherenceRecordRepo: AdherenceRecordRepo = get()

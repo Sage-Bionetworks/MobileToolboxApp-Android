@@ -33,6 +33,17 @@ allprojects {
 
         maven {
             name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/CTRLab-WashU/ArcAssessmentsAndroid")
+            credentials {
+                username = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user")
+                    ?: System.getenv("GPR_USER")
+                password = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key")
+                    ?: System.getenv("GPR_API_KEY")
+            }
+        }
+
+        maven {
+            name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/MobileToolbox/MobileToolboxAndroid")
             credentials {
 
