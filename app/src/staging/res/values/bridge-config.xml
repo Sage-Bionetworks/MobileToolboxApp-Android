@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="osb_app_id">open-bridge</string>
+    <string name="osb_app_name">Open Bridge</string>
+</resources>
