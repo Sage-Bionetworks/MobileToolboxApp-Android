@@ -34,7 +34,7 @@ import org.sagebionetworks.bridge.kmm.shared.cache.loadResource
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
-import org.sagebionetworks.bridge.kmm.shared.upload.UploadFile
+import org.sagebionetworks.bridge.kmm.shared.models.UploadFile
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.RecorderRunner
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderConfigJsonCoder
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
