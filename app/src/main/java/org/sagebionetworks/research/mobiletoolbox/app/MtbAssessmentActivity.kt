@@ -6,12 +6,10 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
-import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
 import edu.wustl.arc.navigation.NavigationManager
 import edu.wustl.arc.sageassessments.ArcAssessmentType
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.serialization.decodeFromString
 import org.koin.android.ext.android.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
@@ -40,12 +38,6 @@ class MtbAssessmentActivity : AssessmentActivity() {
     lateinit var recorderScheduledAssessmentConfigs: List<RecorderScheduledAssessmentConfig>
 
     lateinit var permissionResultCallback: ActivityResultCallback<Nothing>
-
-    //Fix for June so that MTB assessments are full screen
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) AssessmentUtils.hideNavigationBar(window)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!

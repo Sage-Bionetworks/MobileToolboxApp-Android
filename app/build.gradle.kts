@@ -121,12 +121,7 @@ dependencies {
 
     implementation("org.sagebionetworks.research.kmm:passiveData:${Versions.passiveData}")
 
-    // MTB dependencies
-    implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation(Deps.MTB.glide)
-    kapt(Deps.MTB.glide_kapt)
-
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.5.9")
 
     val assessmentVersion = "0.12.0"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
