@@ -26,39 +26,41 @@ class FlankerTest : KoinComponent {
 
     companion object : KoinComponent {
 
+        // Code no longer runs as NU measures have been removed -nbrown 10/19/2023
+        // Leaving code as example for setting up test with a different assessment
         fun runFlanker() : Pair<String, AssessmentResult>{
             // Run Flanker assessment, assumes this is first time through
-            Espresso.onView(ViewMatchers.withId(R.id.welcome_navigation_black_button)).perform(ViewActions.click())
-            Thread.sleep(1000)
-            Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
-            Thread.sleep(1000)
-            Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
-            Thread.sleep(1000)
-            Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
-            Thread.sleep(1000)
-            Espresso.onView(ViewMatchers.withId(R.id.right_button)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_right)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_left)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_right)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_right)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_left)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
-            Thread.sleep(3000)
-            Espresso.onView(ViewMatchers.withId(R.id.right_button)).perform(ViewActions.click())
+//            Espresso.onView(ViewMatchers.withId(R.id.welcome_navigation_black_button)).perform(ViewActions.click())
+//            Thread.sleep(1000)
+//            Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
+//            Thread.sleep(1000)
+//            Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
+//            Thread.sleep(1000)
+//            Espresso.onView(ViewMatchers.withId(R.id.navigator_next_button)).perform(ViewActions.click())
+//            Thread.sleep(1000)
+//            Espresso.onView(ViewMatchers.withId(R.id.right_button)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_right)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_left)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_right)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_right)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_button_left)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.flanker_response_navigation_button)).perform(ViewActions.click())
+//            Thread.sleep(3000)
+//            Espresso.onView(ViewMatchers.withId(R.id.right_button)).perform(ViewActions.click())
             // At this point we no longer need to interact with the measure to get it to complete, just have to wait
             // Could add some random button clicks to vary the data
 
@@ -97,7 +99,7 @@ class FlankerTest : KoinComponent {
             // At this point the zip file should be written to the upload queue and the upload worker should be starting
 
             // Finish the Assessment
-            Espresso.onView(ViewMatchers.withId(R.id.feedback_navigation_btn)).perform(ViewActions.click())
+//            Espresso.onView(ViewMatchers.withId(R.id.feedback_navigation_btn)).perform(ViewActions.click())
             return Pair(assessmentInstanceGuid!!, results)
         }
 

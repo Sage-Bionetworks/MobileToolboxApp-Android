@@ -22,7 +22,6 @@ import androidx.test.rule.GrantPermissionRule
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.networknt.schema.JsonSchemaFactory
 import com.networknt.schema.SpecVersion
-import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
@@ -71,8 +70,8 @@ class AssessmentIntegrationTest : KoinComponent {
         @BeforeClass
         @JvmStatic fun setup() {
             runBlocking {
-                val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
-                (mtbAppNodeStateProvider as MtbAppNodeStateProvider).deleteAllData()
+//                val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
+//                (mtbAppNodeStateProvider as MtbAppNodeStateProvider).deleteAllData()
                 authRepo.signOut()
             }
         }
@@ -97,7 +96,8 @@ class AssessmentIntegrationTest : KoinComponent {
     val composeTestRule = createAndroidComposeRule(MtbMainActivity::class.java)
 
 
-    @Test
+    // Disabling Flanker test as NU measures have been removed -nbrown 10/19/2023
+    // Leaving code as example for setting up test with a different assessment
     fun testFlankerAssessment() {
         runTest {
             val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
