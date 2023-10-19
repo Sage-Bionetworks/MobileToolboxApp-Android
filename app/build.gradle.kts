@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 33
         versionCode = 43
         versionName = "0.30.$versionCode"

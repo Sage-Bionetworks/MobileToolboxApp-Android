@@ -66,6 +66,9 @@ class TodayFragment : MtbBaseFragment() {
             "GradualOnsetV1" to R.drawable.ic_as_cities_and_mountains,
             "ProbabilisticRewardForm1V1" to R.drawable.ic_as_number_guessing,
             "ProbabilisticRewardForm2V1" to R.drawable.ic_as_number_guessing,
+            "grid_test" to R.drawable.ic_as_grid_memory,
+            "price_test" to R.drawable.ic_as_prices,
+            "symbol_test" to R.drawable.ic_as_symbol_search
         )
 
         fun getAssessmentIcon(context: Context, assessmentInfo: AssessmentInfo) : Int {
