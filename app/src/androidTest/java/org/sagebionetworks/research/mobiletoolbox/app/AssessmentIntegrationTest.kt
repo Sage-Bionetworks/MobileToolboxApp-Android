@@ -35,6 +35,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -98,6 +99,7 @@ class AssessmentIntegrationTest : KoinComponent {
 
     // Disabling Flanker test as NU measures have been removed -nbrown 10/19/2023
     // Leaving code as example for setting up test with a different assessment
+    @Ignore
     fun testFlankerAssessment() {
         runTest {
             val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
