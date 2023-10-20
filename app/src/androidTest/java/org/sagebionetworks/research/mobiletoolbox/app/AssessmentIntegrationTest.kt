@@ -58,7 +58,8 @@ import java.net.URI
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-
+// TODO: Figure out a replacement assessment so we can re-enable this test -nbrown 10/20/2023
+/*
 @RunWith(AndroidJUnit4::class)
 class AssessmentIntegrationTest : KoinComponent {
 
@@ -238,3 +239,4 @@ fun validateJson(jsonString: String, schemaUrl: String) {
     val errors = jsonSchema.validate(jsonNode)
     Assert.assertTrue(errors.toString(), errors.isEmpty())
 }
+*/
