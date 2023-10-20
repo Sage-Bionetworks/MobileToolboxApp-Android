@@ -43,7 +43,6 @@ val appModule = module {
 
     single<AssessmentRegistryProvider>() {
         RootAssessmentRegistryProvider(get(), listOf(
-            get(qualifier = named("mtb-northwestern")),
             get(qualifier = named("washu-arc")),
             get(qualifier = named("sage-motorcontrol")),
             get(qualifier = named("sage-survey"))))
@@ -54,7 +53,6 @@ val appModule = module {
 
     single<AssessmentFragmentProvider>() {
         RootAssessmentFragmentProvider(listOf(
-            get(qualifier = named("mtb-northwestern")),
             get(qualifier = named("washu-arc")),
             get(qualifier = named("sage-motorcontrol")),
             get(qualifier = named("sage-survey"))))
@@ -62,7 +60,6 @@ val appModule = module {
     
     single<CustomNodeStateProvider>() {
         RootCustomNodeStateProvider(listOf(
-            get(qualifier = named("mtb-northwestern"))
         ))
     }
 

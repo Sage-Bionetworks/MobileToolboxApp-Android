@@ -22,7 +22,6 @@ import androidx.test.rule.GrantPermissionRule
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.networknt.schema.JsonSchemaFactory
 import com.networknt.schema.SpecVersion
-import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertNotNull
@@ -36,6 +35,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.jsonObject
 import org.junit.Assert
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -58,7 +58,8 @@ import java.net.URI
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-
+// TODO: Figure out a replacement assessment so we can re-enable this test -nbrown 10/20/2023
+/*
 @RunWith(AndroidJUnit4::class)
 class AssessmentIntegrationTest : KoinComponent {
 
@@ -71,8 +72,8 @@ class AssessmentIntegrationTest : KoinComponent {
         @BeforeClass
         @JvmStatic fun setup() {
             runBlocking {
-                val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
-                (mtbAppNodeStateProvider as MtbAppNodeStateProvider).deleteAllData()
+//                val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
+//                (mtbAppNodeStateProvider as MtbAppNodeStateProvider).deleteAllData()
                 authRepo.signOut()
             }
         }
@@ -97,7 +98,9 @@ class AssessmentIntegrationTest : KoinComponent {
     val composeTestRule = createAndroidComposeRule(MtbMainActivity::class.java)
 
 
-    @Test
+    // Disabling Flanker test as NU measures have been removed -nbrown 10/19/2023
+    // Leaving code as example for setting up test with a different assessment
+    @Ignore
     fun testFlankerAssessment() {
         runTest {
             val targetContext = InstrumentationRegistry.getInstrumentation().targetContext
@@ -236,3 +239,4 @@ fun validateJson(jsonString: String, schemaUrl: String) {
     val errors = jsonSchema.validate(jsonNode)
     Assert.assertTrue(errors.toString(), errors.isEmpty())
 }
+*/

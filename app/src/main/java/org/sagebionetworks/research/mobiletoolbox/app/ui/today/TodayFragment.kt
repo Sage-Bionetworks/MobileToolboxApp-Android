@@ -250,11 +250,7 @@ class TodayFragment : MtbBaseFragment() {
             MtbAssessmentActivity.ARG_RECORDER_CONFIG_KEY,
             recorderConfigJsonCoder.encodeToString(recorderConfigViewModel.recorderScheduledAssessmentConfig.value)
         )
-        //Fix for June so that MTB assessments are full screen
-        intent.putExtra(
-            AssessmentActivity.ARG_THEME,
-            edu.northwestern.mobiletoolbox.common.R.style.Theme_AppCompat_Light_NoActionBar_FullSizeScreen
-        )
+
         startActivity(intent)
     }
 

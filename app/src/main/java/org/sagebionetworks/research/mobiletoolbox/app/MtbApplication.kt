@@ -3,8 +3,6 @@ package org.sagebionetworks.research.mobiletoolbox.app
 import androidx.multidex.MultiDexApplication
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
-import edu.northwestern.mobiletoolbox.assessments_provider.mtbModules
-import edu.northwestern.mobiletoolbox.bridge.MTBKitCore
 import edu.wustl.arc.sageassessments.SageArcApplication
 import edu.wustl.arc.sageassessments.arcModule
 import kotlinx.coroutines.CoroutineScope
@@ -40,12 +38,10 @@ class MtbApplication : MultiDexApplication(), KoinComponent {
             androidContext(this@MtbApplication)
             modules(appModule)
             modules(motorControlModule)
-            modules(mtbModules())
             modules(arcModule)
             workManagerFactory()
         }
 
-        MTBKitCore.boot(this)
         ScheduleNotificationsWorker.enqueueDailyScheduleNotificationWorker(this)
         //Trigger an upload worker to process any failed uploads
         val uploadRequester: UploadRequester = get()

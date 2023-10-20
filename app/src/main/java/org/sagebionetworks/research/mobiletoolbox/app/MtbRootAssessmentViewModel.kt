@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
-import edu.northwestern.mobiletoolbox.common.data.MtbAssessmentResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -111,21 +110,13 @@ class MtbRootAssessmentViewModel(
 
                         assessmentResult.inputResults.addAll(recorderResults)
 
-                        //TODO: Figure out better approach to determining filename for the results json file -nbrown 1/23/2023
-                        val fileName = if (assessmentResult is MtbAssessmentResult) {
-                            // Results from Northwestern built assessments are written to taskData.json
-                            "taskData.json"
-                        } else {
-                            // Survey results are written to assessmentResult.json
-                            "assessmentResult.json"
-                        }
                         archiveUploader.archiveResultAndQueueUpload(
                             assessmentResult,
                             jsonCoder,
                             adherenceRecord.instanceGuid,
                             adherenceRecord.eventTimestamp,
                             startedTimeStamp,
-                            fileName,
+                            "assessmentResult.json",
                             sessionExpire
                         )
                     } catch (e: CancellationException) {
