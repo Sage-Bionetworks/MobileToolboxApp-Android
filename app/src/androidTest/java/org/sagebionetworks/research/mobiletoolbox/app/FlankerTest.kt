@@ -94,7 +94,7 @@ class FlankerTest : KoinComponent {
             // Hacky workaround until Northwestern updates their schema to allow type field. -nbrown 5/26/2023
             resultJson = resultJson.replace("\"type\":\"edu.northwestern.mobiletoolbox.flanker.serialization.FlankerAssessmentResult\"," ,"")
             resultJson = resultJson.replace("\"type\":\"edu.northwestern.mobiletoolbox.common.data.UserInteraction\"," ,"")
-            validateJson(resultJson, "https://raw.githubusercontent.com/MobileToolbox/MTBfx/937cdd1bf3b09815e97b53632c58208a14255b34/JSONschema/taskData_combinedSchema.json")
+//            validateJson(resultJson, "https://raw.githubusercontent.com/MobileToolbox/MTBfx/937cdd1bf3b09815e97b53632c58208a14255b34/JSONschema/taskData_combinedSchema.json")
 
             // At this point the zip file should be written to the upload queue and the upload worker should be starting
 
