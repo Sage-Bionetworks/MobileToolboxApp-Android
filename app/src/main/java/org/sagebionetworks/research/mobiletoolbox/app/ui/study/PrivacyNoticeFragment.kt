@@ -146,7 +146,7 @@ class PrivacyPageFragment : Fragment() {
             binding.content.addView(rowBinding.root)
         }
         binding.fullNoticeButton.setOnClickListener {
-            val uriFile: Uri = Uri.parse("https://studies.mobiletoolbox.org/MTBPrivacyPolicy.pdf")
+            val uriFile: Uri = Uri.parse("https://studies.bridgedigital.health/privacy_policy.pdf")
 
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 type = "application/pdf"
