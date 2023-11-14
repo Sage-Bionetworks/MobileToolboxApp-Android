@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
@@ -83,7 +83,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 
     buildFeatures.viewBinding = true
@@ -91,6 +91,7 @@ android {
     androidResources {
         noCompress += listOf("pdf")
     }
+    namespace = "org.sagebionetworks.research.mobiletoolbox.app"
 }
 
 dependencies {
@@ -123,10 +124,10 @@ dependencies {
 
     implementation(Deps.MTB.glide)
 
-    val assessmentVersion = "0.12.0"
+    val assessmentVersion = "1.1.4"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
-    implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
-    implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.3")
+    implementation("org.sagebionetworks.assessmentmodel:assessmentmodel:$assessmentVersion")
+    implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.5")
 
     // WashU Arc
     implementation("edu.wustl.arc.assessments:core-library:1.2.0")
@@ -145,7 +146,7 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}")
