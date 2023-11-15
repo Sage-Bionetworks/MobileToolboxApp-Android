@@ -113,11 +113,8 @@ class MtbRootAssessmentViewModel(
                         archiveUploader.archiveResultAndQueueUpload(
                             assessmentResult,
                             jsonCoder,
-                            adherenceRecord.instanceGuid,
-                            adherenceRecord.eventTimestamp,
-                            startedTimeStamp,
-                            "assessmentResult.json",
-                            sessionExpire
+                            adherenceRecord,
+                            "assessmentResult.json"
                         )
                     } catch (e: CancellationException) {
                         Logger.e("Cancelled archiving", e)
