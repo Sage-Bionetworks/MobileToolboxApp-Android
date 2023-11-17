@@ -66,10 +66,6 @@ class ProfileFragment : Fragment() {
             bundle.putInt(StudyFragment.KEY_PAGE_INDEX, StudyFragment.CONTACT_PAGE_INDEX)
             navController.navigate(R.id.navigation_study_info, bundle)
         }
-
-        if (BuildConfig.DEBUG) {
-            binding.logoutButton.visibility = View.VISIBLE
-        }
         binding.logoutButton.setOnClickListener {
             val newFragment = ConfirmLogOutDialogFragment(viewModel.authRepo)
             newFragment.show(parentFragmentManager, "missiles")
