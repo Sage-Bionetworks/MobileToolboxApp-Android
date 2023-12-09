@@ -130,9 +130,9 @@ dependencies {
     implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.5")
 
     // WashU Arc
-    implementation("edu.wustl.arc.assessments:core-library:1.2.0")
+    implementation("edu.wustl.arc.assessments:core-library:1.2.2")
     implementation("com.github.gcacace:signature-pad:1.3.1")
-    implementation("edu.wustl.arc.sageassessments:sage-library:1.2.0")
+    implementation("edu.wustl.arc.sageassessments:sage-library:1.2.2")
 
     // Kermit
     implementation("co.touchlab:kermit:${Versions.kermit}")
