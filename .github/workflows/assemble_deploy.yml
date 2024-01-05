@@ -20,7 +20,7 @@ jobs:
           java-version: 17
       - name: Write study public key pem file
         env:
-          STUDY_PUBLIC_KEY_BASE64: ${{ secrets.STUDY_PUBLIC_KEY_BASE64 }}
+          STUDY_PUBLIC_KEY_BASE64: ${{ secrets.OPEN_BRIDGE_STUDY_PUBLIC_KEY_BASE64 }}
         run: |
           mkdir -p ${GITHUB_WORKSPACE}/app/src/main/assets/
           echo "$STUDY_PUBLIC_KEY_BASE64" | base64 --decode > ${GITHUB_WORKSPACE}/app/src/main/assets/study_public_key.pem
