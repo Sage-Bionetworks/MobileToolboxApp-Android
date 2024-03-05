@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import edu.northwestern.mobiletoolbox.assessments_provider.MtbAppNodeStateProvider
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
@@ -67,10 +66,6 @@ class ProfileFragment : Fragment() {
             bundle.putInt(StudyFragment.KEY_PAGE_INDEX, StudyFragment.CONTACT_PAGE_INDEX)
             navController.navigate(R.id.navigation_study_info, bundle)
         }
-
-        if (BuildConfig.DEBUG) {
-            binding.logoutButton.visibility = View.VISIBLE
-        }
         binding.logoutButton.setOnClickListener {
             val newFragment = ConfirmLogOutDialogFragment(viewModel.authRepo)
             newFragment.show(parentFragmentManager, "missiles")
@@ -94,8 +89,6 @@ class ConfirmLogOutDialogFragment(val authRepo: AuthenticationRepository) : Dial
                     { dialog, id ->
                         MainScope().launch {
                             authRepo.signOut()
-                            val mtbAppNodeStateProvider: CustomNodeStateProvider = get(named("mtb-northwestern"))
-                            (mtbAppNodeStateProvider as? MtbAppNodeStateProvider)?.deleteAllData()
                             val navController = Navigation.findNavController(it, R.id.nav_host_fragment_activity_mtb_main)
                             navController.navigate(R.id.navigation_home)
                         }

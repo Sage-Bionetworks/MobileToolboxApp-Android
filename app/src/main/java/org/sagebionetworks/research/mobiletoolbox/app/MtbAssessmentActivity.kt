@@ -6,10 +6,10 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import co.touchlab.kermit.Logger
-import edu.northwestern.mobiletoolbox.common.utils.AssessmentUtils
+import edu.wustl.arc.navigation.NavigationManager
+import edu.wustl.arc.sageassessments.ArcAssessmentType
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.serialization.decodeFromString
 import org.koin.android.ext.android.inject
 import org.sagebionetworks.assessmentmodel.AssessmentPlaceholder
 import org.sagebionetworks.assessmentmodel.AssessmentRegistryProvider
@@ -39,12 +39,6 @@ class MtbAssessmentActivity : AssessmentActivity() {
 
     lateinit var permissionResultCallback: ActivityResultCallback<Nothing>
 
-    //Fix for June so that MTB assessments are full screen
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) AssessmentUtils.hideNavigationBar(window)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val adherenceRecordString = intent.getStringExtra(ARG_ADHERENCE_RECORD_KEY)!!
         adherenceRecord = recorderConfigJsonCoder.decodeFromString(adherenceRecordString)
@@ -60,6 +54,17 @@ class MtbAssessmentActivity : AssessmentActivity() {
                 ?.let { recorderConfigJsonCoder.decodeFromString(it) } ?: listOf()
 
         recorderRunnerFactory.withConfig(recorderScheduledAssessmentConfigs)
+
+        // Needed to show Arc Assessments with a status bar
+        // May want to consider applying this layout for all assessments
+        // that do not require full screen, no status bar, look and feel, like Northwestern's.
+        intent.getStringExtra(ARG_ASSESSMENT_ID_KEY)?.let { assessmentIdentifier ->
+            if (ArcAssessmentType.values().any {
+                assessmentIdentifier == it.toAssessmentIdentifier()
+            }) {
+                setContentView(R.layout.activity_mtb_status_bar_assessment)
+            }
+        }
 
         super.onCreate(savedInstanceState)
 
@@ -87,6 +92,8 @@ class MtbAssessmentActivity : AssessmentActivity() {
             (viewModel as MtbRootAssessmentViewModel).startRecorderRunner()
         }
 
+        // Needed to show Arc Assessments
+        NavigationManager.initialize(supportFragmentManager)
     }
 
     override fun initViewModel(

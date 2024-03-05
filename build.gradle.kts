@@ -9,7 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:8.1.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}")
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}")
         classpath("com.google.gms:google-services:4.3.15")
@@ -30,6 +30,17 @@ allprojects {
         }
         maven(url = "https://sagebionetworks.jfrog.io/artifactory/mobile-sdks/")
         mavenLocal()
+
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/CTRLab-WashU/ArcAssessmentsAndroid")
+            credentials {
+                username = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.user")
+                    ?: System.getenv("GPR_USER")
+                password = gradleLocalProperties(rootProject.rootDir).getProperty("gpr.key")
+                    ?: System.getenv("GPR_API_KEY")
+            }
+        }
 
         maven {
             name = "GitHubPackages"

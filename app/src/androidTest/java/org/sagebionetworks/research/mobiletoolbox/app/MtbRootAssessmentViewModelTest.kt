@@ -34,7 +34,7 @@ import org.sagebionetworks.bridge.kmm.shared.cache.loadResource
 import org.sagebionetworks.bridge.kmm.shared.models.AdherenceRecord
 import org.sagebionetworks.bridge.kmm.shared.repo.AdherenceRecordRepo
 import org.sagebionetworks.bridge.kmm.shared.repo.AuthenticationRepository
-import org.sagebionetworks.bridge.kmm.shared.upload.UploadFile
+import org.sagebionetworks.bridge.kmm.shared.models.UploadFile
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.RecorderRunner
 import org.sagebionetworks.research.mobiletoolbox.app.recorder.model.recorderConfigJsonCoder
 import org.sagebionetworks.research.mobiletoolbox.app.ui.login.PermissionPageType
@@ -140,11 +140,7 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
         // Northwestern measures that don't have lateInit engines
         val measureIds = listOf(
-            "Picture Sequence MemoryV1",
-            "Number Match",
-            "Flanker Inhibitory Control",
-            "FNAME Learning Form 1",
-            "FNAME Test Form 1")
+            "price_test")
 
         val studyId = "androidTestStudyId"
         for (assessmentId in measureIds) {
@@ -158,7 +154,8 @@ class MtbRootAssessmentViewModelTest : KoinComponent {
 
         // Check that archives have expected files
         for (uploadResource in pendingUploads) {
-            val expectedFiles = setOf("taskData.json", "metadata.json", "info.json", "microphone_levels.json")
+            // ARC assessment generates a data.json file, but not until assessment is completed -nbrown 10/20/2023
+            val expectedFiles = setOf("assessmentResult.json", "metadata.json", "info.json", "microphone_levels.json")
             verifyArchive(uploadResource.loadResource()!!, expectedFiles)
         }
 

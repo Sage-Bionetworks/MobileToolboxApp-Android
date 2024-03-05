@@ -9,14 +9,14 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "org.sagebionetworks.research.mobiletoolbox.app"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 33
-        versionCode = 41
-        versionName = "0.28.$versionCode"
+        versionCode = 47
+        versionName = "0.32.$versionCode"
 
         multiDexEnabled = true
         multiDexKeepFile = File("multidex-config.txt")
@@ -83,7 +83,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
 
     buildFeatures.viewBinding = true
@@ -91,17 +91,24 @@ android {
     androidResources {
         noCompress += listOf("pdf")
     }
+    namespace = "org.sagebionetworks.research.mobiletoolbox.app"
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
     // Sage dependencies
-    implementation("org.sagebionetworks:BridgeDataUploadUtils:0.2.6") {
+    implementation("org.sagebionetworks:BridgeDataUploadUtils:0.2.7") {
         exclude(group = "joda-time", module = "joda-time")
         exclude(group = "org.bouncycastle")
+        exclude(group = "com.fasterxml.jackson.core") //Depends on older version that is not compatible with json-schema-validator and doesn't use it
         exclude(group = "com.madgag.spongycastle") //pkix renamed to bcpkix-jdk15on, causes dupes
     }
+    val jacksonVersion = "2.14.2"
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+
     implementation("com.madgag.spongycastle:core:1.58.0.0")
     implementation("com.madgag.spongycastle:prov:1.58.0.0")
     // marked api due to propagation of CMSException
@@ -115,17 +122,17 @@ dependencies {
 
     implementation("org.sagebionetworks.research.kmm:passiveData:${Versions.passiveData}")
 
-    // MTB dependencies
-    implementation("com.readdle.swift.java.codegen:annotations:0.8.2")
     implementation(Deps.MTB.glide)
-    kapt(Deps.MTB.glide_kapt)
 
-    implementation("edu.northwestern.mobiletoolbox:assessments_provider:1.5.9")
-
-    val assessmentVersion = "0.12.0"
+    val assessmentVersion = "1.1.4"
     implementation("org.sagebionetworks.assessmentmodel:presentation:$assessmentVersion")
-    implementation("org.sagebionetworks.assessmentmodel:assessmentModel:$assessmentVersion")
-    implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.3")
+    implementation("org.sagebionetworks.assessmentmodel:assessmentmodel:$assessmentVersion")
+    implementation("org.sagebionetworks.motorcontrol:MotorControl:0.0.5")
+
+    // WashU Arc
+    implementation("edu.wustl.arc.assessments:core-library:1.2.2")
+    implementation("com.github.gcacace:signature-pad:1.3.1")
+    implementation("edu.wustl.arc.sageassessments:sage-library:1.2.2")
 
     // Kermit
     implementation("co.touchlab:kermit:${Versions.kermit}")
@@ -139,7 +146,7 @@ dependencies {
     // Kotlin
     implementation(kotlin("stdlib-jdk7", Versions.kotlin))
     implementation(kotlin("reflect", Versions.kotlin))
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}") 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}")
@@ -200,4 +207,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
     // Needed for createAndroidComposeRule, but not createComposeRule:
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["compose_version"]}")
+
+    androidTestImplementation("com.networknt:json-schema-validator:1.0.82")
 }
+
